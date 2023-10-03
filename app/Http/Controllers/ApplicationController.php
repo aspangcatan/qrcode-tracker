@@ -78,7 +78,7 @@ class ApplicationController extends Controller
     {
         try {
             $filters = $request->only(['filter_patient', 'filter_date_issued']);
-            $response = $this->qrService->index(1116, $filters, $request->page * 10);
+            $response = $this->qrService->index(Auth::id(), $filters, $request->page * 10);
             return response()->json($response);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
@@ -90,7 +90,7 @@ class ApplicationController extends Controller
         try {
             //GET REQUEST PARAMS
             $params = [
-                'user_id' => 1116,
+                'user_id' => Auth::id(),
                 'patient_name' => $request->patient_name,
                 'hospital_no' => $request->hospital_no,
                 'certificate_no' => $request->certificate_no,
@@ -131,7 +131,7 @@ class ApplicationController extends Controller
                 return response()->json(['message' => 'QR not found'], 404);
             }
 
-            if ($qrcode->user_id !== 1116) {
+            if ($qrcode->user_id !== Auth::id()) {
                 return response()->json(['message' => 'Permission denied'], 404);
             }
 
