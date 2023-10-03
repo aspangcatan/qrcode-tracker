@@ -33,7 +33,7 @@
 
         .record {
             font-size: 18px;
-            margin: 10px 0;
+            margin: 40px 0;
             text-align: left;
         }
 
@@ -64,12 +64,32 @@
         .not-found-icon {
             color: #ff0000; /* Red color for not found */
         }
+
+        /* Logo and Disclaimer */
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 30px;
+        }
+
+        .logo img {
+            width: 40px; /* Adjust the width as needed */
+            height: auto;
+            margin-right: 20px;
+        }
+
+        .disclaimer {
+            font-size: 14px;
+            color: #777;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     @if($data)
-        <i class="fas fa-check-circle success-icon fa-4x"></i>
+        <i class="fas fa-check-circle success-icon fa-5x"></i>
         <h1>QR Code Verified</h1>
         <div class="record">
             <div><span>Patient:</span> {{ $data->patient_name }}</div>
@@ -80,7 +100,18 @@
     @else
         <i class="fas fa-times-circle not-found-icon fa-4x"></i>
         <div class="no-record">No record found</div>
-    @endif
+@endif
+
+<!-- Logo and Disclaimer -->
+    <div class="logo-container">
+        <div class="logo">
+            <img src="assets/img/logo.png" alt="Company Logo">
+        </div>
+        <div class="disclaimer">
+            This QR code verification service is provided by Cebu South Medical Center.<br>
+            All rights reserved.
+        </div>
+    </div>
 </div>
 </body>
 </html>
