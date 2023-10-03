@@ -72,10 +72,10 @@
         <i class="fas fa-check-circle success-icon fa-4x"></i>
         <h1>QR Code Verified</h1>
         <div class="record">
-            <div><span>Patient:</span> {{ $data['patient_name'] }}</div>
-            <div><span>Hospital No:</span> {{ $data['hospital_no'] }}</div>
-            <div><span>Certificate No:</span> {{ $data['certificate_no'] }}</div>
-            <div><span>Date Issued:</span> {{ $data['date_issued'] }}</div>
+            <div><span>Patient:</span> {{ $data->patient_name }}</div>
+            <div><span>Hospital No:</span> {{ $data->hospital_no }}</div>
+            <div><span>Certificate No:</span> {{ $data->certificate_no }}</div>
+            <div><span>Date Issued:</span> {{ $data->date_issued }}</div>
         </div>
     @else
         <i class="fas fa-times-circle not-found-icon fa-4x"></i>

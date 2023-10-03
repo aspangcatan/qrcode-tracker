@@ -69,8 +69,13 @@ class ApplicationController extends Controller
 
     public function displayQrcodeDetails(Request $request)
     {
-        $qr = $this->qrService->getQrByHash($request->_q);
-        return view('details', ['data' => $qr]);
+        try {
+            $qr = $this->qrService->getQrByHash($request->_q);
+            return view('details', ['data' => $qr]);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
+        }
+
     }
 
 //    QR Modules
