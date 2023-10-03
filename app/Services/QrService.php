@@ -10,7 +10,7 @@ class QrService
 
     public function index($user_id, $filters, $page)
     {
-        return DB::table('qr_trackers')
+        return DB::table('qr_tracker.qr_trackers')
             ->where('user_id', '=', $user_id)
             ->where(function ($query) use ($filters) {
                 if ($filters['filter_patient'] != '') {
@@ -27,26 +27,26 @@ class QrService
 
     public function getQrById($id)
     {
-        return DB::table('qr_trackers')
+        return DB::table('qr_tracker.qr_trackers')
             ->where('id', '=', $id)
             ->first();
     }
 
     public function getQrByHash($hashed_value)
     {
-        return DB::table('qr_trackers')
+        return DB::table('qr_tracker.qr_trackers')
             ->where('hashed_value', '=', $hashed_value)
             ->first();
     }
 
     public function store($data)
     {
-        return DB::table('qr_trackers')->insertGetId($data);
+        return DB::table('qr_tracker.qr_trackers')->insertGetId($data);
     }
 
     public function updateQr($id, $data)
     {
-        DB::table('qr_trackers')
+        DB::table('qr_tracker.qr_trackers')
             ->where('id', '=', $id)
             ->update([
                 'patient_name' => $data['patient_name'],
@@ -59,7 +59,7 @@ class QrService
 
     public function appendHashedValue($id, $url, $hashed_value)
     {
-        DB::table('qr_trackers')
+        DB::table('qr_tracker.qr_trackers')
             ->where('id', '=', $id)
             ->update([
                 'url' => $url,
@@ -70,7 +70,7 @@ class QrService
 
     public function delete($id)
     {
-        DB::table('qr_trackers')
+        DB::table('qr_tracker.qr_trackers')
             ->where('id', '=', $id)
             ->delete();
     }
