@@ -79,7 +79,7 @@
     });
 
     async function showQr(id) {
-        window.open("http://127.0.0.1:8000/generate-qrcode?id=" + id, '_blank');
+        window.open("http://dohcsmc.site/qrcode-tracker/generate-qrcode?id=" + id, '_blank');
     }
 
     function editQr(id) {
