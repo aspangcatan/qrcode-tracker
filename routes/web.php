@@ -36,14 +36,13 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/password/update', [\App\Http\Controllers\ApplicationController::class, 'changePassword'])->name('changePassword');
 
     Route::get('/generate-qrcode', [\App\Http\Controllers\ApplicationController::class, 'generateQrCode'])->name('generateQrCode');
-    Route::get('/generate-hemb-qrcode', [\App\Http\Controllers\ApplicationController::class, 'generateQrHembCode'])->name('generateQrHembCode');
     Route::get('/get_qr', [\App\Http\Controllers\ApplicationController::class, 'getQrList'])->name('getQrList');
     Route::post('/store_qr', [\App\Http\Controllers\ApplicationController::class, 'storeQr'])->name('storeQr');
     Route::delete('/delete_qr', [\App\Http\Controllers\ApplicationController::class, 'deleteQr'])->name('deleteQr');
 
     /////////////////////////
     ///
-    Route::get('/generate-qrcode', [\App\Http\Controllers\ApplicationController::class, 'generateQrHembCode'])->name('generateQrHembCode');
+    Route::get('/generate-hemb-qrcode', [\App\Http\Controllers\ApplicationController::class, 'generateQrHembCode'])->name('generateQrHembCode');
     Route::get('/get_qr_hemb', [\App\Http\Controllers\ApplicationController::class, 'getQrHembList'])->name('getQrHembList');
     Route::post('/store_qr_hemb', [\App\Http\Controllers\ApplicationController::class, 'storeQrHemb'])->name('storeQrHemb');
     Route::delete('/delete_qr_hemb', [\App\Http\Controllers\ApplicationController::class, 'deleteQrHemb'])->name('deleteQrHemb');
