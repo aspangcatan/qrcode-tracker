@@ -168,7 +168,7 @@ class ApplicationController extends Controller
     {
         try {
             $qr = $this->qrHembService->getQrByHash($request->_q);
-            return view('details', ['data' => $qr]);
+            return view('details_hemb', ['data' => $qr]);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
