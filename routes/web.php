@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,7 @@ Route::get('/qrcode-details', [\App\Http\Controllers\ApplicationController::clas
 Route::get('/qrcode-hemb-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrHembcodeDetails'])->middleware('throttle:5,1');
 Route::get('/logout', function () {
     Auth::logout();
+    Session::flush();
     return redirect()->route('login');
 })->name('logout');
 
