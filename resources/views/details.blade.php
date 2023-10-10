@@ -80,21 +80,22 @@
         }
 
         .disclaimer {
-            font-size: 14px;
+            font-size: 22px;
             color: #777;
+            font-weight: bold;
             text-align: center;
         }
 
         .fw-bold {
-            font-size: 24px;
+            font-size: 30px;
             font-weight: bold;
         }
+
     </style>
 </head>
 <body>
 <div class="container fw-bold">
     @if($data)
-        <i class="fas fa-check-circle success-icon fa-5x"></i>
         <div class="record">
             <div><span>Patient:</span> {{ $data->patient_name }}</div>
             <div><span>Hospital No:</span> {{ $data->hospital_no }}</div>
