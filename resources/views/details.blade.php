@@ -84,13 +84,17 @@
             color: #777;
             text-align: center;
         }
+
+        .fw-bold {
+            font-size: 24px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-<div class="container">
+<div class="container fw-bold">
     @if($data)
         <i class="fas fa-check-circle success-icon fa-5x"></i>
-        <h1>QR Code Verified</h1>
         <div class="record">
             <div><span>Patient:</span> {{ $data->patient_name }}</div>
             <div><span>Hospital No:</span> {{ $data->hospital_no }}</div>
@@ -108,8 +112,8 @@
             <img src="assets/img/logo.png" alt="Company Logo">
         </div>
         <div class="disclaimer">
-            This QR code verification service is provided by Cebu South Medical Center.<br>
-            All rights reserved.
+            To verify the authenticity of this certificate, please contact Cebu South Medical Center - Health
+            Information Management Department (Medical Records Office). Thank you.
         </div>
     </div>
 </div>

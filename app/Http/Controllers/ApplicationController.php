@@ -10,7 +10,6 @@ use App\Services\QrService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 
 class ApplicationController extends Controller
@@ -79,7 +78,6 @@ class ApplicationController extends Controller
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
-
     }
 
     public function getQrList(Request $request)
