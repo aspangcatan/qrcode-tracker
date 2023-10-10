@@ -80,7 +80,7 @@
 <div class="center-container">
     <div class="container">
         <div class="banner">
-            <img src="banner.jpg" alt="Banner Image">
+            <img src="images/banner.jpg" alt="Banner Image">
         </div>
         <main>
             @if($data)
