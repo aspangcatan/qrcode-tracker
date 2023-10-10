@@ -56,6 +56,7 @@
         }
 
         .record p {
+            font-size: 20px;
             text-align: left;
             margin: 5px 0;
         }
@@ -65,7 +66,7 @@
         }
 
         .disclaimer {
-            font-size: 14px;
+            font-size: 18px;
             color: #555;
         }
 

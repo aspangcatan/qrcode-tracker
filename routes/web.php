@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Session;
 Route::get('/', [\App\Http\Controllers\ApplicationController::class, 'index'])->name('login');
 Route::post('/authenticate', [\App\Http\Controllers\ApplicationController::class, 'authenticate'])->name('authenticate');
 Route::get('/qrcode-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrcodeDetails'])->middleware('throttle:5,1');
-Route::get('/qrcode-hemb-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrHembcodeDetails'])->middleware('throttle:5,1');
+Route::get('/qrcode-hemb-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrHembcodeDetails'])->middleware('throttle:10,1');
 Route::get('/logout', function () {
     Auth::logout();
     Session::flush();
