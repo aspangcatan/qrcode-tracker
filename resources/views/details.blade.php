@@ -3,51 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>QR Code Verification</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <title>Verification Results</title>
     <style>
+
         body {
             font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
+            background-color: #f0f0f0;
             margin: 0;
             padding: 0;
+        }
+
+        .center-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-        }
-
-        .container {
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            padding: 20px;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 24px;
-            color: #333;
-        }
-
-        .record {
-            font-size: 18px;
-            margin: 40px 0;
-            text-align: left;
-        }
-
-        .record div {
-            margin-bottom: 5px;
-        }
-
-        .record div:last-child {
-            margin-bottom: 0;
-        }
-
-        .record span {
-            margin-left: 10px;
-            font-weight: bold;
+            min-height: 100vh;
         }
 
         .no-record {
@@ -56,67 +28,79 @@
             margin-top: 20px;
         }
 
-        /* Icon styles */
-        .success-icon {
-            color: #008000; /* Green color for success */
-        }
-
-        .not-found-icon {
-            color: #ff0000; /* Red color for not found */
-        }
-
-        /* Logo and Disclaimer */
-        .logo-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 30px;
-        }
-
-        .logo img {
-            width: 40px; /* Adjust the width as needed */
-            height: auto;
-            margin-right: 20px;
-        }
-
-        .disclaimer {
-            font-size: 22px;
-            color: #777;
-            font-weight: bold;
+        .container {
+            max-width: 600px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
         }
 
-        .fw-bold {
-            font-size: 30px;
-            font-weight: bold;
+        .banner img {
+            display: block;
+            max-width: 100%;
+            width: 100%;
+            height: auto;
         }
+
+        header {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 10px;
+            border-radius: 8px 8px 0 0;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .record p {
+            text-align: left;
+            margin: 5px 0;
+        }
+
+        footer {
+            padding: 20px;
+        }
+
+        .disclaimer {
+            font-size: 14px;
+            color: #555;
+        }
+
+        main {
+            padding: 20px;
+        }
+
 
     </style>
 </head>
 <body>
-<div class="container fw-bold">
-    @if($data)
-        <div class="record">
-            <div><span>Patient:</span> {{ $data->patient_name }}</div>
-            <div><span>Hospital No:</span> {{ $data->hospital_no }}</div>
-            <div><span>Certificate No:</span> {{ $data->certificate_no }}</div>
-            <div><span>Date Issued:</span> {{ $data->date_issued }}</div>
+<div class="center-container">
+    <div class="container">
+        <div class="banner">
+            <img src="banner.jpg" alt="Banner Image">
         </div>
-    @else
-        <i class="fas fa-times-circle not-found-icon fa-4x"></i>
-        <div class="no-record">No record found</div>
-@endif
-
-<!-- Logo and Disclaimer -->
-    <div class="logo-container">
-        <div class="logo">
-            <img src="assets/img/logo.png" alt="Company Logo">
-        </div>
-        <div class="disclaimer">
-            To verify the authenticity of this certificate, please contact Cebu South Medical Center - Health
-            Information Management Department (Medical Records Office). Thank you.
-        </div>
+        <main>
+            @if($data)
+                <div class="record">
+                    <p><strong>Patient:</strong> {{ $data->patient_name }}</p>
+                    <p><strong>Hospital No:</strong> {{ $data->hospital_no }}</p>
+                    <p><strong>Certificate No:</strong> {{ $data->certificate_no }}-001</p>
+                    <p><strong>Date Issued:</strong> {{ $data->date_issued }}</p>
+                </div>
+            @else
+                <i class="fas fa-times-circle not-found-icon fa-4x"></i>
+                <div class="no-record">No record found</div>
+            @endif
+        </main>
+        <footer>
+            <p class="disclaimer">To verify the authenticity of this certificate, please contact Cebu South Medical
+                Center - Health Information Management Department (Medical Records Office). Thank you.</p>
+        </footer>
     </div>
 </div>
 </body>
 </html>
+
