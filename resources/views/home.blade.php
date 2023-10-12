@@ -59,7 +59,7 @@
         </div>
     </div>
 
-    @include('modals.qrcode')
+    @include('modals.certificate')
 @stop
 @section('js')
     @include('js.home')

@@ -17,13 +17,12 @@ use Illuminate\Support\Facades\Session;
 
 Route::get('/', [\App\Http\Controllers\ApplicationController::class, 'index'])->name('login');
 Route::post('/authenticate', [\App\Http\Controllers\ApplicationController::class, 'authenticate'])->name('authenticate');
-Route::get('/qrcode-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrcodeDetails'])->middleware('throttle:5,1');
-Route::get('/qrcode-hemb-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrHembcodeDetails'])->middleware('throttle:10,1');
 Route::get('/logout', function () {
     Auth::logout();
     Session::flush();
     return redirect()->route('login');
 })->name('logout');
+
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home', function () {
@@ -35,17 +34,17 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/password/update', [\App\Http\Controllers\ApplicationController::class, 'changePassword'])->name('changePassword');
 
+    Route::post('/store_certificate', [\App\Http\Controllers\ApplicationController::class, 'storeCertificate'])->name('storeCertificate');
+    Route::delete('/delete_certificate', [\App\Http\Controllers\ApplicationController::class, 'deleteCertificate'])->name('deleteCertificate');
+    Route::get('/get_certificates', [\App\Http\Controllers\ApplicationController::class, 'getCertificates'])->name('getCertificates');
+
     Route::get('/generate-qrcode', [\App\Http\Controllers\ApplicationController::class, 'generateQrCode'])->name('generateQrCode');
     Route::get('/get_qr', [\App\Http\Controllers\ApplicationController::class, 'getQrList'])->name('getQrList');
-    Route::post('/store_qr', [\App\Http\Controllers\ApplicationController::class, 'storeQr'])->name('storeQr');
-    Route::delete('/delete_qr', [\App\Http\Controllers\ApplicationController::class, 'deleteQr'])->name('deleteQr');
 
-    /////////////////////////
-    ///
-    Route::get('/generate-hemb-qrcode', [\App\Http\Controllers\ApplicationController::class, 'generateQrHembCode'])->name('generateQrHembCode');
-    Route::get('/get_qr_hemb', [\App\Http\Controllers\ApplicationController::class, 'getQrHembList'])->name('getQrHembList');
-    Route::post('/store_qr_hemb', [\App\Http\Controllers\ApplicationController::class, 'storeQrHemb'])->name('storeQrHemb');
-    Route::delete('/delete_qr_hemb', [\App\Http\Controllers\ApplicationController::class, 'deleteQrHemb'])->name('deleteQrHemb');
 
+    #FORMS
+    Route::get('/form-original', function () {
+        return view('forms.medico_legal');
+    });
 });
 

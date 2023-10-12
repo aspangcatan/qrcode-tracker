@@ -2,12 +2,22 @@
     //COMMON HEADERS TO BE USED TO ALL POST,PUT,DELETE request
     let page = 0;
     let qr_id = 0;
+    let diagnosis_index = -1;
     const HEADERS = {
         "Content-Type": "application/json",
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     };
 
     $(document).ready(() => {
+        $("#certificate_modal").modal('show');
+        fetch('/qrcode-tracker/form-original', {
+            method: "GET"
+        })
+            .then(response => response.text()) // Convert response to text
+            .then(html => {
+                $("#certificate_modal .modal-body").append(html);
+            })
+            .catch(error => console.error(error));
         $("#btn_search").click(function () {
             page = 0;
             getQr();
@@ -30,7 +40,117 @@
 
         $("#btn_add").click(() => {
             clearForms();
-            $("#qr_modal").modal('show');
+            $("#certificate_modal").modal('show');
+            fetch('/qrcode-tracker/form-original', {
+                method: "GET"
+            })
+                .then(response => response.text()) // Convert response to text
+                .then(html => {
+                    $("#certificate_modal .modal-body").append(html);
+                })
+                .catch(error => console.error(error));
+        });
+
+        $("#btn_add_diagnosis").click(function () {
+            diagnosis_index = -1;
+            $("#diagnosis_modal").modal("show");
+        });
+
+        $("#btn_save_diagnosis").click(function () {
+            const diagnosis = $("#diagnosis").val().trim();
+            if (diagnosis_index > -1) {
+                $("#diagnosis_list tr:eq(" + diagnosis_index + ") td:eq(0)").text(diagnosis);
+                $("#diagnosis_modal").modal("hide");
+                diagnosis_index = -1;
+            } else {
+                let tr = "<tr>";
+                tr += "<td style='width: 90%'>" + diagnosis + "</td>"
+                tr += "<td style='width: 5%'><button class='btn btn-sm btn-transparent' onClick='editDiagnosis(this)'><i class='bi bi-pencil-fill text-success'></i></button></td>"
+                tr += "<td style='width: 5%'><button class='btn btn-sm btn-transparent' onClick='deleteDiagnosis(this)'><i class='bi bi-trash-fill text-danger'></i></button></td>"
+                tr += "</tr>";
+                $("#diagnosis_list").append(tr);
+            }
+            $("#diagnosis").val("");
+        });
+
+        $("#btn_save_ordinary").click(async function () {
+            const certificate_no = $("#certificate_no").val().trim();
+            const health_record_no = $("#health_record_no").val().trim();
+            const date_issued = $("#date_issued").val().trim();
+            const patient = $("#patient").val().trim();
+            const age = $("#age").val().trim();
+            const sex = $("#sex").val();
+            const civil_status = $("#civil_status").val();
+            const address = $("#address").val().trim();
+            const date_examined = $("#date_examined").val().trim();
+            const days_barred = $("#days_barred").val();
+            const doctor = $("#doctor").val().trim();
+            const doctor_designation = $("#doctor_designation").val();
+            const doctor_license = $("#doctor_license").val().trim();
+            const requesting_person = $("#requesting_person").val();
+            const purpose = $("#purpose").val();
+            const or_no = $("#or_no").val().trim();
+            const amount = $("#amount").val().trim();
+            const diagnosis_array = [];
+
+            for (let i = 0; i < $("#diagnosis_list tr").length; i++) {
+                const diagnosis = $("#diagnosis_list tr:eq(" + i + ") td:eq(0)").text().trim();
+                diagnosis_array.push({
+                    diagnosis: diagnosis
+                });
+            }
+
+            const noi = $("#noi").val();
+            const doi = $("#doi").val();
+            const poi = $("#poi").val();
+            const toi = $("#toi").val();
+
+            const sustained = {
+                "noi": (noi === undefined) ? null : noi,
+                "doi": (doi === undefined) ? null : doi,
+                "poi": (poi === undefined) ? null : poi,
+                "toi": (toi === undefined) ? null : toi
+            }
+
+            if (!certificate_no || !health_record_no || !date_issued || !patient || !age || !civil_status || !address || !date_examined) {
+                alert("Please fill in records");
+                return;
+            }
+
+            const params = {
+                "certificate_no": certificate_no,
+                "health_record_no": health_record_no,
+                "date_issued": date_issued,
+                "patient": patient,
+                "age": age,
+                "sex": (sex === undefined) ? null : sex,
+                "civil_status": (civil_status === undefined) ? null : civil_status,
+                "address": address,
+                "date_examined": date_examined,
+                "days_barred": (days_barred === undefined) ? null : days_barred,
+                "doctor": doctor,
+                "doctor_designation": (doctor_designation === undefined) ? null : doctor_designation,
+                "doctor_license": doctor_license,
+                "requesting_person": (requesting_person === undefined) ? null : requesting_person,
+                "purpose": (purpose === undefined) ? null : purpose,
+                "or_no": or_no,
+                "amount": amount,
+                "diagnosis": diagnosis_array,
+                "sustained": (noi === undefined) ? null : sustained
+            }
+
+            try {
+                const response = await fetch('{{route('storeCertificate')}}', {
+                    method: "POST",
+                    headers: HEADERS,
+                    body: JSON.stringify(params)
+                });
+
+                const data = await response.json();
+                console.log(data);
+            } catch (err) {
+                console.log(err);
+            }
         });
 
         $("#btn_save").click(async () => {
@@ -53,7 +173,7 @@
             }
 
             try {
-                const response = await fetch('{{ route('storeQr') }}', {
+                const response = await fetch('{{ route('storeCertificate') }}', {
                     method: "POST",
                     headers: HEADERS,
                     body: JSON.stringify(params)
@@ -98,7 +218,7 @@
 
     async function deleteQr(id) {
         if (confirm("Are you sure you want to delete this record?")) {
-            const response = await fetch('{{ route('deleteQr') }}', {
+            const response = await fetch('{{ route('deleteCertificate') }}', {
                 method: "DELETE",
                 headers: HEADERS,
                 body: JSON.stringify({id: id})
@@ -119,7 +239,7 @@
     function getQr() {
         const filter_patient = $("#filter_patient").val().trim();
         const filter_date_issued = $("#filter_date_issued").val();
-        fetch('{{ route('getQrList') }}?page=' + page +
+        fetch('{{ route('getCertificates') }}?page=' + page +
             '&filter_patient=' + filter_patient +
             '&filter_date_issued=' + filter_date_issued)
             .then(res => res.json())
@@ -178,5 +298,21 @@
         $("#hospital_no").val("");
         $("#certificate_no").val("");
         $("#date_issued").val("");
+    }
+
+    function editDiagnosis(button) {
+        const tr = $(button).closest('tr');
+        const diagnosis = tr.find('td:first').text();
+        diagnosis_index = tr.index();
+
+        $("#diagnosis_modal").modal("show");
+        $("#diagnosis").val(diagnosis);
+    }
+
+    function deleteDiagnosis(button) {
+        if (confirm("Are you sure you want to remove this record?")) {
+            const tr = $(button).closest('tr');
+            tr.remove();
+        }
     }
 </script>

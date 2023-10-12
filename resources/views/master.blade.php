@@ -39,6 +39,140 @@
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
+    <style>
+        .banner img {
+            display: block;
+            max-width: 100%;
+            width: 100%;
+            height: auto;
+        }
+
+        .certificate-details {
+            text-align: right;
+            margin-top: 10px;
+        }
+
+        .certificate-details p {
+            margin: 10px 0;
+        }
+
+        .certificate-details span {
+            text-decoration: underline;
+        }
+
+        .certificate-title {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .certificate-text {
+            margin-top: 20px;
+            margin-left: 20%;
+            margin-right: 10%;
+        }
+
+        .certificate-text > div {
+            margin-top: 20px;
+        }
+
+        .long {
+            text-align: center;
+            width: 390px; /* Adjust the width as needed */
+            border-bottom: 1px solid black;
+            display: inline-block;
+        }
+
+        .medium {
+            margin-left: 20px;
+            text-align: center;
+            width: 300px; /* Adjust the width as needed */
+            border-bottom: 1px solid black;
+            display: inline-block;
+        }
+
+        .very-small {
+            text-align: center;
+            width: 60px; /* Adjust the width as needed */
+            border-bottom: 1px solid black;
+            display: inline-block;
+        }
+
+
+        .small {
+            text-align: center;
+            width: 180px; /* Adjust the width as needed */
+            border-bottom: 1px solid black;
+            display: inline-block;
+        }
+
+        .very-small input {
+            text-align: center;
+            width: 100%;
+            border: 0px solid transparent;
+        }
+
+        .small input {
+            text-align: center;
+            width: 100%;
+            border: 0px solid transparent;
+        }
+
+        .btn-transparent {
+            background: transparent;
+            border: 0px solid transparent;
+        }
+
+        .medium input {
+            text-align: center;
+            width: 100%;
+            border: 0px solid transparent;
+        }
+
+        .long input {
+            text-align: center;
+            width: 100%;
+            border: 0px solid transparent;
+        }
+
+        .mt-1 {
+            margin-top: 10px;
+        }
+
+        /* Specific styling for the label */
+        .label {
+            text-align: center;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .border-bottom {
+            border-bottom: 1px solid black;
+        }
+
+        .ml-1 {
+            margin-left: 10px;
+        }
+
+        .mr-3 {
+            margin-right: 30px;
+        }
+
+        .doctor-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: end;
+        }
+
+        .mt-3 {
+            margin-top: 30px;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body>

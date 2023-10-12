@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\NurseStation;
 use App\Models\User;
 use App\Models\UserPrivelege;
+use App\Services\CertificateService;
+use App\Services\DiagnosisService;
 use App\Services\QrHembService;
 use App\Services\QrService;
+use App\Services\SustainedService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -14,12 +17,15 @@ use Illuminate\Support\Facades\Hash;
 
 class ApplicationController extends Controller
 {
-    protected $qrService, $qrHembService;
+    protected $qrService, $certificateService, $diagnosisService, $sustainedService;
 
-    public function __construct(QrService $qrService, QrHembService $qrHembService)
+    public function __construct(QrService $qrService, CertificateService $certificateService,
+                                DiagnosisService $diagnosisService, SustainedService $sustainedService)
     {
         $this->qrService = $qrService;
-        $this->qrHembService = $qrHembService;
+        $this->certificateService = $certificateService;
+        $this->diagnosisService = $diagnosisService;
+        $this->sustainedService = $sustainedService;
     }
 
     public function index(Request $request)
@@ -91,155 +97,97 @@ class ApplicationController extends Controller
         }
     }
 
-    public function storeQr(Request $request)
-    {
-        try {
-            //GET REQUEST PARAMS
-            $params = [
-                'user_id' => Auth::id(),
-                'patient_name' => $request->patient_name,
-                'hospital_no' => $request->hospital_no,
-                'certificate_no' => $request->certificate_no,
-                'date_issued' => $request->date_issued,
-                'created_at' => now()
-            ];
 
-            //CHECK IF QR EXISTS
-            $qr = $this->qrService->getQrById($request->id);
-            if ($qr) {
-                //MODIFY RECORD IF ID EXISTS
-                $this->qrService->updateQr($qr->id, $params);
-            } else {
-                //GET QR ID TO BE USED ON GENERATING HASH VALUE
-                $qr_id = $this->qrService->store($params);
-
-                $data = now() . $qr_id;
-                $hashedValue = hash('sha256', $data);
-                $shortenedHash = substr($hashedValue, 0, 8); // Shorten if needed
-                $url = env('APP_URL') . '/qrcode-details?_q=' . $shortenedHash;
-
-                $this->qrService->appendHashedValue($qr_id, $url, $shortenedHash);
-            }
-
-            return response()->json(['message' => 'QR successfully saved']);
-        } catch (\Exception $exception) {
-            return response()->json(['message' => $exception->getMessage()], 500);
-        }
-    }
-
-    public function deleteQr(Request $request)
-    {
-        try {
-            //CHECK FIRST IF ID EXISTS AND IT BELONGS TO THE CREATOR
-            $qrcode = $this->qrService->getQrById($request->id);
-
-            if (!$qrcode) {
-                return response()->json(['message' => 'QR not found'], 404);
-            }
-
-            if ($qrcode->user_id !== Auth::id()) {
-                return response()->json(['message' => 'Permission denied'], 404);
-            }
-
-            $this->qrService->delete($request->id);
-            return response()->json(['message' => 'QR successfully removed']);
-        } catch (\Exception $exception) {
-            return response()->json(['message' => $exception->getMessage()]);
-        }
-    }
-
-    ///////////////////////////
-    ///
-
-    public function generateQrHembCode(Request $request)
-    {
-        try {
-            #GET HASHED_VALUE BY ID
-            $qr = $this->qrHembService->getQrById($request->id);
-            return view('qrcode_hemb', ['qrcode' => $qr]);
-        } catch (\Exception $exception) {
-            return response()->json(['message' => $exception->getMessage()]);
-        }
-    }
-
-    public function displayQrHembcodeDetails(Request $request)
-    {
-        try {
-            $qr = $this->qrHembService->getQrByHash($request->_q);
-            return view('details_hemb', ['data' => $qr]);
-        } catch (\Exception $exception) {
-            return response()->json(['message' => $exception->getMessage()], 500);
-        }
-
-    }
-
-    public function getQrHembList(Request $request)
+    //START OF MODULES
+    public function getCertificates(Request $request)
     {
         try {
             $filters = $request->only(['filter_patient', 'filter_date_issued']);
-            $response = $this->qrHembService->index(Auth::id(), $filters, $request->page * 10);
+            $response = $this->certificateService->index(Auth::id(), $filters, $request->page * 10);
             return response()->json($response);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 
-    public function storeQrHemb(Request $request)
+    public function storeCertificate(Request $request)
     {
         try {
-            //GET REQUEST PARAMS
             $params = [
-                'user_id' => Auth::id(),
-                'patient_name' => $request->patient_name,
-                'date_training' => $request->date_training,
-                'date_expiry' => $request->date_expiry,
-                'institution' => $request->institution,
+                'user_id' => 1116,
+                'certificate_no' => $request->certificate_no,
+                'health_record_no' => $request->health_record_no,
+                'date_issued' => $request->date_issued,
+                'patient' => $request->patient,
+                'age' => $request->age,
+                'sex' => $request->sex,
+                'civil_status' => $request->civil_status,
+                'address' => $request->address,
+                'date_examined' => $request->date_examined,
+                'doctor' => $request->doctor,
+                'doctor_designation' => $request->doctor_designation,
+                'doctor_license' => $request->doctor_license,
+                'requesting_person' => $request->requesting_person,
+                'purpose' => $request->purpose,
+                'or_no' => $request->or_no,
+                'amount' => $request->amount,
+                'type' => $request->type,
                 'created_at' => now()
             ];
 
-            //CHECK IF QR EXISTS
-            $qr = $this->qrHembService->getQrById($request->id);
-            if ($qr) {
-                //MODIFY RECORD IF ID EXISTS
-                $this->qrHembService->updateQr($qr->id, $params);
-            } else {
-                //GET QR ID TO BE USED ON GENERATING HASH VALUE
-                $qr_id = $this->qrHembService->store($params);
+            $certificate_id = $this->certificateService->store($params);
+            $data = now() . $certificate_id;
+            $hashedValue = hash('sha256', $data);
+            $shortenedHash = substr($hashedValue, 0, 8); // Shorten if needed
+            $url = env('APP_URL') . '/qrcode-details?_q=' . $shortenedHash;
 
-                $data = now() . $qr_id;
-                $hashedValue = hash('sha256', $data);
-                $shortenedHash = substr($hashedValue, 0, 8); // Shorten if needed
-                $url = env('APP_URL') . '/qrcode-hemb-details?_q=' . $shortenedHash;
+            $this->certificateService->appendHashedValue($certificate_id, $url, $shortenedHash);
 
-                $this->qrHembService->appendHashedValue($qr_id, $url, $shortenedHash);
+            //INSERT DIAGNOSIS
+            if ($request->diagnosis) {
+                $diagnosis = $request->diagnosis;
+                $diagnosis_params = [];
+                for ($i = 0; $i < count($diagnosis); $i++) {
+                    $diagnosis_params[] = [
+                        'certificate_id' => $certificate_id,
+                        'diagnosis' => $diagnosis[$i]['diagnosis']
+                    ];
+                }
+
+                $this->diagnosisService->delete($certificate_id);
+                $this->diagnosisService->store($diagnosis_params);
             }
 
-            return response()->json(['message' => 'QR successfully saved']);
+            if ($request->sustained) {
+                $this->sustainedService->delete($certificate_id);
+                $sustained = $request->sustained;
+                $sustained['certificate_id'] = $certificate_id;
+                $this->sustainedService->store($sustained);
+            }
+
+            return response()->json(['message' => 'New record added']);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 
-    public function deleteQrHemb(Request $request)
+    public function deleteCertificate(Request $request)
     {
         try {
-            //CHECK FIRST IF ID EXISTS AND IT BELONGS TO THE CREATOR
-            $qrcode = $this->qrHembService->getQrById($request->id);
+            $certificate = $this->certificateService->getCertificateById($request->id);
 
-            if (!$qrcode) {
+            if (!$certificate) {
                 return response()->json(['message' => 'QR not found'], 404);
             }
 
-            if ($qrcode->user_id !== Auth::id()) {
+            if ($certificate->user_id !== Auth::id()) {
                 return response()->json(['message' => 'Permission denied'], 404);
             }
 
-            $this->qrHembService->delete($request->id);
-            return response()->json(['message' => 'QR successfully removed']);
+            $this->certificateService->delete($request->id);
+            return response()->json(['message' => 'Record removed']);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()]);
         }
     }
-
-
 }
