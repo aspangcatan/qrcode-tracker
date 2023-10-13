@@ -500,7 +500,7 @@
     });
 
     async function printPreview(id) {
-        window.open("http://localhost/qrcode-tracker/print-preview?id=" + id, '_blank');
+        window.open("https://dohcsmc.site/qrcode-tracker/print-preview?id=" + id, '_blank');
     }
 
     function editCertificate(id) {
