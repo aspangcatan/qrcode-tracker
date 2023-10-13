@@ -76,6 +76,12 @@
             margin-top: 20px;
         }
 
+        .is-invalid {
+            border: 1px solid #dc3545; /* Red border color */
+            background-color: #f8d7da; /* Red background color */
+            color: #dc3545; /* Red text color */
+        }
+
         .long {
             text-align: center;
             width: 390px; /* Adjust the width as needed */

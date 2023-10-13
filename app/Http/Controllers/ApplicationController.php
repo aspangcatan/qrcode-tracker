@@ -7,30 +7,35 @@ use App\Models\User;
 use App\Models\UserPrivelege;
 use App\Services\CertificateService;
 use App\Services\DiagnosisService;
-use App\Services\QrHembService;
-use App\Services\QrService;
 use App\Services\SustainedService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 
 class ApplicationController extends Controller
 {
-    protected $qrService, $certificateService, $diagnosisService, $sustainedService;
+    protected $certificateService, $diagnosisService, $sustainedService;
 
-    public function __construct(QrService $qrService, CertificateService $certificateService,
+    public function __construct(CertificateService $certificateService,
                                 DiagnosisService $diagnosisService, SustainedService $sustainedService)
     {
-        $this->qrService = $qrService;
         $this->certificateService = $certificateService;
         $this->diagnosisService = $diagnosisService;
         $this->sustainedService = $sustainedService;
     }
 
-    public function index(Request $request)
+    public function index()
     {
+        if (Auth::check()) return redirect()->route('home');
         return view('login');
+    }
+
+    public function home()
+    {
+        if (!Auth::check()) return redirect()->route('login');
+        return view('home');
     }
 
     public function authenticate(Request $request)
@@ -65,38 +70,22 @@ class ApplicationController extends Controller
         }
     }
 
-    public function generateQrCode(Request $request)
+    public function logout()
     {
-        try {
-            #GET HASHED_VALUE BY ID
-            $qr = $this->qrService->getQrById($request->id);
-            return view('qrcode', ['qrcode' => $qr]);
-        } catch (\Exception $exception) {
-            return response()->json(['message' => $exception->getMessage()]);
-        }
+        Auth::logout();
+        Session::flush();
+        return redirect()->route('login');
     }
 
     public function displayQrcodeDetails(Request $request)
     {
         try {
-            $qr = $this->qrService->getQrByHash($request->_q);
+            $qr = $this->certificateService->getCertificateByHash($request->_q);
             return view('details', ['data' => $qr]);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
-
-    public function getQrList(Request $request)
-    {
-        try {
-            $filters = $request->only(['filter_patient', 'filter_date_issued']);
-            $response = $this->qrService->index(Auth::id(), $filters, $request->page * 10);
-            return response()->json($response);
-        } catch (\Exception $exception) {
-            return response()->json(['message' => $exception->getMessage()], 500);
-        }
-    }
-
 
     //START OF MODULES
     public function getCertificates(Request $request)
@@ -114,7 +103,7 @@ class ApplicationController extends Controller
     {
         try {
             $params = [
-                'user_id' => 1116,
+                'user_id' => Auth::id(),
                 'certificate_no' => $request->certificate_no,
                 'health_record_no' => $request->health_record_no,
                 'date_issued' => $request->date_issued,
@@ -131,17 +120,27 @@ class ApplicationController extends Controller
                 'purpose' => $request->purpose,
                 'or_no' => $request->or_no,
                 'amount' => $request->amount,
+                'days_barred' => $request->days_barred,
                 'type' => $request->type,
                 'created_at' => now()
             ];
 
-            $certificate_id = $this->certificateService->store($params);
-            $data = now() . $certificate_id;
-            $hashedValue = hash('sha256', $data);
-            $shortenedHash = substr($hashedValue, 0, 8); // Shorten if needed
-            $url = env('APP_URL') . '/qrcode-details?_q=' . $shortenedHash;
-
-            $this->certificateService->appendHashedValue($certificate_id, $url, $shortenedHash);
+            //CHECK IF ID EXISTS
+            $certificate = $this->certificateService->getCertificateById($request->id);
+            if ($certificate) {
+                //UPDATE INFORMATION
+                $certificate_id = $request->id;
+                $this->certificateService->updateCertificate($certificate_id, $params);
+                $message = 'Record updated';
+            } else {
+                $certificate_id = $this->certificateService->store($params);
+                $data = now() . $certificate_id;
+                $hashedValue = hash('sha256', $data);
+                $shortenedHash = substr($hashedValue, 0, 8); // Shorten if needed
+                $url = env('APP_URL') . '/qrcode-details?_q=' . $shortenedHash;
+                $this->certificateService->appendHashedValue($certificate_id, $url, $shortenedHash);
+                $message = 'New record added';
+            }
 
             //INSERT DIAGNOSIS
             if ($request->diagnosis) {
@@ -165,7 +164,7 @@ class ApplicationController extends Controller
                 $this->sustainedService->store($sustained);
             }
 
-            return response()->json(['message' => 'New record added']);
+            return response()->json(['message' => $message]);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
@@ -186,6 +185,63 @@ class ApplicationController extends Controller
 
             $this->certificateService->delete($request->id);
             return response()->json(['message' => 'Record removed']);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()]);
+        }
+    }
+
+    public function partialForm(Request $request)
+    {
+        switch ($request->type) {
+            case "ordinary":
+                if ($request->has('id')) {
+                    $certificates = $this->certificateService->getCertificateById($request->id);
+                    $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
+                    return view('forms.ordinary', compact('certificates', 'diagnosis'));
+                }
+
+                return view('forms.ordinary');
+            case "maipp":
+                if ($request->has('id')) {
+                    $certificates = $this->certificateService->getCertificateById($request->id);
+                    $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
+                    return view('forms.maipp', compact('certificates', 'diagnosis'));
+                }
+
+                return view('forms.maipp');
+            case "medico_legal":
+                if ($request->has('id')) {
+                    $certificates = $this->certificateService->getCertificateById($request->id);
+                    $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
+                    $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
+                    return view('forms.medico_legal', compact('certificates', 'diagnosis', 'sustained'));
+                }
+                return view('forms.medico_legal');
+        }
+    }
+
+    public function printPreview(Request $request)
+    {
+        try {
+
+            $certificate = $this->certificateService->getCertificateById($request->id);
+
+            //CHECK CERTIFICATE TYPE
+            if (!$certificate) {
+                return response()->json(['message' => 'Certificate record dont exists'], 404);
+            }
+
+            $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
+
+            switch ($certificate->type) {
+                case "ordinary":
+                    return view('pdf.ordinary', ['certificate' => $certificate, 'diagnosis' => $diagnosis]);
+                case "maipp":
+                    return view('pdf.maipp', ['certificate' => $certificate, 'diagnosis' => $diagnosis]);
+                case "medico_legal":
+                    $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
+                    return view('pdf.medico_legal', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'sustained' => $sustained]);
+            }
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()]);
         }

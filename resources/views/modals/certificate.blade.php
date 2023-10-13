@@ -10,7 +10,7 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
                 <button class="btn btn-warning ml-1 mr-1" id="btn_add_diagnosis">ADD DIAGNOSIS</button>
-                <button class="btn btn-success ml-1" id="btn_save_ordinary">SAVE</button>
+                <button class="btn btn-success ml-1" id="btn_save">SAVE</button>
             </div>
         </div>
     </div>

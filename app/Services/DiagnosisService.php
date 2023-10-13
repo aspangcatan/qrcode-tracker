@@ -11,7 +11,7 @@ class DiagnosisService
     public function getDiagnosisByCertificate($certificate_id)
     {
         return DB::table('qr_tracker.diagnosis')
-            ->where('certificiate_id', '=', $certificate_id)
+            ->where('certificate_id', '=', $certificate_id)
             ->get();
     }
 

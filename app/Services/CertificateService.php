@@ -27,7 +27,7 @@ class CertificateService
 
     public function getCertificateById($id)
     {
-        return DB::table('qr_tracker.qr_trackers')
+        return DB::table('qr_tracker.certificates')
             ->where('id', '=', $id)
             ->first();
     }
@@ -65,7 +65,7 @@ class CertificateService
                 'purpose' => $data['purpose'],
                 'or_no' => $data['or_no'],
                 'amount' => $data['amount'],
-                'type' => $data['type'],
+                'days_barred' => $data['days_barred'],
                 'updated_at' => now()
             ]);
     }

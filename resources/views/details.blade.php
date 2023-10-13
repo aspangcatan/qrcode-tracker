@@ -86,10 +86,10 @@
         <main>
             @if($data)
                 <div class="record">
-                    <p><strong>Patient:</strong> {{ $data->patient_name }}</p>
-                    <p><strong>Hospital No:</strong> {{ $data->hospital_no }}</p>
-                    <p><strong>Certificate No:</strong> {{ $data->certificate_no }}-001</p>
-                    <p><strong>Date Issued:</strong> {{ $data->date_issued }}</p>
+                    <p><strong>Patient:</strong> {{ $data->patient }}</p>
+                    <p><strong>Health Record No.:</strong> {{ $data->health_record_no }}</p>
+                    <p><strong>Certificate No:</strong> {{ $data->certificate_no }}</p>
+                    <p><strong>Date Issued:</strong> {{ \Illuminate\Support\Carbon::parse($data->date_issued)->format('F d, Y') }}</p>
                 </div>
             @else
                 <i class="fas fa-times-circle not-found-icon fa-4x"></i>

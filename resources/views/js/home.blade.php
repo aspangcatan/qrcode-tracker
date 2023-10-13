@@ -1,31 +1,24 @@
 <script>
     //COMMON HEADERS TO BE USED TO ALL POST,PUT,DELETE request
     let page = 0;
-    let qr_id = 0;
+    let certificate_id = 0;
     let diagnosis_index = -1;
     const HEADERS = {
         "Content-Type": "application/json",
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     };
 
+    let type = "";
+
     $(document).ready(() => {
-        $("#certificate_modal").modal('show');
-        fetch('/qrcode-tracker/form-original', {
-            method: "GET"
-        })
-            .then(response => response.text()) // Convert response to text
-            .then(html => {
-                $("#certificate_modal .modal-body").append(html);
-            })
-            .catch(error => console.error(error));
         $("#btn_search").click(function () {
             page = 0;
-            getQr();
+            getCertificates();
         });
 
         $("#btn_next").click(function () {
             page++;
-            getQr();
+            getCertificates();
             $("#btn_prev").removeClass("d-none");
         });
 
@@ -35,18 +28,53 @@
                 $("#btn_prev").addClass("d-none");
             }
             page--;
-            getQr();
+            getCertificates();
         });
 
-        $("#btn_add").click(() => {
-            clearForms();
+        $("#btn_add_ordinary").click(() => {
+            certificate_id = 0;
+            type = "ordinary";
             $("#certificate_modal").modal('show');
-            fetch('/qrcode-tracker/form-original', {
+            showSpinner();
+            fetch('/qrcode-tracker/partial-form?type=' + type, {
                 method: "GET"
             })
                 .then(response => response.text()) // Convert response to text
                 .then(html => {
-                    $("#certificate_modal .modal-body").append(html);
+                    $("#certificate_modal .modal-body").html(html);
+                    $("#certificate_modal .modal-footer").removeClass("d-none");
+                })
+                .catch(error => console.error(error));
+        });
+
+        $("#btn_add_maipp").click(() => {
+            certificate_id = 0;
+            type = "maipp";
+            $("#certificate_modal").modal('show');
+            showSpinner();
+            fetch('/qrcode-tracker/partial-form?type=' + type, {
+                method: "GET"
+            })
+                .then(response => response.text()) // Convert response to text
+                .then(html => {
+                    $("#certificate_modal .modal-body").html(html);
+                    $("#certificate_modal .modal-footer").removeClass("d-none");
+                })
+                .catch(error => console.error(error));
+        });
+
+        $("#btn_add_medico_legal").click(() => {
+            certificate_id = 0;
+            type = "medico_legal";
+            $("#certificate_modal").modal('show');
+            showSpinner();
+            fetch('/qrcode-tracker/partial-form?type=' + type, {
+                method: "GET"
+            })
+                .then(response => response.text()) // Convert response to text
+                .then(html => {
+                    $("#certificate_modal .modal-body").html(html);
+                    $("#certificate_modal .modal-footer").removeClass("d-none");
                 })
                 .catch(error => console.error(error));
         });
@@ -58,6 +86,10 @@
 
         $("#btn_save_diagnosis").click(function () {
             const diagnosis = $("#diagnosis").val().trim();
+            if (diagnosis == '') {
+                alert("Please fill in diagnosis");
+                return;
+            }
             if (diagnosis_index > -1) {
                 $("#diagnosis_list tr:eq(" + diagnosis_index + ") td:eq(0)").text(diagnosis);
                 $("#diagnosis_modal").modal("hide");
@@ -73,7 +105,7 @@
             $("#diagnosis").val("");
         });
 
-        $("#btn_save_ordinary").click(async function () {
+        $("#btn_save").click(async function () {
             const certificate_no = $("#certificate_no").val().trim();
             const health_record_no = $("#health_record_no").val().trim();
             const date_issued = $("#date_issued").val().trim();
@@ -112,12 +144,8 @@
                 "toi": (toi === undefined) ? null : toi
             }
 
-            if (!certificate_no || !health_record_no || !date_issued || !patient || !age || !civil_status || !address || !date_examined) {
-                alert("Please fill in records");
-                return;
-            }
-
             const params = {
+                "id": certificate_id,
                 "certificate_no": certificate_no,
                 "health_record_no": health_record_no,
                 "date_issued": date_issued,
@@ -135,11 +163,322 @@
                 "purpose": (purpose === undefined) ? null : purpose,
                 "or_no": or_no,
                 "amount": amount,
+                "type": type,
                 "diagnosis": diagnosis_array,
                 "sustained": (noi === undefined) ? null : sustained
             }
+            let is_valid = true;
+            $(".is-invalid").removeClass("is-invalid");
+            switch (type) {
+                case "ordinary":
+                    if (!certificate_no) {
+                        toastr.error('Certificate No. is required');
+                        $("#certificate_no").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!health_record_no) {
+                        toastr.error('Health Record No. is required');
+                        $("#health_record_no").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!date_issued) {
+                        toastr.error('Date issued is required');
+                        $("#date_issued").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!patient) {
+                        toastr.error('Patient is required');
+                        $("#patient").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!age) {
+                        toastr.error('Age is required');
+                        $("#age").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!address) {
+                        toastr.error('Address is required');
+                        $("#address").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!date_examined) {
+                        toastr.error('Date examined is required');
+                        $("#date_examined").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!requesting_person) {
+                        toastr.error('Requesting person is required');
+                        $("#requesting_person").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!purpose) {
+                        toastr.error('Purpose is required');
+                        $("#purpose").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!doctor) {
+                        toastr.error('Doctor is required');
+                        $("#doctor").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!doctor_designation) {
+                        toastr.error('Doctor designation is required');
+                        $("#doctor_designation").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!doctor_license) {
+                        toastr.error('Doctor license no. is required');
+                        $("#doctor_license").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!or_no) {
+                        toastr.error('OR no. is required');
+                        $("#or_no").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!amount) {
+                        toastr.error('Amount is required');
+                        $("#amount").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if(diagnosis_array.length < 1){
+                        toastr.error('Diagnosis is required');
+                        is_valid = false;
+                    }
+                    break;
+                case "maipp":
+                    if (!certificate_no) {
+                        toastr.error('Certificate No. is required');
+                        $("#certificate_no").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!health_record_no) {
+                        toastr.error('Health Record No. is required');
+                        $("#health_record_no").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!date_issued) {
+                        toastr.error('Date issued is required');
+                        $("#date_issued").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!patient) {
+                        toastr.error('Patient is required');
+                        $("#patient").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!age) {
+                        toastr.error('Age is required');
+                        $("#age").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!sex) {
+                        toastr.error('Sex is required');
+                        $("#sex").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!address) {
+                        toastr.error('Address is required');
+                        $("#address").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!date_examined) {
+                        toastr.error('Date examined is required');
+                        $("#date_examined").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!requesting_person) {
+                        toastr.error('Requesting person is required');
+                        $("#requesting_person").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!purpose) {
+                        toastr.error('Purpose is required');
+                        $("#purpose").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!doctor) {
+                        toastr.error('Doctor is required');
+                        $("#doctor").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!doctor_license) {
+                        toastr.error('Doctor license no. is required');
+                        $("#doctor_license").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!or_no) {
+                        toastr.error('OR no. is required');
+                        $("#or_no").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!amount) {
+                        toastr.error('Amount is required');
+                        $("#amount").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if(diagnosis_array.length < 1){
+                        toastr.error('Diagnosis is required');
+                        is_valid = false;
+                    }
+                    break;
+                case "medico_legal":
+                    if (!certificate_no) {
+                        toastr.error('Certificate No. is required');
+                        $("#certificate_no").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!health_record_no) {
+                        toastr.error('Health Record No. is required');
+                        $("#health_record_no").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!date_issued) {
+                        toastr.error('Date issued is required');
+                        $("#date_issued").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!patient) {
+                        toastr.error('Patient is required');
+                        $("#patient").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!age) {
+                        toastr.error('Age is required');
+                        $("#age").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!sex) {
+                        toastr.error('Sex is required');
+                        $("#sex").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!civil_status) {
+                        toastr.error('Civil status is required');
+                        $("#civil_status").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!address) {
+                        toastr.error('Address is required');
+                        $("#address").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!date_examined) {
+                        toastr.error('Date examined is required');
+                        $("#date_examined").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!days_barred) {
+                        toastr.error('Day/s barred is required');
+                        $("#days_barred").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!doctor) {
+                        toastr.error('Doctor is required');
+                        $("#doctor").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!doctor_designation) {
+                        toastr.error('Doctor designation is required');
+                        $("#doctor_designation").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!doctor_license) {
+                        toastr.error('Doctor license no. is required');
+                        $("#doctor_license").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!or_no) {
+                        toastr.error('OR no. is required');
+                        $("#or_no").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!amount) {
+                        toastr.error('Amount is required');
+                        $("#amount").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+
+                    if(diagnosis_array.length < 1){
+                        toastr.error('Diagnosis is required');
+                        is_valid = false;
+                    }
+
+                    if (!noi) {
+                        toastr.error('NOI is required');
+                        $("#noi").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!doi) {
+                        toastr.error('DOI is required');
+                        $("#doi").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!poi) {
+                        toastr.error('POI is required');
+                        $("#poi").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!toi) {
+                        toastr.error('TOI is required');
+                        $("#toi").addClass("is-invalid");
+                        is_valid = false;
+                    }
+                    break;
+            }
+
+            if (!is_valid) {
+                return;
+            }
 
             try {
+                $(this).prop("disabled", true);
                 const response = await fetch('{{route('storeCertificate')}}', {
                     method: "POST",
                     headers: HEADERS,
@@ -147,76 +486,42 @@
                 });
 
                 const data = await response.json();
-                console.log(data);
-            } catch (err) {
-                console.log(err);
-            }
-        });
-
-        $("#btn_save").click(async () => {
-            const patient_name = $("#patient_name").val().trim().toUpperCase();
-            const hospital_no = $("#hospital_no").val();
-            const certificate_no = $("#certificate_no").val();
-            const date_issued = $("#date_issued").val();
-
-            if (!patient_name || !hospital_no || !certificate_no || !date_issued) {
-                toastr.error("Please fill in all input fields", "Ooops");
-                return;
-            }
-
-            const params = {
-                id: qr_id,
-                patient_name: patient_name,
-                hospital_no: hospital_no,
-                certificate_no: certificate_no,
-                date_issued: date_issued
-            }
-
-            try {
-                const response = await fetch('{{ route('storeCertificate') }}', {
-                    method: "POST",
-                    headers: HEADERS,
-                    body: JSON.stringify(params)
-                });
-
-                if (!response.ok) {
-                    alert("Oops, something went wrong");
-                    return;
-                }
-
-                const data = await response.json();
+                $("#certificate_modal").modal("hide");
                 toastr.success(data.message, "Information");
-                $("#qr_modal").modal('hide');
-                clearForms();
-                page = 0;
-                getQr();
-            } catch (error) {
-                console.log(err);
+                getCertificates();
+            } catch (err) {
+                toastr.success(err, "Ooops");
+            } finally {
+                $(this).prop("disabled", false);
             }
         });
 
-        getQr();
+        getCertificates();
     });
 
-    async function showQr(id) {
-        window.open("http://dohcsmc.site/qrcode-tracker/generate-qrcode?id=" + id, '_blank');
+    async function printPreview(id) {
+        window.open("http://localhost/qrcode-tracker/print-preview?id=" + id, '_blank');
     }
 
-    function editQr(id) {
-        qr_id = id;
-        const patient_name = $("#qr_id_" + id + " td:eq(0)").text().trim();
-        const hospital_no = $("#qr_id_" + id + " td:eq(1)").text().trim();
-        const certificate_no = $("#qr_id_" + id + " td:eq(2)").text().trim();
-        const date_issued = $("#qr_id_" + id + " td:eq(3)").text().trim();
-
-        $("#patient_name").val(patient_name);
-        $("#hospital_no").val(hospital_no);
-        $("#certificate_no").val(certificate_no);
-        $("#date_issued").val(date_issued);
-        $("#qr_modal").modal('show');
+    function editCertificate(id) {
+        certificate_id = id;
+        type = $("#certificate_id_" + id + " td:eq(0)").text().trim();
+        $("#certificate_modal").modal("show");
+        $("#certificate_modal .modal-footer").addClass("d-none");
+        showSpinner();
+        fetch('/qrcode-tracker/partial-form?type=' + type +
+            '&id=' + id, {
+            method: "GET"
+        })
+            .then(response => response.text()) // Convert response to text
+            .then(html => {
+                $("#certificate_modal .modal-body").html(html);
+                $("#certificate_modal .modal-footer").removeClass("d-none");
+            })
+            .catch(error => console.error(error));
     }
 
-    async function deleteQr(id) {
+    async function deleteCertificate(id) {
         if (confirm("Are you sure you want to delete this record?")) {
             const response = await fetch('{{ route('deleteCertificate') }}', {
                 method: "DELETE",
@@ -232,72 +537,8 @@
 
             const data = await response.json();
             toastr.success(data.message, "Information");
-            getQr();
+            getCertificates();
         }
-    }
-
-    function getQr() {
-        const filter_patient = $("#filter_patient").val().trim();
-        const filter_date_issued = $("#filter_date_issued").val();
-        fetch('{{ route('getCertificates') }}?page=' + page +
-            '&filter_patient=' + filter_patient +
-            '&filter_date_issued=' + filter_date_issued)
-            .then(res => res.json())
-            .then(data => {
-                $("#pagination_container").addClass("d-none")
-                $("#qr_list").empty();
-                $("#btn_next").addClass("d-none");
-                if (data.length < 1) {
-                    $("#qr_list").append("<tr><td colspan='8'>No record found</td></tr>");
-                    return;
-                }
-
-                $("#pagination_container").removeClass("d-none")
-
-                let max_visible = data.length;
-                if (max_visible == 11) {
-                    max_visible = 10;
-                    $("#btn_next").removeClass("d-none");
-                }
-
-                $("#page_items_count").text(((page * 10) + 1) + " - " + ((page * 10) + max_visible));
-                for (let i = 0; i < max_visible; i++) {
-                    const it = data[i];
-                    const tr = `
-                    <tr id="qr_id_` + it.id + `">
-                        <td>` + it.patient_name + `</td>
-                        <td>` + it.hospital_no + `</td>
-                        <td>` + it.certificate_no + `</td>
-                        <td>` + it.date_issued + `</td>
-                        <td>` + it.created_at + `</td>
-                        <td>
-                            <button class="btn btn-sm btn-info" onclick="showQr(` + it.id + `)">
-                                <i class="bi bi-qr-code"></i>
-                            </button>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-success" onclick="editQr(` + it.id + `)">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-danger" onclick="deleteQr(` + it.id + `)">
-                                <i class="bi bi-trash-fill"></i>
-                            </button>
-                        </td>
-                    </tr>`
-
-                    $("#qr_list").append(tr);
-                }
-            })
-    }
-
-    function clearForms() {
-        qr_id = 0;
-        $("#patient_name").val("");
-        $("#hospital_no").val("");
-        $("#certificate_no").val("");
-        $("#date_issued").val("");
     }
 
     function editDiagnosis(button) {
@@ -314,5 +555,71 @@
             const tr = $(button).closest('tr');
             tr.remove();
         }
+    }
+
+    async function getCertificates() {
+        const filter_patient = $("#filter_patient").val().trim();
+        const filter_date_issued = $("#filter_date_issued").val();
+        const response = await fetch('{{ route('getCertificates') }}?page=' + page +
+            '&filter_patient=' + filter_patient +
+            '&filter_date_issued=' + filter_date_issued);
+
+        const data = await response.json();
+
+        $("#pagination_container").addClass("d-none")
+        $("#certificate_lists").empty();
+        $("#btn_next").addClass("d-none");
+        if (data.length < 1) {
+            $("#certificate_lists").append("<tr><td colspan='8'>No record found</td></tr>");
+            return;
+        }
+
+        $("#pagination_container").removeClass("d-none")
+
+        let max_visible = data.length;
+        if (max_visible == 11) {
+            max_visible = 10;
+            $("#btn_next").removeClass("d-none");
+        }
+
+        $("#page_items_count").text(((page * 10) + 1) + " - " + ((page * 10) + max_visible));
+        for (let i = 0; i < max_visible; i++) {
+            const it = data[i];
+            const tr = `
+                    <tr id="certificate_id_` + it.id + `">
+                        <td>` + it.type + `</td>
+                        <td>` + it.patient + `</td>
+                        <td>` + it.health_record_no + `</td>
+                        <td>` + it.certificate_no + `</td>
+                        <td>` + it.date_issued + `</td>
+                        <td>` + it.created_at + `</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="printPreview(` + it.id + `)">
+                                <i class="bi bi-qr-code"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-success" onclick="editCertificate(` + it.id + `)">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-danger" onclick="deleteCertificate(` + it.id + `)">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </td>
+                    </tr>`
+
+            $("#certificate_lists").append(tr);
+        }
+    }
+
+    function showSpinner() {
+        $("#certificate_modal .modal-body").html(`
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+             </div>
+        </div>`);
     }
 </script>

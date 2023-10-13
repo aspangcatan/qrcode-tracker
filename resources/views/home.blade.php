@@ -18,25 +18,36 @@
             <div class="card-body p-0">
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="card-title ms-3 mt-1">QR List</h5>
-                    <button class="btn btn-success me-3" id="btn_add">
-                        Create QR
-                        <i class="bi bi-plus-lg ms-2"></i>
-                    </button>
+                    <div>
+                        <button class="btn btn-success me-3" id="btn_add_ordinary">
+                            Create Original
+                            <i class="bi bi-plus-lg ms-2"></i>
+                        </button>
+                        <button class="btn btn-info me-3" id="btn_add_maipp">
+                            Create MAIPP
+                            <i class="bi bi-plus-lg ms-2"></i>
+                        </button>
+                        <button class="btn btn-warning me-3" id="btn_add_medico_legal">
+                            Create Medico Legal
+                            <i class="bi bi-plus-lg ms-2"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="table-responsive">
                     <table class="table table-hover text-center m-0" style="border-spacing: 10px;">
                         <thead>
                         <tr>
+                            <th>Type</th>
                             <th>Patient</th>
-                            <th>Hospital No.</th>
+                            <th>Health Record No.</th>
                             <th>Certificate No.</th>
                             <th>Date Issued</th>
                             <th>Date Created</th>
                             <th colspan="3" style="width:12%"></th>
                         </tr>
                         </thead>
-                        <tbody id="qr_list">
+                        <tbody id="certificate_lists">
 
                         </tbody>
                         <tfoot class="d-none"></tfoot>

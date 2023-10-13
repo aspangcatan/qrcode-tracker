@@ -7,19 +7,31 @@
                     <div class="mt-1">
                         Certificate No:
                         <div class="small">
-                            <input type="text" id="certificate_no"/>
+                            @if(isset($certificates) && $certificates)
+                                <input type="text" id="certificate_no" value="{{ $certificates->certificate_no }}"/>
+                            @else
+                                <input type="text" id="certificate_no"/>
+                            @endif
                         </div>
                     </div>
                     <div>
                         Health Record No:
                         <div class="small">
-                            <input type="text" id="health_record_no"/>
+                            @if(isset($certificates) && $certificates)
+                                <input type="text" id="health_record_no" value="{{ $certificates->health_record_no }}"/>
+                            @else
+                                <input type="text" id="health_record_no"/>
+                            @endif
                         </div>
                     </div>
                     <div class="mt-1">
                         Date:
                         <div class="small">
-                            <input type="date" id="date_issued"/>
+                            @if(isset($certificates) && $certificates)
+                                <input type="date" id="date_issued" value="{{ $certificates->date_issued }}"/>
+                            @else
+                                <input type="date" id="date_issued"/>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -35,35 +47,68 @@
         <div>
             This is to certify that based on the Hospital Record
             <div class="medium">
-                <input type="text" id="patient" placeholder="Patient's name">
+                @if(isset($certificates) && $certificates)
+                    <input type="text" id="patient" placeholder="Patient's name" value="{{ $certificates->patient }}">
+                @else
+                    <input type="text" id="patient" placeholder="Patient's name">
+                @endif
             </div>
             , of
         </div>
         <div>
             <div class="long">
-                <input type="text" id="address" placeholder="Patient's complete address">
+                @if(isset($certificates) && $certificates)
+                    <input type="text" id="address" placeholder="Patient's complete address"
+                           value="{{ $certificates->address }}">
+                @else
+                    <input type="text" id="address" placeholder="Patient's complete address">
+                @endif
             </div>
             <div class="very-small">
-                <input type="number" id="age" placeholder="age"/>
+                @if(isset($certificates) && $certificates)
+                    <input type="number" id="age" placeholder="age" value="{{ $certificates->age }}"/>
+                @else
+                    <input type="number" id="age" placeholder="age"/>
+                @endif
             </div>
             <span>years old,</span>
             <div class="very-small">
-                <input type="text" id="sex" placeholder="sex">
+                @if(isset($certificates) && $certificates)
+                    <input type="text" id="sex" placeholder="sex" value="{{ $certificates->sex }}">
+                @else
+                    <input type="text" id="sex" placeholder="sex">
+                @endif
             </div>
             , was<br/>
         </div>
         <div>
             examined and treated in this hospital on
-            <div class="small"><input type="date" id="date_examined"></div>
+            <div class="small">
+                @if(isset($certificates) && $certificates)
+                    <input type="date" id="date_examined" value="{{ \Illuminate\Support\Carbon::parse($certificates->date_examined)->format('Y-m-d') }}">
+                @else
+                    <input type="date" id="date_examined">
+                @endif
+            </div>
         </div>
         <div>
             under the care of
             <div class="medium">
-                <input type="text" placeholder="Attending Physician" id="doctor">
+                @if(isset($certificates) && $certificates)
+                    <input type="text" placeholder="Attending Physician" id="doctor"
+                           value="{{ $certificates->doctor }}">
+                @else
+                    <input type="text" placeholder="Attending Physician" id="doctor">
+                @endif
             </div>
             <span class="mr-3">-</span>
             <div class="small">
-                <input type="text" placeholder="License Number" id="doctor_license">
+                @if(isset($certificates) && $certificates)
+                    <input type="text" placeholder="License Number" id="doctor_license"
+                           value="{{ $certificates->doctor_license }}">
+                @else
+                    <input type="text" placeholder="License Number" id="doctor_license">
+                @endif
             </div>
         </div>
         <div>
@@ -71,19 +116,60 @@
         </div>
         <div class="mt-3 mb-3">
             <div>DIAGNOSIS:</div>
-            <table id="diagnosis_list" class="ms-5"></table>
+            <table id="diagnosis_list" class="ms-5">
+                @if(isset($diagnosis) && $diagnosis)
+                    @foreach($diagnosis as $item)
+                        <tr>
+                            <td style='width: 90%'>{{ $item->diagnosis }}</td>
+                            <td style='width: 5%'>
+                                <button class='btn btn-sm btn-transparent' onClick='editDiagnosis(this)'><i
+                                        class='bi bi-pencil-fill text-success'></i></button>
+                            </td>
+                            <td style='width: 5%'>
+                                <button class='btn btn-sm btn-transparent' onClick='deleteDiagnosis(this)'><i
+                                        class='bi bi-trash-fill text-danger'></i></button>
+                            </td>
+                        </tr>
+                    @endforeach
+                @endif
+            </table>
         </div>
         <div class="d-flex">
             <div>This certification is being issued at the request of</div>
             <div class="medium">
-                <input type="text" id="requesting_person">
+                @if(isset($certificates) && $certificates)
+                    <input type="text" id="requesting_person" value="{{ $certificates->requesting_person }}">
+                @else
+                    <input type="text" id="requesting_person">
+                @endif
             </div>
         </div>
         <div>Purpose</div>
         <select id="purpose">
-            <option>Financial and Medical Assistance Program available in the hospital</option>
-            <option>School Related Purposes, except for insurance claims or any legal claim</option>
-            <option>Work Related-Purposes, except for insurance claims or any legal claim</option>
+            @if(isset($certificates) && $certificates)
+                @if($certificates->purpose == 'Financial and Medical Assistance Program available in the hospital')
+                    <option selected>Financial and Medical Assistance Program available in the hospital</option>
+                @else
+                    <option>Financial and Medical Assistance Program available in the hospital</option>
+                @endif
+
+                @if($certificates->purpose == 'School Related Purposes, except for insurance claims or any legal claim')
+                    <option selected>School Related Purposes, except for insurance claims or any legal claim</option>
+                @else
+                    <option>School Related Purposes, except for insurance claims or any legal claim</option>
+                @endif
+
+                @if($certificates->purpose == 'Work Related-Purposes, except for insurance claims or any legal claim')
+                    <option selected>Work Related-Purposes, except for insurance claims or any legal claim</option>
+                @else
+                    <option>Work Related-Purposes, except for insurance claims or any legal claim</option>
+                @endif
+            @else
+                <option>Financial and Medical Assistance Program available in the hospital</option>
+                <option>School Related Purposes, except for insurance claims or any legal claim</option>
+                <option>Work Related-Purposes, except for insurance claims or any legal claim</option>
+            @endif
+
         </select>
         <div class="mt-3">
             <div>(NOT VALID WITHOUT SEAL)</div>
@@ -93,7 +179,11 @@
                     <td style="width: 3%">:</td>
                     <td style="width: 49%">
                         <div class="medium">
-                            <input type="text" id="or_no">
+                            @if(isset($certificates) && $certificates)
+                                <input type="text" id="or_no" value="{{ $certificates->or_no }}">
+                            @else
+                                <input type="text" id="or_no">
+                            @endif
                         </div>
                     </td>
                     <td style="width: 30%"></td>
@@ -103,7 +193,11 @@
                     <td>:</td>
                     <td>
                         <div class="medium">
-                            <input type="text" id="amount">
+                            @if(isset($certificates) && $certificates)
+                                <input type="number" id="amount" value="{{ $certificates->amount }}">
+                            @else
+                                <input type="number" id="amount">
+                            @endif
                         </div>
                     </td>
                     <td>

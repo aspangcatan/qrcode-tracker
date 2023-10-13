@@ -5,16 +5,22 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Ordinary Medical Certificate</title>
     <style>
+        @media print {
+            body {
+                margin: 0 !important;
+                width: unset !important;
+            }
+        }
 
         body {
             padding: 0 !important;
-            margin: 0 !important;
+            margin-left: 30%;
+            margin-right: 30%;
             font-size: 16px;
             font-family: Arial, sans-serif;
         }
-
         .container {
             margin-top: 160px;
             margin-left: 20px;
@@ -129,18 +135,18 @@
             <td></td>
             <td>
                 <div class="certificate-details">
-                    {!! QrCode::size(50)->generate("https://hellow") !!}
-                    <div class="mt-1">
+                    {!! QrCode::size(100)->generate($certificate->url) !!}
+                    <div class="mt-3">
                         Certificate No:
-                        <div class="small">1234</div>
+                        <div class="small">{{ $certificate->certificate_no }}</div>
                     </div>
                     <div>
                         Health Record No:
-                        <div class="small">67890</div>
+                        <div class="small">{{ $certificate->health_record_no }}</div>
                     </div>
                     <div class="mt-1">
                         Date:
-                        <div class="small">OCTOBER 10, 2023</div>
+                        <div class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}</div>
                     </div>
                 </div>
             </td>
@@ -153,31 +159,30 @@
     <div class="certificate-text">
         <div>
             This is to certify
-            <div class="medium">JUAN DELA CRUZ</div>
-
+            <div class="medium">{{ $certificate->patient }}</div>
             , 32 years old, of
         </div>
         <div>
-            <div class="long">SAN ISIDRO, TALISAY CITY, CEBU</div>
+            <div class="long">{{ $certificate->address }}</div>
             was examined and treated in this<br/>
         </div>
         <div>
             hospital on/from
-            <div class="small">OCTOBER 08, 2023</div>
+            <div class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}</div>
             with the following findings and/or diagnosis:
         </div>
     </div>
     <div class="certificate-diagnosis">
-        @for($i=0; $i<5; $i++)
-            <div>Line {{ $i }} diagnosis</div>
+        @for($i=0; $i<count($diagnosis); $i++)
+            <div>{{ $diagnosis[$i]->diagnosis }}</div>
         @endfor
     </div>
     <div class="certificate-text">
         <table style="width: 100%">
             <tr>
-                <td style="width: 65%">This certification is being issued at the requested of</td>
-                <td style="width: 35%">
-                    <div class="border-bottom ml-1">JUAN DELA CRUZ</div>
+                <td style="width: 60%">This certification is being issued at the requested of</td>
+                <td>
+                    <div class="border-bottom ml-1">{{ $certificate->requesting_person }}</div>
                 </td>
             </tr>
             <tr>
@@ -190,8 +195,8 @@
         <table style="width: 100%">
             <tr>
                 <td style="width: 10%">for</td>
-                <td style="width: 70%">
-                    <div class="border-bottom ml-1">WORK RELATED</div>
+                <td style="width: 65%">
+                    <div class="border-bottom ml-1">{{ $certificate->purpose }}</div>
                 </td>
                 <td style="width: 20%"></td>
             </tr>
@@ -206,24 +211,24 @@
     </div>
 
     <div class="doctor-container mt-3">
-        <div><u>DR. JAMES C. BERNAL</u></div>
-        <div>MEDICAL OFFICER</div>
-        <div>License No.: <span class="ml-1"><u>14219</u></span></div>
+        <div><u>{{ $certificate->doctor }}</u></div>
+        <div>{{ $certificate->doctor_designation }}</div>
+        <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>
     </div>
 
-    <div class="mt-3" style="display: none">
+    <div class="mt-3">
         <div>(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
             <tr>
                 <td style="width: 18%">OR NO</td>
                 <td style="width: 3%">:</td>
-                <td style="width: 49%">123123123</td>
+                <td style="width: 49%">{{ $certificate->or_no }}</td>
                 <td style="width: 30%"></td>
             </tr>
             <tr>
                 <td>AMOUNT</td>
                 <td>:</td>
-                <td>P50.00</td>
+                <td>₱{{ number_format($certificate->amount,2) }}</td>
                 <td>
                     <small>MPS-REC-FM-06</small>
                 </td>
@@ -231,7 +236,11 @@
             <tr>
                 <td>Prepared by</td>
                 <td>:</td>
-                <td>John Doe</td>
+                <td>
+                    {{ \Illuminate\Support\Facades\Auth::user()->fname }}
+                    {{ \Illuminate\Support\Facades\Auth::user()->mname ? \Illuminate\Support\Facades\Auth::user()->mname[0].'.' : '' }}
+                    {{ \Illuminate\Support\Facades\Auth::user()->lname }}
+                </td>
                 <td>
                     <small>07-Dec-18</small>
                 </td>
@@ -239,5 +248,16 @@
         </table>
     </div>
 </div>
+<script>
+    // Disable right-click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
+    document.onkeydown = function(e) {
+        if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+            e.preventDefault();
+            return false;
+        }
+    };
+</script>
 </body>
 </html>

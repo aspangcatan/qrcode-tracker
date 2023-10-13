@@ -32,7 +32,7 @@ class CreateCertificatesTable extends Migration
             $table->text('purpose')->nullable();
             $table->string('or_no', 200);
             $table->decimal('amount', 10, 2);
-            $table->string('type', 100)->nullable();
+            $table->string('type', 100);
             $table->integer('days_barred')->nullable();
             $table->text('url')->nullable();
             $table->text('hashed_value')->nullable();

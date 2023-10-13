@@ -5,12 +5,19 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>MEDICO LEGAL CERTIFICATE</title>
     <style>
+        @media print {
+            body {
+                margin: 0 !important;
+                width: unset !important;
+            }
+        }
 
         body {
             padding: 0 !important;
-            margin: 0 !important;
+            margin-left: 30%;
+            margin-right: 30%;
             font-size: 16px;
             font-family: Arial, sans-serif;
         }
@@ -129,18 +136,19 @@
             <td></td>
             <td>
                 <div class="certificate-details">
-                    {!! QrCode::size(50)->generate("https://hellow") !!}
-                    <div class="mt-1">
+                    {!! QrCode::size(100)->generate($certificate->url) !!}
+                    <div class="mt-3">
                         Certificate No:
-                        <div class="small">1234</div>
+                        <div class="small">{{ $certificate->certificate_no }}</div>
                     </div>
                     <div>
                         Health Record No:
-                        <div class="small">67890</div>
+                        <div class="small">{{ $certificate->health_record_no }}</div>
                     </div>
                     <div class="mt-1">
                         Date:
-                        <div class="small">OCTOBER 10, 2023</div>
+                        <div
+                            class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}</div>
                     </div>
                 </div>
             </td>
@@ -152,31 +160,53 @@
     </div>
     <table style="width: 100%;margin-top:15px">
         <tr>
-            <td style="width: 30%"><div style="margin-left: 10px">This is to certify that</div></td>
-            <td class="border-bottom text-center" style="width: 50%">
-                JUAN DELA CRUZ
+            <td style="width: 30%">
+                <div style="margin-left: 10px">This is to certify that</div>
             </td>
-            <td style="width: 20%">, 30 years old</td>
+            <td class="border-bottom text-center" style="width: 50%">
+                {{ $certificate->patient }}
+            </td>
+            <td style="width: 20%">, {{ $certificate->age }} years old</td>
         </tr>
         <tr>
             <td colspan="4">
                 <div style="word-spacing: 10px;">
-                    male  /  female,  single  /  married  /  child  /  widow/er, Filipino, and a resident of
+                    @if($certificate->sex == 'MALE') <u>male</u>
+                    @else male
+                    @endif /
+                    @if($certificate->sex == 'FEMALE')
+                        <u>female</u>
+                    @else female
+                    @endif ,
+                    @if($certificate->civil_status == 'Single')<u>single</u>
+                    @else single
+                    @endif /
+                    @if($certificate->civil_status == 'Married')<u>married</u>
+                    @else married
+                    @endif /
+                    @if($certificate->civil_status == 'Child')<u>child</u>
+                    @else child
+                    @endif /
+                    @if($certificate->civil_status == 'Widow/er')<u>widow/er</u>
+                    @else widow/er
+                    @endif, Filipino, and a resident of
                 </div>
             </td>
         </tr>
     </table>
     <table style="width: 100%">
         <tr>
-            <td style="width: 45%" class="border-bottom text-center">SAN ISIDRO, TALISAY CITY, CEBU</td>
+            <td style="width: 45%" class="border-bottom text-center">{{ $certificate->address }}</td>
             <td style="width: 10%" class="text-center">on</td>
-            <td style="width: 40%" class="border-bottom text-center">OCTOBER 20, 2023</td>
+            <td style="width: 40%"
+                class="border-bottom text-center">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}</td>
         </tr>
     </table>
     <table style="width: 100%">
         <tr>
             <td style="width: 10%">at about</td>
-            <td class="border-bottom text-center" style="width: 10%">8:10AM</td>
+            <td class="border-bottom text-center"
+                style="width: 10%">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('h:iA')) }}</td>
             <td class="text-center" style="width: 35%">
                 for the following lesion / injury;
             </td>
@@ -184,39 +214,41 @@
         </tr>
     </table>
     <div style="margin-left: 35%;margin-top: 10px">
-        @for($i=0; $i<5; $i++)
-            <div>Line {{ $i }} diagnosis</div>
+        @for($i=0; $i<count($diagnosis); $i++)
+            <div>{{ $diagnosis[$i]->diagnosis }}</div>
         @endfor
     </div>
     <table style="margin-top: 20px">
         <tr>
             <td style="width: 40%">sustained by:</td>
-            <td>NOI: ALLEGED ASSAULT</td>
+            <td>NOI: {{ $sustained->noi }}</td>
         </tr>
         <tr>
             <td></td>
-            <td>DOI: OCTOBER 08, 2023</td>
+            <td>DOI: {{ $sustained->doi }}</td>
         </tr>
         <tr>
             <td></td>
-            <td>POI: SAN ISIDRO, TALISAY CITY, CEBU</td>
+            <td>POI: {{ $sustained->poi }}</td>
         </tr>
         <tr>
             <td></td>
-            <td>TOI: 7:00 PM</td>
+            <td>TOI: {{ $sustained->toi }}</td>
         </tr>
     </table>
     <div class="certificate-text">
         <table style="width: 100%">
             <tr>
                 <td colspan="3">
-                    <div style="margin-left: 20px">In my opinion, the injuries sustained by the patient will incapacitate or require medical</div>
+                    <div style="margin-left: 20px">In my opinion, the injuries sustained by the patient will
+                        incapacitate or require medical
+                    </div>
                 </td>
             </tr>
             <tr>
                 <td>attention for a period of</td>
                 <td style="width: 30%" class="border-bottom text-center">
-                    28
+                    {{ $certificate->days_barred }}
                 </td>
                 <td>day/days barring complications, otherwise</td>
             </tr>
@@ -230,9 +262,9 @@
         </table>
     </div>
     <div class="doctor-container mt-3">
-        <div><u>DR. JAMES C. BERNAL</u></div>
-        <div>MEDICAL OFFICER</div>
-        <div>License No.: <span class="ml-1"><u>14219</u></span></div>
+        <div><u>{{ $certificate->doctor }}</u></div>
+        <div>{{ $certificate->doctor_designation }}</div>
+        <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>
     </div>
 
     <div class="mt-3">
@@ -241,13 +273,13 @@
             <tr>
                 <td style="width: 18%">OR NO</td>
                 <td style="width: 3%">:</td>
-                <td style="width: 49%">123123123</td>
+                <td style="width: 49%">{{ $certificate->or_no }}</td>
                 <td style="width: 30%"></td>
             </tr>
             <tr>
                 <td>AMOUNT</td>
                 <td>:</td>
-                <td>P50.00</td>
+                <td>₱{{ number_format($certificate->amount,2) }}</td>
                 <td>
                     <small>MPS-REC-FM-06</small>
                 </td>
@@ -255,7 +287,11 @@
             <tr>
                 <td>Prepared by</td>
                 <td>:</td>
-                <td>John Doe</td>
+                <td>
+                    {{ \Illuminate\Support\Facades\Auth::user()->fname }}
+                    {{ \Illuminate\Support\Facades\Auth::user()->mname ? \Illuminate\Support\Facades\Auth::user()->mname[0].'.' : '' }}
+                    {{ \Illuminate\Support\Facades\Auth::user()->lname }}
+                </td>
                 <td>
                     <small>07-Dec-18</small>
                 </td>
@@ -263,5 +299,16 @@
         </table>
     </div>
 </div>
+<script>
+    // Disable right-click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
+    document.onkeydown = function(e) {
+        if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+            e.preventDefault();
+            return false;
+        }
+    };
+</script>
 </body>
 </html>

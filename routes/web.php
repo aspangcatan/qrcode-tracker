@@ -1,8 +1,6 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Session;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,34 +15,20 @@ use Illuminate\Support\Facades\Session;
 
 Route::get('/', [\App\Http\Controllers\ApplicationController::class, 'index'])->name('login');
 Route::post('/authenticate', [\App\Http\Controllers\ApplicationController::class, 'authenticate'])->name('authenticate');
-Route::get('/logout', function () {
-    Auth::logout();
-    Session::flush();
-    return redirect()->route('login');
-})->name('logout');
-
+Route::get('/logout', [\App\Http\Controllers\ApplicationController::class, 'logout'])->name('logout');
+Route::get('qrcode-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrcodeDetails'])->middleware('throttle:10,1');
 
 Route::group(['middleware' => 'auth'], function () {
-    Route::get('/home', function () {
-        if (session('access_rights') == 'MEDICAL')
-            return view('home');
-        else
-            return view('hemb');
-    });
+    Route::get('/home',[\App\Http\Controllers\ApplicationController::class,'home'])->name('home');
 
     Route::post('/password/update', [\App\Http\Controllers\ApplicationController::class, 'changePassword'])->name('changePassword');
 
+    Route::get('/get_certificates', [\App\Http\Controllers\ApplicationController::class, 'getCertificates'])->name('getCertificates');
     Route::post('/store_certificate', [\App\Http\Controllers\ApplicationController::class, 'storeCertificate'])->name('storeCertificate');
     Route::delete('/delete_certificate', [\App\Http\Controllers\ApplicationController::class, 'deleteCertificate'])->name('deleteCertificate');
-    Route::get('/get_certificates', [\App\Http\Controllers\ApplicationController::class, 'getCertificates'])->name('getCertificates');
-
-    Route::get('/generate-qrcode', [\App\Http\Controllers\ApplicationController::class, 'generateQrCode'])->name('generateQrCode');
-    Route::get('/get_qr', [\App\Http\Controllers\ApplicationController::class, 'getQrList'])->name('getQrList');
-
-
     #FORMS
-    Route::get('/form-original', function () {
-        return view('forms.medico_legal');
-    });
+    Route::get('/partial-form', [\App\Http\Controllers\ApplicationController::class, 'partialForm'])->name('partialForm');
+    #PREVIEWS
+    Route::get('/print-preview', [\App\Http\Controllers\ApplicationController::class, 'printPreview'])->name('printPreview');
 });
 
