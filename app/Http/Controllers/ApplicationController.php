@@ -54,7 +54,8 @@ class ApplicationController extends Controller
         return back()->with(['message' => 'The provided credentials do not match our records.']);
     }
 
-    public function changePassword(Request $request)
+    public function changePassword
+    (Request $request)
     {
         try {
             $user = User::find(Auth::id());
