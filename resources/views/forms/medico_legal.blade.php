@@ -71,7 +71,7 @@
             ,
             <div class="small">
                 @if(isset($certificates) && $certificates)
-                    <select id="civil_status">
+                    <select id="civil_status" class="w-100">
                         @if($certificates->civil_status == "SINGLE")
                             <option selected>SINGLE</option>
                         @else
@@ -97,7 +97,7 @@
                         @endif
                     </select>
                 @else
-                    <select id="civil_status">
+                    <select id="civil_status" class="w-100">
                         <option>SINGLE</option>
                         <option>MARRIED</option>
                         <option>CHILD</option>
