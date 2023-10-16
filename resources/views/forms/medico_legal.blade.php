@@ -71,7 +71,7 @@
             ,
             <div class="small">
                 @if(isset($certificates) && $certificates)
-                    <select id="civil_status" class="w-100">
+                    <select id="civil_status" class="w-100 text-center">
                         @if($certificates->civil_status == "SINGLE")
                             <option selected>SINGLE</option>
                         @else
