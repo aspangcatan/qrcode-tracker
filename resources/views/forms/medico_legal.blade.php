@@ -97,7 +97,7 @@
                         @endif
                     </select>
                 @else
-                    <select id="civil_status" class="w-100">
+                    <select id="civil_status" class="w-100 text-center">
                         <option>SINGLE</option>
                         <option>MARRIED</option>
                         <option>CHILD</option>
