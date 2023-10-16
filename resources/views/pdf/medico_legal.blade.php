@@ -171,23 +171,23 @@
         <tr>
             <td colspan="4">
                 <div style="word-spacing: 10px;">
-                    @if($certificate->sex == 'MALE') <u>male</u>
+                    @if(strtoupper($certificate->sex) == 'MALE') <u>male</u>
                     @else male
                     @endif /
-                    @if($certificate->sex == 'FEMALE')
+                    @if(strtoupper($certificate->sex) == 'FEMALE')
                         <u>female</u>
                     @else female
                     @endif ,
-                    @if($certificate->civil_status == 'Single')<u>single</u>
+                    @if(strtoupper($certificate->civil_status) == 'SINGLE')<u>single</u>
                     @else single
                     @endif /
-                    @if($certificate->civil_status == 'Married')<u>married</u>
+                    @if(strtoupper($certificate->civil_status) == 'MARRIED')<u>married</u>
                     @else married
                     @endif /
-                    @if($certificate->civil_status == 'Child')<u>child</u>
+                    @if(strtoupper($certificate->civil_status) == 'CHILD')<u>child</u>
                     @else child
                     @endif /
-                    @if($certificate->civil_status == 'Widow/er')<u>widow/er</u>
+                    @if(strtoupper($certificate->civil_status) == 'WIDOW/ER')<u>widow/er</u>
                     @else widow/er
                     @endif, Filipino, and a resident of
                 </div>

@@ -71,10 +71,38 @@
             ,
             <div class="small">
                 @if(isset($certificates) && $certificates)
-                    <input type="text" id="civil_status" placeholder="civil status"
-                           value="{{ $certificates->civil_status }}"/>
+                    <select id="civil_status">
+                        @if($certificates->civil_status == "SINGLE")
+                            <option selected>SINGLE</option>
+                        @else
+                            <option>SINGLE</option>
+                        @endif
+
+                        @if($certificates->civil_status == "MARRIED")
+                            <option selected>MARRIED</option>
+                        @else
+                            <option>MARRIED</option>
+                        @endif
+
+                        @if($certificates->civil_status == "CHILD")
+                            <option selected>CHILD</option>
+                        @else
+                            <option>CHILD</option>
+                        @endif
+
+                        @if($certificates->civil_status == "WIDOW/ER")
+                            <option selected>WIDOW/ER</option>
+                        @else
+                            <option>WIDOW/ER</option>
+                        @endif
+                    </select>
                 @else
-                    <input type="text" id="civil_status" placeholder="civil status"/>
+                    <select id="civil_status">
+                        <option>SINGLE</option>
+                        <option>MARRIED</option>
+                        <option>CHILD</option>
+                        <option>WIDOW/ER</option>
+                    </select>
                 @endif
             </div>
             , Filipino, and a resident of
