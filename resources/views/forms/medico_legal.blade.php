@@ -53,14 +53,13 @@
                 @endif
             </div>
             ,
-            <div class="very-small">
+            <div class="small">
                 @if(isset($certificates) && $certificates)
                     <input type="text" id="age" placeholder="age" value="{{ $certificates->age }}">
                 @else
                     <input type="text" id="age" placeholder="age">
                 @endif
             </div>
-            years old,
             <div class="small mt-2">
                 @if(isset($certificates) && $certificates)
                     <select id="sex" class="w-100 text-center">

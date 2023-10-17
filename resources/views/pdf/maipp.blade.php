@@ -175,7 +175,7 @@
     <table style="width: 100%;margin-top:15px">
         <tr>
             <td class="border-bottom text-center" style="width: 53%">{{ $certificate->address }}</td>
-            <td class="border-bottom text-center" style="width: 15%">, {{ $certificate->age }} years old</td>
+            <td class="border-bottom text-center" style="width: 15%">, {{ $certificate->age }} </td>
             <td class="border-bottom text-center" style="width: 15%">, {{ $certificate->sex }}</td>
             <td style="width: 10%">
                 <div style="margin-left: 5px;">, was</div>

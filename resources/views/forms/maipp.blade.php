@@ -64,14 +64,13 @@
                     <input type="text" id="address" placeholder="Patient's complete address">
                 @endif
             </div>
-            <div class="very-small">
+            <div class="small">
                 @if(isset($certificates) && $certificates)
                     <input type="text" id="age" placeholder="age" value="{{ $certificates->age }}"/>
                 @else
                     <input type="text" id="age" placeholder="age"/>
                 @endif
             </div>
-            <span>years old,</span>
             <div class="small">
                 @if(isset($certificates) && $certificates)
                     <select id="sex" class="w-100 text-center">

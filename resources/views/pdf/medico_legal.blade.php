@@ -166,7 +166,7 @@
             <td class="border-bottom text-center" style="width: 50%">
                 {{ $certificate->patient }}
             </td>
-            <td style="width: 20%">, {{ $certificate->age }} years old</td>
+            <td style="width: 20%">, {{ $certificate->age }} </td>
         </tr>
         <tr>
             <td colspan="4">
