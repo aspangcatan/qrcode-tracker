@@ -19,6 +19,10 @@
                 <div class="d-flex justify-content-between align-items-center">
                     <h5 class="card-title ms-3 mt-1">QR List</h5>
                     <div>
+                        <button class="btn btn-danger me-3" id="btn_add_report">
+                            Generate Report
+                            <i class="bi bi-file-excel ms-2"></i>
+                        </button>
                         <button class="btn btn-success me-3" id="btn_add_ordinary">
                             Create Original
                             <i class="bi bi-plus-lg ms-2"></i>

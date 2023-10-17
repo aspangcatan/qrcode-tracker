@@ -63,9 +63,26 @@
             years old,
             <div class="small mt-2">
                 @if(isset($certificates) && $certificates)
-                    <input type="text" id="sex" placeholder="sex" value="{{ $certificates->sex }}"/>
+                    <select id="sex" class="w-100 text-center">
+                        <option></option>
+                        @if(strtoupper($certificates->sex) == "MALE")
+                            <option selected>MALE</option>
+                        @else
+                            <option>MALE</option>
+                        @endif
+
+                        @if(strtoupper($certificates->sex) == "FEMALE")
+                            <option selected>FEMALE</option>
+                        @else
+                            <option>FEMALE</option>
+                        @endif
+                    </select>
                 @else
-                    <input type="text" id="sex" placeholder="sex"/>
+                    <select id="sex" class="w-100 text-center">
+                        <option></option>
+                        <option>MALE</option>
+                        <option>FEMALE</option>
+                    </select>
                 @endif
             </div>
             ,
@@ -224,6 +241,26 @@
             </div>
             day/days barring complications, otherwise the period of healing will vary accordingly.
         </div>
+        <div class="d-flex">
+            <div>This certification is being issued at the request of</div>
+            <div class="small">
+                @if(isset($certificates) && $certificates)
+                    <input type="text" id="requesting_person" value="{{ $certificates->requesting_person }}"
+                           placeholder="Requesting person">
+                @else
+                    <input type="text" id="requesting_person" placeholder="Requesting person">
+                @endif
+            </div>
+            ,
+            <div class="small">
+                @if(isset($certificates) && $certificates)
+                    <input type="text" id="relationship" value="{{ $certificates->relationship }}"
+                           placeholder="Relationship">
+                @else
+                    <input type="text" id="relationship" placeholder="Relationship">
+                @endif
+            </div>
+        </div>
         <div class="doctor-container mt-3">
             <div>Doctor:
                 <div class="medium ml-1">
@@ -276,9 +313,69 @@
                     <td>
                         <div class="medium">
                             @if(isset($certificates) && $certificates)
-                                <input type="number" id="amount" value="{{ $certificates->amount }}">
+                                <input type="text" id="amount" value="{{ $certificates->amount }}">
                             @else
-                                <input type="number" id="amount">
+                                <input type="text" id="amount">
+                            @endif
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Charge Slip no.</td>
+                    <td>:</td>
+                    <td>
+                        <div class="medium">
+                            @if(isset($certificates) && $certificates)
+                                <input type="text" id="charge_slip_no" value="{{ $certificates->charge_slip_no }}">
+                            @else
+                                <input type="text" id="charge_slip_no">
+                            @endif
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Registry No.</td>
+                    <td>:</td>
+                    <td>
+                        <div class="medium">
+                            @if(isset($certificates) && $certificates)
+                                <input type="text" id="registry_no" value="{{ $certificates->registry_no }}">
+                            @else
+                                <input type="text" id="registry_no">
+                            @endif
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date/Time Requested</td>
+                    <td>:</td>
+                    <td>
+                        <div class="medium">
+                            @if(isset($certificates) && $certificates)
+                                <input type="datetime-local" id="date_requested" value="{{ $certificates->amount }}"/>
+                            @else
+                                <input type="datetime-local" id="date_requested"/>
+                            @endif
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date/Time Finished</td>
+                    <td>:</td>
+                    <td>
+                        <div class="medium">
+                            @if(isset($certificates) && $certificates)
+                                <input type="datetime-local" id="date_finished" value="{{ $certificates->amount }}">
+                            @else
+                                <input type="datetime-local" id="date_finished">
                             @endif
                         </div>
                     </td>

@@ -9,9 +9,12 @@ use App\Services\CertificateService;
 use App\Services\DiagnosisService;
 use App\Services\SustainedService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 
 class ApplicationController extends Controller
@@ -54,8 +57,7 @@ class ApplicationController extends Controller
         return back()->with(['message' => 'The provided credentials do not match our records.']);
     }
 
-    public function changePassword
-    (Request $request)
+    public function changePassword(Request $request)
     {
         try {
             $user = User::find(Auth::id());
@@ -103,6 +105,9 @@ class ApplicationController extends Controller
     public function storeCertificate(Request $request)
     {
         try {
+
+            $mi = (Auth::user()->mname) ? Auth::user()->mname[0] . '.' : '';
+            $prepared_by = strtoupper(Auth::user()->fname . ' ' . $mi . ' ' . Auth::user()->lname);
             $params = [
                 'user_id' => Auth::id(),
                 'certificate_no' => $request->certificate_no,
@@ -118,11 +123,17 @@ class ApplicationController extends Controller
                 'doctor_designation' => $request->doctor_designation,
                 'doctor_license' => $request->doctor_license,
                 'requesting_person' => $request->requesting_person,
+                'relationship' => $request->relationship,
                 'purpose' => $request->purpose,
                 'or_no' => $request->or_no,
                 'amount' => $request->amount,
+                'charge_slip_no' => $request->charge_slip_no,
+                'registry_no' => $request->registry_no,
+                'date_requested' => $request->date_requested,
+                'date_finished' => $request->date_finished,
                 'days_barred' => $request->days_barred,
                 'type' => $request->type,
+                'prepared_by' => $prepared_by,
                 'created_at' => now()
             ];
 
@@ -245,6 +256,54 @@ class ApplicationController extends Controller
             }
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()]);
+        }
+    }
+
+    public function generateReport(Request $request)
+    {
+        try {
+            $templatePath = public_path('excel/SUMMARY_TEMPLATE.xlsx'); // Replace with the actual path to your template
+            $spreadsheet = IOFactory::load($templatePath);
+            $sheet = $spreadsheet->getActiveSheet();
+            $records = $this->certificateService->generateReport($request->month, $request->year);
+
+            $carbon = Carbon::create()->month($request->month);
+            $monthString = strtoupper($carbon->format('F'));
+            $sheet->setCellValue('C1', "SUMMARY REPORT FOR THE MONTH OF " .$monthString . ' ' . $request->year);
+            $row = 7;
+            $sheet->insertNewRowBefore($row, count($records));
+            for ($i = 0; $i < count($records); $i++) {
+                $sheet->setCellValue('A' . $row, $records[$i]->patient);
+                $sheet->setCellValue('B' . $row, $records[$i]->type);
+                $sheet->setCellValue('C' . $row, $records[$i]->charge_slip_no);
+                $sheet->setCellValue('D' . $row, $records[$i]->or_no);
+                $sheet->setCellValue('E' . $row, $records[$i]->requesting_person);
+                $sheet->setCellValue('F' . $row, $records[$i]->relationship);
+                $sheet->setCellValue('G' . $row, $records[$i]->date_requested);
+                $sheet->setCellValue('H' . $row, $records[$i]->registry_no);
+                $sheet->setCellValue('I' . $row, $records[$i]->date_finished);
+
+                $sheet->getStyle('B' . $row . ':I' . $row)->getAlignment()->setWrapText(true);
+                $sheet->getStyle('B' . $row . ':I' . $row)->getAlignment()->setHorizontal('center');
+                $sheet->getStyle('B' . $row . ':I' . $row)->getAlignment()->setVertical('middle');
+                $row++;
+            }
+
+            $writer = new Xlsx($spreadsheet);
+            $filename = 'Certificate_Report.xlsx'; // The desired filename for the download
+
+            return response()->stream(
+                function () use ($writer) {
+                    $writer->save('php://output');
+                },
+                200,
+                [
+                    'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                    'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                ]
+            );
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 }

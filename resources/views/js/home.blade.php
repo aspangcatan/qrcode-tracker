@@ -11,6 +11,16 @@
     let type = "";
 
     $(document).ready(() => {
+        $("#btn_add_report").click(function () {
+            $("#report_modal").modal("show");
+        });
+
+        $("#btn_generate_report").click(function () {
+            const month = $("#monthSelect").val();
+            const year = $("#yearSelect").val();
+            window.open("/qrcode-tracker/generate_report?month=" + month + "&year=" + year, "_blank");
+        });
+
         $("#btn_search").click(function () {
             page = 0;
             getCertificates();
@@ -120,9 +130,14 @@
             const doctor_designation = $("#doctor_designation").val();
             const doctor_license = $("#doctor_license").val().trim();
             const requesting_person = $("#requesting_person").val();
+            const relationship = $("#relationship").val();
             const purpose = $("#purpose").val();
             const or_no = $("#or_no").val().trim();
             const amount = $("#amount").val().trim();
+            const charge_slip_no = $("#charge_slip_no").val();
+            const registry_no = $("#registry_no").val();
+            const date_requested = $("#date_requested").val().trim();
+            const date_finished = $("#date_finished").val().trim();
             const diagnosis_array = [];
 
             for (let i = 0; i < $("#diagnosis_list tr").length; i++) {
@@ -160,15 +175,62 @@
                 "doctor_designation": (doctor_designation === undefined) ? null : doctor_designation,
                 "doctor_license": doctor_license,
                 "requesting_person": (requesting_person === undefined) ? null : requesting_person,
+                "relationship": relationship,
+                "charge_slip_no": charge_slip_no,
+                "registry_no": registry_no,
+                "date_requested": date_requested,
+                "date_finished": date_finished,
                 "purpose": (purpose === undefined) ? null : purpose,
                 "or_no": or_no,
                 "amount": amount,
+                "charge_slip_no": charge_slip_no,
+                "registry_no": registry_no,
+                "date_requested": date_requested,
+                "date_finished": date_finished,
                 "type": type,
                 "diagnosis": diagnosis_array,
                 "sustained": (noi === undefined) ? null : sustained
             }
             let is_valid = true;
             $(".is-invalid").removeClass("is-invalid");
+
+            if (!requesting_person) {
+                toastr.error('Requesting person is required');
+                $("#requesting_person").addClass("is-invalid");
+                is_valid = false;
+            }
+
+            if (!relationship) {
+                toastr.error('Relationship is required');
+                $("#relationship").addClass("is-invalid");
+                is_valid = false;
+            }
+
+            if (!charge_slip_no) {
+                toastr.error('Charge slip no. is required');
+                $("#charge_slip_no").addClass("is-invalid");
+                is_valid = false;
+            }
+
+            if (!registry_no) {
+                toastr.error('Registry no. is required');
+                $("#registry_no").addClass("is-invalid");
+                is_valid = false;
+            }
+
+            if (!date_requested) {
+                toastr.error('Requesting person is required');
+                $("#date_requested").addClass("is-invalid");
+                is_valid = false;
+            }
+
+            if (!date_finished) {
+                toastr.error('Relationship is required');
+                $("#date_finished").addClass("is-invalid");
+                is_valid = false;
+            }
+
+
             switch (type) {
                 case "ordinary":
                     if (!certificate_no) {
@@ -213,11 +275,6 @@
                         is_valid = false;
                     }
 
-                    if (!requesting_person) {
-                        toastr.error('Requesting person is required');
-                        $("#requesting_person").addClass("is-invalid");
-                        is_valid = false;
-                    }
 
                     if (!purpose) {
                         toastr.error('Purpose is required');
@@ -255,7 +312,7 @@
                         is_valid = false;
                     }
 
-                    if(diagnosis_array.length < 1){
+                    if (diagnosis_array.length < 1) {
                         toastr.error('Diagnosis is required');
                         is_valid = false;
                     }
@@ -309,12 +366,6 @@
                         is_valid = false;
                     }
 
-                    if (!requesting_person) {
-                        toastr.error('Requesting person is required');
-                        $("#requesting_person").addClass("is-invalid");
-                        is_valid = false;
-                    }
-
                     if (!purpose) {
                         toastr.error('Purpose is required');
                         $("#purpose").addClass("is-invalid");
@@ -345,7 +396,7 @@
                         is_valid = false;
                     }
 
-                    if(diagnosis_array.length < 1){
+                    if (diagnosis_array.length < 1) {
                         toastr.error('Diagnosis is required');
                         is_valid = false;
                     }
@@ -442,7 +493,7 @@
                     }
 
 
-                    if(diagnosis_array.length < 1){
+                    if (diagnosis_array.length < 1) {
                         toastr.error('Diagnosis is required');
                         is_valid = false;
                     }
@@ -490,7 +541,7 @@
                 toastr.success(data.message, "Information");
                 getCertificates();
             } catch (err) {
-                toastr.success(err, "Ooops");
+                toastr.error(err, "Ooops");
             } finally {
                 $(this).prop("disabled", false);
             }

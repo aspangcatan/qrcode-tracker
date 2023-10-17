@@ -28,14 +28,20 @@ class CreateCertificatesTable extends Migration
             $table->string('doctor', 200);
             $table->string('doctor_designation', 200)->nullable();
             $table->string('doctor_license', 30);
-            $table->string('requesting_person', 200)->nullable();
+            $table->string('requesting_person', 200);
+            $table->string('relationship', 200);
             $table->text('purpose')->nullable();
             $table->string('or_no', 200);
-            $table->decimal('amount', 10, 2);
+            $table->string('amount', 100);
             $table->string('type', 100);
             $table->integer('days_barred')->nullable();
             $table->text('url')->nullable();
             $table->text('hashed_value')->nullable();
+            $table->string('prepared_by', 200);
+            $table->string('charge_slip_no', 200);
+            $table->string('registry_no', 200);
+            $table->string('date_requested', 200);
+            $table->string('date_finished', 200);
             $table->timestamps();
         });
     }

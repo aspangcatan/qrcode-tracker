@@ -110,12 +110,20 @@
             <tr>
                 <td>This certification is being issued at the requested of</td>
                 <td>
-                    <div class="medium">
+                    <div class="small">
                         @if(isset($certificates) && $certificates)
                             <input type="text" id="requesting_person" placeholder="Name of Person Requesting"
                                    value="{{ $certificates->requesting_person }}"/>
                         @else
                             <input type="text" id="requesting_person" placeholder="Name of Person Requesting"/>
+                        @endif
+                    </div>
+                    <div class="small">
+                        @if(isset($certificates) && $certificates)
+                            <input type="text" id="relationship" placeholder="Relationship"
+                                   value="{{ $certificates->relationship }}"/>
+                        @else
+                            <input type="text" id="relationship" placeholder="Relationship"/>
                         @endif
                     </div>
                 </td>
@@ -191,9 +199,69 @@
                 <td>
                     <div class="medium">
                         @if(isset($certificates) && $certificates)
-                            <input type="number" id="amount" value="{{ $certificates->amount }}">
+                            <input type="text" id="amount" value="{{ $certificates->amount }}">
                         @else
-                            <input type="number" id="amount">
+                            <input type="text" id="amount">
+                        @endif
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>Charge Slip no.</td>
+                <td>:</td>
+                <td>
+                    <div class="medium">
+                        @if(isset($certificates) && $certificates)
+                            <input type="text" id="charge_slip_no" value="{{ $certificates->charge_slip_no }}">
+                        @else
+                            <input type="text" id="charge_slip_no">
+                        @endif
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>Registry No.</td>
+                <td>:</td>
+                <td>
+                    <div class="medium">
+                        @if(isset($certificates) && $certificates)
+                            <input type="text" id="registry_no" value="{{ $certificates->registry_no }}">
+                        @else
+                            <input type="text" id="registry_no">
+                        @endif
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>Date/Time Requested</td>
+                <td>:</td>
+                <td>
+                    <div class="medium">
+                        @if(isset($certificates) && $certificates)
+                            <input type="datetime-local" id="date_requested" value="{{ $certificates->date_requested }}" />
+                        @else
+                            <input type="datetime-local" id="date_requested" />
+                        @endif
+                    </div>
+                </td>
+                <td>
+                </td>
+            </tr>
+            <tr>
+                <td>Date/Time Finished</td>
+                <td>:</td>
+                <td>
+                    <div class="medium">
+                        @if(isset($certificates) && $certificates)
+                            <input type="datetime-local" id="date_finished" value="{{ $certificates->date_finished }}">
+                        @else
+                            <input type="datetime-local" id="date_finished">
                         @endif
                     </div>
                 </td>

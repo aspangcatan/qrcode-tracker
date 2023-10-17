@@ -65,10 +65,16 @@ class CertificateService
                 'doctor_designation' => $data['doctor_designation'],
                 'doctor_license' => $data['doctor_license'],
                 'requesting_person' => $data['requesting_person'],
+                'relationship' => $data['relationship'],
                 'purpose' => $data['purpose'],
                 'or_no' => $data['or_no'],
                 'amount' => $data['amount'],
+                'charge_slip_no' => $data['charge_slip_no'],
+                'registry_no' => $data['registry_no'],
+                'date_requested' => $data['date_requested'],
+                'date_finished' => $data['date_finished'],
                 'days_barred' => $data['days_barred'],
+                'prepared_by' => $data['prepared_by'],
                 'updated_at' => now()
             ]);
     }
@@ -93,6 +99,25 @@ class CertificateService
 
     public function generateReport($month, $year)
     {
-        return DB::table('qr_tracker.certificates');
+        return DB::table('qr_tracker.certificates')
+            ->select([
+                'patient',
+                DB::raw('CASE
+                WHEN type = "ordinary" THEN "Medical Certificate"
+                WHEN type = "maipp" THEN "MAIPP Medical Certificate"
+                WHEN type = "medico_legal" THEN "MEDICO LEGAL CERTIFICATE"
+                ELSE type
+            END AS type'), // Display type with custom values
+                'charge_slip_no',
+                'or_no',
+                'requesting_person',
+                'relationship',
+                'date_requested',
+                'registry_no',
+                'date_finished'
+            ])
+            ->whereMonth('created_at', $month)
+            ->whereYear('created_at', $year)
+            ->get();
     }
 }
