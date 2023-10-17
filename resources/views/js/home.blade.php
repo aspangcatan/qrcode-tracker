@@ -8,6 +8,84 @@
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     };
 
+    const DOCTORS = [
+        {
+            name: "DR. JADY JEAN T. ALJAS",
+            designation: "MEDICAL OFFICER III",
+            license_no: "150568"
+        },
+        {
+            name: "DR. JAMES C. BERNAL",
+            designation: "MEDICAL OFFICER III",
+            license_no: "142129"
+        },
+        {
+            name: "DR. KAREN BEA E. DALENA",
+            designation: "MEDICAL OFFICER III",
+            license_no: "139377"
+        },
+        {
+            name: "DR. WILSON C. DE LA CALZADA",
+            designation: "ATTENDING PHYSICIAN",
+            license_no: "86690"
+        },
+        {
+            name: "DR. KENNY M. DURANGPARANG",
+            designation: "MEDICAL OFFICER III",
+            license_no: "152059"
+        },
+        {
+            name: "DR. REY EVAN A. FLORES",
+            designation: "MEDICAL OFFICER III",
+            license_no: "140886"
+        },
+        {
+            name: "DR. JOHN RAY D. GAGATAM",
+            designation: "MEDICAL OFFICER III",
+            license_no: "140559"
+        },
+        {
+            name: "DR. STEPHEN PAUL C. MAHILUM",
+            designation: "MEDICAL OFFICER III",
+            license_no: "152911"
+        },
+        {
+            name: "DR. SIMON PETER P. MOLLANEDA",
+            designation: "MEDICAL OFFICER III",
+            license_no: "140060"
+        },
+        {
+            name: "DR. GLENN L. PUNAY",
+            designation: "MEDICAL OFFICER III",
+            license_no: "132175"
+        },
+        {
+            name: "DR. GUADA GISELLE S. RARANG",
+            designation: "MEDICAL OFFICER IV",
+            license_no: "123741"
+        },
+        {
+            name: "DR. KEITH MOON Q. SABERON",
+            designation: "NEUROLOGY",
+            license_no: "127707"
+        },
+        {
+            name: "DR. DOMINIC VICUÑA",
+            designation: "MEDICAL OFFICER IV",
+            license_no: "117160"
+        },
+        {
+            name: "DR. JASON P. WONG",
+            designation: "MEDICAL OFFICER III",
+            license_no: "145736"
+        },
+        {
+            name: "DR. MARYAN C. SAMSON",
+            designation: "MEDICAL OFFICER IV",
+            license_no: "130710"
+        },
+    ];
+
     let type = "";
 
     $(document).ready(() => {
@@ -53,6 +131,8 @@
                 .then(html => {
                     $("#certificate_modal .modal-body").html(html);
                     $("#certificate_modal .modal-footer").removeClass("d-none");
+
+                    //APPEND DOCTORS ON A SELECT
                 })
                 .catch(error => console.error(error));
         });
@@ -224,11 +304,11 @@
                 is_valid = false;
             }
 
-            if (!date_finished) {
-                toastr.error('Relationship is required');
-                $("#date_finished").addClass("is-invalid");
-                is_valid = false;
-            }
+            // if (!date_finished) {
+            //     toastr.error('Relationship is required');
+            //     $("#date_finished").addClass("is-invalid");
+            //     is_valid = false;
+            // }
 
 
             switch (type) {

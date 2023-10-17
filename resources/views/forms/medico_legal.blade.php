@@ -55,9 +55,9 @@
             ,
             <div class="very-small">
                 @if(isset($certificates) && $certificates)
-                    <input type="number" id="age" placeholder="age" value="{{ $certificates->age }}">
+                    <input type="text" id="age" placeholder="age" value="{{ $certificates->age }}">
                 @else
-                    <input type="number" id="age" placeholder="age">
+                    <input type="text" id="age" placeholder="age">
                 @endif
             </div>
             years old,
