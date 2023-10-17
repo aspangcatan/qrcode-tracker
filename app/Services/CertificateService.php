@@ -11,8 +11,11 @@ class CertificateService
     public function index($user_id, $filters, $page)
     {
         return DB::table('qr_tracker.certificates')
-            ->where('user_id', '=', $user_id)
-            ->where(function ($query) use ($filters) {
+            ->where(function ($query) use ($user_id, $filters) {
+                if (!session('access_rights') === 'admin') {
+                    $query->where('user_id', '=', $user_id);
+                }
+
                 if ($filters['filter_patient'] != '') {
                     $query->where('patient', 'LIKE', '%' . $filters['filter_patient'] . '%');
                 }
@@ -86,5 +89,10 @@ class CertificateService
         DB::table('qr_tracker.certificates')
             ->where('id', '=', $id)
             ->delete();
+    }
+
+    public function generateReport($month, $year)
+    {
+        return DB::table('qr_tracker.certificates');
     }
 }
