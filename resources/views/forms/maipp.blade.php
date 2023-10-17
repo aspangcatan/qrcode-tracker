@@ -113,18 +113,18 @@
             <div class="medium">
                 @if(isset($certificates) && $certificates)
                     <input type="text" placeholder="Attending Physician" id="doctor"
-                           value="{{ $certificates->doctor }}">
+                           value="{{ $certificates->doctor }}" disabled>
                 @else
-                    <input type="text" placeholder="Attending Physician" id="doctor">
+                    <input type="text" placeholder="Attending Physician" id="doctor" disabled>
                 @endif
             </div>
             <span class="mr-3">-</span>
             <div class="small">
                 @if(isset($certificates) && $certificates)
                     <input type="text" placeholder="License Number" id="doctor_license"
-                           value="{{ $certificates->doctor_license }}">
+                           value="{{ $certificates->doctor_license }}" disabled>
                 @else
-                    <input type="text" placeholder="License Number" id="doctor_license">
+                    <input type="text" placeholder="License Number" id="doctor_license" disabled>
                 @endif
             </div>
         </div>

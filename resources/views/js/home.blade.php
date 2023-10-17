@@ -174,6 +174,32 @@
             $("#diagnosis_modal").modal("show");
         });
 
+        $("#btn_add_doctor").click(function () {
+            $("#doctor_modal").modal("show");
+        });
+
+        $("#btn_set_doctor").click(function () {
+            const selected_doctor = $("#select_doctor").val();
+            if (!selected_doctor) {
+                alert("Please specify doctor");
+                return;
+            }
+
+            const doctor = getDoctorByLicense(selected_doctor);
+            if (!doctor) {
+                alert("Doctor license no. dont't exists");
+                return;
+            }
+
+            //SET FORM DOCTOR
+            $("#doctor").val(doctor.name);
+            $("#doctor_designation").val(doctor.designation);
+            $("#doctor_license").val(doctor.license_no);
+
+            $("#doctor_modal").modal("hide");
+        });
+
+
         $("#btn_save_diagnosis").click(function () {
             const diagnosis = $("#diagnosis").val().trim();
             if (diagnosis == '') {
@@ -628,6 +654,7 @@
         });
 
         getCertificates();
+        appendDoctors();
     });
 
     async function printPreview(id) {
@@ -743,6 +770,22 @@
 
             $("#certificate_lists").append(tr);
         }
+    }
+
+    function appendDoctors() {
+        $("#select_doctor").append("<option></option>");
+        DOCTORS.forEach(it => {
+            $("#select_doctor").append("<option value='" + it.license_no + "'>" + it.name + "</option>");
+        });
+    }
+
+    function getDoctorByLicense(license_no) {
+        for (let i = 0; i < DOCTORS.length; i++) {
+            if (DOCTORS[i].license_no === license_no) {
+                return DOCTORS[i];
+            }
+        }
+        return null;
     }
 
     function showSpinner() {

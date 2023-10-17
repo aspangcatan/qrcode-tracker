@@ -9,6 +9,7 @@
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
+                <button class="btn btn-primary ml-1 mr-1" id="btn_add_doctor">ADD PHYSICIAN</button>
                 <button class="btn btn-warning ml-1 mr-1" id="btn_add_diagnosis">ADD DIAGNOSIS</button>
                 <button class="btn btn-success ml-1" id="btn_save">SAVE</button>
             </div>
@@ -31,6 +32,25 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
                 <button class="btn btn-success ml-1" id="btn_save_diagnosis">SAVE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="doctor_modal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title p-1" style="font-size: 24px">Select physician</div>
+            </div>
+            <div class="modal-body">
+                <select class="form-select" id="select_doctor">
+
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
+                <button class="btn btn-success ml-1" id="btn_set_doctor">SET</button>
             </div>
         </div>
     </div>

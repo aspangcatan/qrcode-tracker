@@ -149,27 +149,27 @@
         <div>Doctor:
             <div class="medium ml-1">
                 @if(isset($certificates) && $certificates)
-                    <input type="text" id="doctor" value="{{ $certificates->doctor }}"/>
+                    <input type="text" id="doctor" value="{{ $certificates->doctor }}" disabled/>
                 @else
-                    <input type="text" id="doctor"/>
+                    <input type="text" id="doctor" disabled/>
                 @endif
             </div>
         </div>
         <div>Designation:
             <div class="medium ml-1">
                 @if(isset($certificates) && $certificates)
-                    <input type="text" id="doctor_designation" value="{{ $certificates->doctor_designation }}"/>
+                    <input type="text" id="doctor_designation" value="{{ $certificates->doctor_designation }}" disabled/>
                 @else
-                    <input type="text" id="doctor_designation"/>
+                    <input type="text" id="doctor_designation" disabled/>
                 @endif
             </div>
         </div>
         <div>License No.:
             <div class="medium ml-1">
                 @if(isset($certificates) && $certificates)
-                    <input type="text" id="doctor_license" value="{{ $certificates->doctor_license }}"/>
+                    <input type="text" id="doctor_license" value="{{ $certificates->doctor_license }}" disabled/>
                 @else
-                    <input type="text" id="doctor_license"/>
+                    <input type="text" id="doctor_license" disabled/>
                 @endif
             </div>
         </div>
