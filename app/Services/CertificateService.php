@@ -67,6 +67,7 @@ class CertificateService
                 'requesting_person' => $data['requesting_person'],
                 'relationship' => $data['relationship'],
                 'purpose' => $data['purpose'],
+                'second_purpose' => $data['second_purpose'],
                 'or_no' => $data['or_no'],
                 'amount' => $data['amount'],
                 'charge_slip_no' => $data['charge_slip_no'],

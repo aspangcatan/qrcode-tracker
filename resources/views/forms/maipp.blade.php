@@ -160,7 +160,8 @@
                 @else
                     <input type="text" id="requesting_person" placeholder="Requesting person">
                 @endif
-            </div>,
+            </div>
+            ,
             <div class="small">
                 @if(isset($certificates) && $certificates)
                     <input type="text" id="relationship" value="{{ $certificates->relationship }}"
@@ -195,8 +196,43 @@
                 <option>School Related Purposes, except for insurance claims or any legal claim</option>
                 <option>Work Related-Purposes, except for insurance claims or any legal claim</option>
             @endif
-
         </select>
+        <div id="purpose_container">
+            <div>2nd Purpose</div>
+            <select id="second_purpose">
+                <option></option>
+                @if(isset($certificates) && $certificates)
+                    @if($certificates->second_purpose == '(AKSYON AGAD)')
+                        <option selected>(AKSYON AGAD)</option>
+                    @else
+                        <option>(AKSYON AGAD)</option>
+                    @endif
+
+                    @if($certificates->second_purpose == '(CSWD)')
+                        <option selected>(CSWD)</option>
+                    @else
+                        <option>(CSWD)</option>
+                    @endif
+
+                    @if($certificates->second_purpose == '(DSWD)')
+                        <option selected>(DSWD)</option>
+                    @else
+                        <option>(DSWD)</option>
+                    @endif
+
+                    @if($certificates->second_purpose == '(MAIPP)')
+                        <option selected>(MAIPP)</option>
+                    @else
+                        <option>(MAIPP)</option>
+                    @endif
+                @else
+                    <option>(AKSYON AGAD)</option>
+                    <option>(CSWD)</option>
+                    <option>(DSWD)</option>
+                    <option>(MAIPP)</option>
+                @endif
+            </select>
+        </div>
         <div class="mt-3">
             <div>(NOT VALID WITHOUT SEAL)</div>
             <table style="width: 100%">
@@ -265,9 +301,10 @@
                     <td>
                         <div class="medium">
                             @if(isset($certificates) && $certificates)
-                                <input type="datetime-local" id="date_requested" value="{{ $certificates->date_requested }}" />
+                                <input type="datetime-local" id="date_requested"
+                                       value="{{ $certificates->date_requested }}"/>
                             @else
-                                <input type="datetime-local" id="date_requested" />
+                                <input type="datetime-local" id="date_requested"/>
                             @endif
                         </div>
                     </td>
@@ -280,7 +317,8 @@
                     <td>
                         <div class="medium">
                             @if(isset($certificates) && $certificates)
-                                <input type="datetime-local" id="date_finished" value="{{ $certificates->date_finished }}">
+                                <input type="datetime-local" id="date_finished"
+                                       value="{{ $certificates->date_finished }}">
                             @else
                                 <input type="datetime-local" id="date_finished">
                             @endif

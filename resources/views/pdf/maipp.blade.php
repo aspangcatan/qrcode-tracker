@@ -148,7 +148,8 @@
                     </div>
                     <div class="mt-1">
                         Date:
-                        <div class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}</div>
+                        <div
+                            class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}</div>
                     </div>
                 </div>
             </td>
@@ -191,7 +192,10 @@
     <table style="width: 100%">
         <tr>
             <td style="width: 43%">examined and treated in the Hospital on</td>
-            <td class="border-bottom text-center" style="width: 25%">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }} .</td>
+            <td class="border-bottom text-center"
+                style="width: 25%">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}
+                .
+            </td>
         </tr>
         <tr class="text-center">
             <td></td>
@@ -248,6 +252,9 @@
                     @endif
                 </div>
                 <span>Financial and Medical Assistance Program available in the hospital</span>
+                @if($certificate->second_purpose)
+                    <div style="display: inline;margin-left: 80px"><u>{{ $certificate->second_purpose }}</u></div>
+                @endif
             </div>
             <div>
                 <div style="display: inline">
@@ -308,7 +315,7 @@
     // Disable right-click
     document.addEventListener('contextmenu', event => event.preventDefault());
     // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
-    document.onkeydown = function(e) {
+    document.onkeydown = function (e) {
         if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
             e.preventDefault();
             return false;

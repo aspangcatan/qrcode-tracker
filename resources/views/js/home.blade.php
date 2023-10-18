@@ -89,6 +89,15 @@
     let type = "";
 
     $(document).ready(() => {
+
+        $("body").on("change", "#purpose", function () {
+            $("#purpose_container").addClass("d-none");
+            $("#second_purpose").val("");
+            if ($(this).val() == "Financial and Medical Assistance Program available in the hospital") {
+                $("#purpose_container").removeClass("d-none");
+            }
+        });
+
         $("#btn_add_report").click(function () {
             $("#report_modal").modal("show");
         });
@@ -238,6 +247,7 @@
             const requesting_person = $("#requesting_person").val();
             const relationship = $("#relationship").val();
             const purpose = $("#purpose").val();
+            const second_purpose = $("#second_purpose").val();
             const or_no = $("#or_no").val().trim();
             const amount = $("#amount").val().trim();
             const charge_slip_no = $("#charge_slip_no").val();
@@ -287,6 +297,7 @@
                 "date_requested": date_requested,
                 "date_finished": date_finished,
                 "purpose": (purpose === undefined) ? null : purpose,
+                "second_purpose": (second_purpose === undefined) ? null : second_purpose,
                 "or_no": or_no,
                 "amount": amount,
                 "charge_slip_no": charge_slip_no,
@@ -329,13 +340,6 @@
                 $("#date_requested").addClass("is-invalid");
                 is_valid = false;
             }
-
-            // if (!date_finished) {
-            //     toastr.error('Relationship is required');
-            //     $("#date_finished").addClass("is-invalid");
-            //     is_valid = false;
-            // }
-
 
             switch (type) {
                 case "ordinary":
@@ -475,6 +479,12 @@
                     if (!purpose) {
                         toastr.error('Purpose is required');
                         $("#purpose").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (purpose === "Financial and Medical Assistance Program available in the hospital" && !second_purpose) {
+                        toastr.error('Second purpose is required');
+                        $("#second_purpose").addClass("is-invalid");
                         is_valid = false;
                     }
 

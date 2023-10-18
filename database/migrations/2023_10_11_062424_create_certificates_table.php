@@ -20,7 +20,7 @@ class CreateCertificatesTable extends Migration
             $table->string('health_record_no', 100);
             $table->date('date_issued');
             $table->string('patient', 150);
-            $table->integer('age');
+            $table->text('age');
             $table->string('sex', 10)->nullable();
             $table->string('civil_status', 20)->nullable();
             $table->string('address', 200);
@@ -31,6 +31,7 @@ class CreateCertificatesTable extends Migration
             $table->string('requesting_person', 200);
             $table->string('relationship', 200);
             $table->text('purpose')->nullable();
+            $table->text('second_purpose')->nullable();
             $table->string('or_no', 200);
             $table->string('amount', 100);
             $table->string('type', 100);
@@ -41,7 +42,7 @@ class CreateCertificatesTable extends Migration
             $table->string('charge_slip_no', 200);
             $table->string('registry_no', 200);
             $table->string('date_requested', 200);
-            $table->string('date_finished', 200);
+            $table->string('date_finished', 200)->nullable();
             $table->timestamps();
         });
     }

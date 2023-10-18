@@ -125,6 +125,7 @@ class ApplicationController extends Controller
                 'requesting_person' => $request->requesting_person,
                 'relationship' => $request->relationship,
                 'purpose' => $request->purpose,
+                'second_purpose' => $request->second_purpose,
                 'or_no' => $request->or_no,
                 'amount' => $request->amount,
                 'charge_slip_no' => $request->charge_slip_no,
