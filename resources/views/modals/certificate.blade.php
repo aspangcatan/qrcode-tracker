@@ -43,8 +43,8 @@
             <div class="modal-header">
                 <div class="card-title p-1" style="font-size: 24px">Select physician</div>
             </div>
-            <div class="modal-body">
-                <select class="form-select" id="select_doctor">
+            <div class="modal-body w-100">
+                <select class="js-example-basic-single w-100" name="doctor"  id="select_doctor">
 
                 </select>
             </div>
