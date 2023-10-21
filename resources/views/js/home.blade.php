@@ -1271,7 +1271,7 @@
             })
                 .then(response => response.text()) // Convert response to text
                 .then(html => {
-                    $("#certificate_modal .modal-body").html(html);
+                    $("#certificate_modal #certificate_form").html(html);
                     $("#certificate_modal .modal-footer").removeClass("d-none");
 
                     //APPEND DOCTORS ON A SELECT
@@ -1289,7 +1289,7 @@
             })
                 .then(response => response.text()) // Convert response to text
                 .then(html => {
-                    $("#certificate_modal .modal-body").html(html);
+                    $("#certificate_modal #certificate_form").html(html);
                     $("#certificate_modal .modal-footer").removeClass("d-none");
                 })
                 .catch(error => console.error(error));
@@ -1305,7 +1305,7 @@
             })
                 .then(response => response.text()) // Convert response to text
                 .then(html => {
-                    $("#certificate_modal .modal-body").html(html);
+                    $("#certificate_modal #certificate_form").html(html);
                     $("#certificate_modal .modal-footer").removeClass("d-none");
                 })
                 .catch(error => console.error(error));
@@ -1543,22 +1543,12 @@
                         is_valid = false;
                     }
 
-                    if (!or_no) {
-                        toastr.error('OR no. is required');
-                        $("#or_no").addClass("is-invalid");
-                        is_valid = false;
-                    }
-
                     if (!amount) {
                         toastr.error('Amount is required');
                         $("#amount").addClass("is-invalid");
                         is_valid = false;
                     }
 
-                    if (diagnosis_array.length < 1) {
-                        toastr.error('Diagnosis is required');
-                        is_valid = false;
-                    }
                     break;
                 case "maipp":
                     if (!certificate_no) {
@@ -1633,20 +1623,9 @@
                         is_valid = false;
                     }
 
-                    if (!or_no) {
-                        toastr.error('OR no. is required');
-                        $("#or_no").addClass("is-invalid");
-                        is_valid = false;
-                    }
-
                     if (!amount) {
                         toastr.error('Amount is required');
                         $("#amount").addClass("is-invalid");
-                        is_valid = false;
-                    }
-
-                    if (diagnosis_array.length < 1) {
-                        toastr.error('Diagnosis is required');
                         is_valid = false;
                     }
                     break;
@@ -1705,12 +1684,6 @@
                         is_valid = false;
                     }
 
-                    if (!days_barred) {
-                        toastr.error('Day/s barred is required');
-                        $("#days_barred").addClass("is-invalid");
-                        is_valid = false;
-                    }
-
                     if (!doctor) {
                         toastr.error('Doctor is required');
                         $("#doctor").addClass("is-invalid");
@@ -1729,21 +1702,9 @@
                         is_valid = false;
                     }
 
-                    if (!or_no) {
-                        toastr.error('OR no. is required');
-                        $("#or_no").addClass("is-invalid");
-                        is_valid = false;
-                    }
-
                     if (!amount) {
                         toastr.error('Amount is required');
                         $("#amount").addClass("is-invalid");
-                        is_valid = false;
-                    }
-
-
-                    if (diagnosis_array.length < 1) {
-                        toastr.error('Diagnosis is required');
                         is_valid = false;
                     }
 
@@ -1816,10 +1777,30 @@
         })
             .then(response => response.text()) // Convert response to text
             .then(html => {
-                $("#certificate_modal .modal-body").html(html);
+                $("#certificate_modal #certificate_form").html(html);
                 $("#certificate_modal .modal-footer").removeClass("d-none");
             })
             .catch(error => console.error(error));
+    }
+
+    async function tagCertificate(id) {
+        if (confirm("Are you sure you want to tag this as done?")) {
+            const response = await fetch('{{ route('tagCertificate') }}', {
+                method: "PUT",
+                headers: HEADERS,
+                body: JSON.stringify({id: id})
+            });
+
+            if (!response.ok) {
+                toastr.error("Something went wrong", "Ooops");
+                console.log(response);
+                return;
+            }
+
+            const data = await response.json();
+            toastr.success(data.message, "Information");
+            getCertificates();
+        }
     }
 
     async function deleteCertificate(id) {
@@ -1886,7 +1867,7 @@
         $("#page_items_count").text(((page * 10) + 1) + " - " + ((page * 10) + max_visible));
         for (let i = 0; i < max_visible; i++) {
             const it = data[i];
-            const tr = `
+            let tr = `
                     <tr id="certificate_id_` + it.id + `">
                         <td>` + it.type + `</td>
                         <td>` + it.patient + `</td>
@@ -1903,8 +1884,22 @@
                             <button class="btn btn-sm btn-success" onclick="editCertificate(` + it.id + `)">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
-                        </td>
+                        </td>`;
+            if (it.date_finished)
+                tr += `
                         <td>
+                            <button class="btn btn-sm btn-secondary" disabled>
+                                <i class="bi bi-tag-fill"></i>
+                            </button>
+                        </td>`;
+            else
+                tr += `
+                        <td>
+                            <button class="btn btn-sm btn-warning" onclick="tagCertificate(` + it.id + `)">
+                                <i class="bi bi-tag-fill"></i>
+                            </button>
+                        </td>`;
+            tr += `<td>
                             <button class="btn btn-sm btn-danger" onclick="deleteCertificate(` + it.id + `)">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
@@ -1932,7 +1927,7 @@
     }
 
     function showSpinner() {
-        $("#certificate_modal .modal-body").html(`
+        $("#certificate_modal #certificate_form").html(`
         <div class="d-flex justify-content-center align-items-center">
             <div class="spinner-border" role="status">
                     <span class="visually-hidden">Loading...</span>

@@ -5,7 +5,9 @@
                 <div class="card-title p-1" style="font-size: 24px">Create Certificate</div>
             </div>
             <div class="modal-body">
+                <form id="certificate_form" autocomplete="off">
 
+                </form>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>

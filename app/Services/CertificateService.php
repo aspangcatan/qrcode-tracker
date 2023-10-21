@@ -80,6 +80,17 @@ class CertificateService
             ]);
     }
 
+    public function updateDateFinished($id, $date_finished,$prepared_by)
+    {
+        DB::table('qr_tracker.certificates')
+            ->where('id', '=', $id)
+            ->update([
+                'date_finished' => $date_finished,
+                'prepared_by' => $prepared_by,
+                'updated_at' => now()
+            ]);
+    }
+
     public function appendHashedValue($id, $url, $hashed_value)
     {
         DB::table('qr_tracker.certificates')
@@ -104,18 +115,19 @@ class CertificateService
             ->select([
                 'patient',
                 DB::raw('CASE
-                WHEN type = "ordinary" THEN "Medical Certificate"
-                WHEN type = "maipp" THEN "MAIPP Medical Certificate"
-                WHEN type = "medico_legal" THEN "MEDICO LEGAL CERTIFICATE"
-                ELSE type
-            END AS type'), // Display type with custom values
+            WHEN type = "ordinary" THEN "Medical Certificate"
+            WHEN type = "maipp" THEN "MAIPP Medical Certificate"
+            WHEN type = "medico_legal" THEN "MEDICO LEGAL CERTIFICATE"
+            ELSE type
+        END AS type'), // Display type with custom values
                 'charge_slip_no',
                 'or_no',
                 'requesting_person',
                 'relationship',
                 'date_requested',
+                DB::raw('DATE_FORMAT(date_requested, "%m/%d/%Y %h:%i %p") AS date_requested'),
                 'registry_no',
-                'date_finished'
+                DB::raw('DATE_FORMAT(date_finished, "%m/%d/%Y %h:%i %p") AS date_finished')
             ])
             ->whereMonth('created_at', $month)
             ->whereYear('created_at', $year)

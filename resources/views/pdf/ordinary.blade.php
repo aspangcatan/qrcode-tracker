@@ -172,11 +172,15 @@
             with the following findings and/or diagnosis:
         </div>
     </div>
+    <div style="color:white">A</div>
+    <div style="color:white">A</div>
     <div class="certificate-diagnosis">
         @for($i=0; $i<count($diagnosis); $i++)
             <div>{{ $diagnosis[$i]->diagnosis }}</div>
         @endfor
     </div>
+    <div style="color:white">A</div>
+    <div style="color:white">A</div>
     <div class="certificate-text">
         <table style="width: 100%">
             <tr>

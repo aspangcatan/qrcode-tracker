@@ -213,12 +213,16 @@
             <td></td>
         </tr>
     </table>
-    <div style="margin-left: 35%;margin-top: 10px">
+    <div style="color:white">A</div>
+    <div style="color:white">A</div>
+    <div style="margin-left: 35%">
         @for($i=0; $i<count($diagnosis); $i++)
             <div>{{ $diagnosis[$i]->diagnosis }}</div>
         @endfor
     </div>
-    <table style="margin-top: 20px">
+    <div style="color:white">A</div>
+    <div style="color:white">A</div>
+    <table>
         <tr>
             <td style="width: 40%">sustained by:</td>
             <td>NOI: {{ $sustained->noi }}</td>

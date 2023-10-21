@@ -26,6 +26,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/get_certificates', [\App\Http\Controllers\ApplicationController::class, 'getCertificates'])->name('getCertificates');
     Route::post('/store_certificate', [\App\Http\Controllers\ApplicationController::class, 'storeCertificate'])->name('storeCertificate');
+    Route::put('/tag_certificate', [\App\Http\Controllers\ApplicationController::class, 'tagCertificate'])->name('tagCertificate');
     Route::delete('/delete_certificate', [\App\Http\Controllers\ApplicationController::class, 'deleteCertificate'])->name('deleteCertificate');
 
     #PREVIEWS

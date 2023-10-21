@@ -318,9 +318,9 @@
                         <div class="medium">
                             @if(isset($certificates) && $certificates)
                                 <input type="datetime-local" id="date_finished"
-                                       value="{{ $certificates->date_finished }}">
+                                       value="{{ $certificates->date_finished }}" disabled>
                             @else
-                                <input type="datetime-local" id="date_finished">
+                                <input type="datetime-local" id="date_finished" disabled>
                             @endif
                         </div>
                     </td>
