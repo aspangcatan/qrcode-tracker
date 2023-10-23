@@ -294,7 +294,7 @@ class ApplicationController extends Controller
 
             $carbon = Carbon::create()->month($request->month);
             $monthString = strtoupper($carbon->format('F'));
-            $sheet->setCellValue('C1', $request->title);
+            $sheet->setCellValue('B1', $request->title);
             $row = 7;
             $sheet->insertNewRowBefore($row, count($records));
             for ($i = 0; $i < count($records); $i++) {
