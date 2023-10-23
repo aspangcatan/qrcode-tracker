@@ -132,27 +132,36 @@
 <body>
 <div style="color: white">A</div>
 <div style="color: white">A</div>
+<div style="color: white">A</div>
 <div class="container">
     <table style="width: 100%">
         <tr>
-            <td>
-                {!! QrCode::size(100)->generate($certificate->url) !!}
+            <td rowspan="3">
+                <div style="height: 100%;vertical-align: middle;text-align: center">
+                    {!! QrCode::size(100)->generate($certificate->url) !!}
+                </div>
             </td>
             <td>
-                <div class="certificate-details">
-                    <div>
-                        Certificate No:
-                        <div class="small">{{ $certificate->certificate_no }}</div>
-                    </div>
-                    <div>
-                        Health Record No:
-                        <div class="small">{{ $certificate->health_record_no }}</div>
-                    </div>
-                    <div class="mt-1">
-                        Date:
-                        <div
-                            class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}</div>
-                    </div>
+                <div style="text-align: right">
+                    Certificate No:
+                    <div class="small">{{ $certificate->certificate_no }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="text-align: right">
+                    Health Record No:
+                    <div class="small">{{ $certificate->health_record_no }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="text-align: right">
+                    Date:
+                    <div
+                        class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}</div>
                 </div>
             </td>
         </tr>
@@ -163,13 +172,13 @@
     </div>
     <table style="width: 100%;margin-top:15px">
         <tr>
-            <td style="width: 30%">
+            <td style="width: 25%">
                 <div style="margin-left: 10px">This is to certify that</div>
             </td>
             <td class="border-bottom text-center" style="width: 50%">
                 {{ $certificate->patient }}
             </td>
-            <td style="width: 20%">, {{ $certificate->age }} </td>
+            <td style="width: 30%">, {{ $certificate->age }} </td>
         </tr>
         <tr>
             <td colspan="4">
@@ -218,16 +227,19 @@
     </table>
     <div style="color:white">A</div>
     <div style="color:white">A</div>
-    <div>
+    <table style="width: 100%">
         @for($i=0; $i<count($diagnosis); $i++)
-            <div>{{ $diagnosis[$i]->diagnosis }}</div>
+            <tr>
+                <td style="width: 15%;color:white">sustained by:</td>
+                <td>{{ $diagnosis[$i]->diagnosis }}</td>
+            </tr>
         @endfor
-    </div>
+    </table>
     <div style="color:white">A</div>
     <div style="color:white">A</div>
-    <table>
+    <table style="width: 100%">
         <tr>
-            <td style="width: 40%">sustained by:</td>
+            <td style="width: 15%">sustained by:</td>
             <td>NOI: {{ $sustained->noi }}</td>
         </tr>
         <tr>
@@ -288,7 +300,7 @@
                 <td>:</td>
                 <td>₱{{ number_format($certificate->amount,2) }}</td>
                 <td>
-                    <small>MPS-REC-FM-06</small>
+                    <small></small>
                 </td>
             </tr>
             <tr>
@@ -300,22 +312,26 @@
                     {{ \Illuminate\Support\Facades\Auth::user()->lname }}
                 </td>
                 <td>
-                    <small>07-Dec-18</small>
+                    <small></small>
                 </td>
             </tr>
         </table>
     </div>
+    <div class="mt-3" style="float:right">
+        <div>MPS - REC - FM - 05</div>
+        <div>07-Dec-18</div>
+    </div>
 </div>
 <script>
     // Disable right-click
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
-    document.onkeydown = function(e) {
-        if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
-            e.preventDefault();
-            return false;
-        }
-    };
+    // document.addEventListener('contextmenu', event => event.preventDefault());
+    // // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
+    // document.onkeydown = function(e) {
+    //     if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+    //         e.preventDefault();
+    //         return false;
+    //     }
+    // };
 </script>
 </body>
 </html>

@@ -1224,6 +1224,7 @@
             width: '100%'
         });
 
+
         $('input[name="datefilter"]').daterangepicker({
             autoUpdateInput: false,
             locale: {

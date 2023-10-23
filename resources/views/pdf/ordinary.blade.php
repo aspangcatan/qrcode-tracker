@@ -130,26 +130,36 @@
 <body>
 <div style="color: white">A</div>
 <div style="color: white">A</div>
+<div style="color: white">A</div>
 <div class="container">
     <table style="width: 100%">
         <tr>
-            <td>
-                {!! QrCode::size(100)->generate($certificate->url) !!}
+            <td rowspan="3">
+                <div style="height: 100%;vertical-align: middle;text-align: center">
+                    {!! QrCode::size(100)->generate($certificate->url) !!}
+                </div>
             </td>
             <td>
-                <div class="certificate-details">
-                    <div>
-                        Certificate No:
-                        <div class="small">{{ $certificate->certificate_no }}</div>
-                    </div>
-                    <div>
-                        Health Record No:
-                        <div class="small">{{ $certificate->health_record_no }}</div>
-                    </div>
-                    <div class="mt-1">
-                        Date:
-                        <div class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}</div>
-                    </div>
+                <div style="text-align: right">
+                    Certificate No:
+                    <div class="small">{{ $certificate->certificate_no }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="text-align: right">
+                    Health Record No:
+                    <div class="small">{{ $certificate->health_record_no }}</div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <div style="text-align: right">
+                    Date:
+                    <div
+                        class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}</div>
                 </div>
             </td>
         </tr>
@@ -162,7 +172,7 @@
         <div>
             This is to certify
             <div class="medium">{{ $certificate->patient }}</div>
-            , 32 years old, of
+            , <div class="small">{{ $certificate->age }}</div>, of
         </div>
         <div>
             <div class="long">{{ $certificate->address }}</div>
@@ -176,7 +186,7 @@
     </div>
     <div style="color:white">A</div>
     <div style="color:white">A</div>
-    <div class="certificate-diagnosis">
+    <div class="certificate-diagnosis" style="margin-left: 35px">
         @for($i=0; $i<count($diagnosis); $i++)
             <div>{{ $diagnosis[$i]->diagnosis }}</div>
         @endfor
@@ -236,7 +246,7 @@
                 <td>:</td>
                 <td>₱{{ number_format($certificate->amount,2) }}</td>
                 <td>
-                    <small>MPS-REC-FM-06</small>
+                    <small></small>
                 </td>
             </tr>
             <tr>
@@ -248,10 +258,14 @@
                     {{ \Illuminate\Support\Facades\Auth::user()->lname }}
                 </td>
                 <td>
-                    <small>07-Dec-18</small>
+                    <small></small>
                 </td>
             </tr>
         </table>
+    </div>
+    <div class="mt-3" style="float:right">
+        <div>MPS - REC - FM - 06</div>
+        <div>07-Dec-18</div>
     </div>
 </div>
 <script>
