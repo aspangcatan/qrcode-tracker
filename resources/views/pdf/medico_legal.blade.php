@@ -285,10 +285,16 @@
         </table>
     </div>
     <div class="doctor-container mt-5">
-        <div><u>{{ $certificate->doctor }}</u></div>
-        <div>{{ $certificate->doctor_designation }}</div>
-        <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>
-    </div>
+        @if(strlen($certificate->doctor) >= 20)
+            <div style="font-size: 12px">
+                @else
+                    <div>
+                        @endif
+                        <div><u>{{ $certificate->doctor }}</u></div>
+                        <div>{{ $certificate->doctor_designation }}</div>
+                        <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>
+                    </div>
+            </div>
 
     <div class="mt-3">
         <div>(NOT VALID WITHOUT SEAL)</div>

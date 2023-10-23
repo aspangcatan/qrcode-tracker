@@ -187,9 +187,12 @@
     </table>
     <table style="width: 100%">
         <tr>
-            <td class="border-bottom text-center" style="width: 48%;vertical-align: bottom">{{ $certificate->address }}</td>
-            <td class="border-bottom text-center" style="width: 30%;vertical-align: bottom">, {{ $certificate->age }} </td>
-            <td class="border-bottom text-center" style="width: 17%;vertical-align: bottom">, {{ $certificate->sex }}</td>
+            <td class="border-bottom text-center"
+                style="width: 48%;vertical-align: bottom">{{ $certificate->address }}</td>
+            <td class="border-bottom text-center" style="width: 30%;vertical-align: bottom">
+                , {{ $certificate->age }} </td>
+            <td class="border-bottom text-center" style="width: 17%;vertical-align: bottom">
+                , {{ $certificate->sex }}</td>
             <td style="width: 5%">
                 <div style="margin-left: 5px;">, was</div>
             </td>
@@ -218,10 +221,18 @@
     <table style="width: 100%">
         <tr>
             <td style="width: 20%">under the care of</td>
-            <td class="border-bottom text-center" style="width: 49%">{{ $certificate->doctor }}</td>
+            @if(strlen($certificate->doctor) >= 20)
+                <td class="border-bottom text-center" style="width: 49%;font-size: 12px">{{ $certificate->doctor }}</td>
+            @else
+                <td class="border-bottom text-center" style="width: 49%">{{ $certificate->doctor }}</td>
+            @endif
             <td style="width: 2%">-</td>
             <td class="text-center" style="width: 18%">
-                <div><u>{{ $certificate->doctor_license }}</u></div>
+                @if(strlen($certificate->doctor) >= 20)
+                    <div style="font-size: 12px"><u>{{ $certificate->doctor_license }}</u></div>
+                @else
+                    <div><u>{{ $certificate->doctor_license }}</u></div>
+                @endif
             </td>
             <td></td>
         </tr>
@@ -239,7 +250,7 @@
     <div style="margin-top:10px">DIAGNOSIS:</div>
     <div style="color:white">A</div>
     <div style="color:white">A</div>
-    <div>
+    <div style="margin-left: 35%">
         @for($i=0; $i<count($diagnosis); $i++)
             <div>{{ $diagnosis[$i]->diagnosis }}</div>
         @endfor

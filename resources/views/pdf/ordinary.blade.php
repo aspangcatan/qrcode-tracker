@@ -21,6 +21,7 @@
             font-size: 16px;
             font-family: Arial, sans-serif;
         }
+
         .container {
             margin-top: 100px;
             margin-left: 20px;
@@ -122,8 +123,8 @@
             margin-top: 30px;
         }
 
-        .mt-5{
-            margin-top:70px
+        .mt-5 {
+            margin-top: 70px
         }
 
         .text-center {
@@ -176,7 +177,9 @@
         <div>
             This is to certify
             <div class="medium">{{ $certificate->patient }}</div>
-            , <div class="small">{{ $certificate->age }}</div>, of
+            ,
+            <div class="small">{{ $certificate->age }}</div>
+            , of
         </div>
         <div>
             <div class="long">{{ $certificate->address }}</div>
@@ -184,13 +187,14 @@
         </div>
         <div>
             hospital on/from
-            <div class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}</div>
+            <div
+                class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}</div>
             with the following findings and/or diagnosis:
         </div>
     </div>
     <div style="color:white">A</div>
     <div style="color:white">A</div>
-    <div class="certificate-diagnosis" style="margin-left: 35px">
+    <div class="certificate-diagnosis" style="margin-left: 35%">
         @for($i=0; $i<count($diagnosis); $i++)
             <div>{{ $diagnosis[$i]->diagnosis }}</div>
         @endfor
@@ -231,57 +235,63 @@
     </div>
 
     <div class="doctor-container mt-5">
-        <div><u>{{ $certificate->doctor }}</u></div>
-        <div>{{ $certificate->doctor_designation }}</div>
-        <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>
-    </div>
+        @if(strlen($certificate->doctor) >= 20)
+            <div style="font-size: 12px">
+                @else
+                    <div>
+                        @endif
+                        <div><u>{{ $certificate->doctor }}</u></div>
+                        <div>{{ $certificate->doctor_designation }}</div>
+                        <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>
+                    </div>
+            </div>
 
-    <div class="mt-3">
-        <div>(NOT VALID WITHOUT SEAL)</div>
-        <table style="width: 100%">
-            <tr>
-                <td style="width: 18%">OR NO</td>
-                <td style="width: 3%">:</td>
-                <td style="width: 49%">{{ $certificate->or_no }}</td>
-                <td style="width: 30%"></td>
-            </tr>
-            <tr>
-                <td>AMOUNT</td>
-                <td>:</td>
-                <td>₱{{ number_format($certificate->amount,2) }}</td>
-                <td>
-                    <small></small>
-                </td>
-            </tr>
-            <tr>
-                <td>Prepared by</td>
-                <td>:</td>
-                <td>
-                    {{ \Illuminate\Support\Facades\Auth::user()->fname }}
-                    {{ \Illuminate\Support\Facades\Auth::user()->mname ? \Illuminate\Support\Facades\Auth::user()->mname[0].'.' : '' }}
-                    {{ \Illuminate\Support\Facades\Auth::user()->lname }}
-                </td>
-                <td>
-                    <small></small>
-                </td>
-            </tr>
-        </table>
+            <div class="mt-3">
+                <div>(NOT VALID WITHOUT SEAL)</div>
+                <table style="width: 100%">
+                    <tr>
+                        <td style="width: 18%">OR NO</td>
+                        <td style="width: 3%">:</td>
+                        <td style="width: 49%">{{ $certificate->or_no }}</td>
+                        <td style="width: 30%"></td>
+                    </tr>
+                    <tr>
+                        <td>AMOUNT</td>
+                        <td>:</td>
+                        <td>₱{{ number_format($certificate->amount,2) }}</td>
+                        <td>
+                            <small></small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Prepared by</td>
+                        <td>:</td>
+                        <td>
+                            {{ \Illuminate\Support\Facades\Auth::user()->fname }}
+                            {{ \Illuminate\Support\Facades\Auth::user()->mname ? \Illuminate\Support\Facades\Auth::user()->mname[0].'.' : '' }}
+                            {{ \Illuminate\Support\Facades\Auth::user()->lname }}
+                        </td>
+                        <td>
+                            <small></small>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="float:right;margin-top:30px;font-size: 13px">
+                <div>MPS - REC - FM - 06</div>
+                <div>07-Dec-18</div>
+            </div>
     </div>
-    <div style="float:right;margin-top:30px;font-size: 13px">
-        <div>MPS - REC - FM - 06</div>
-        <div>07-Dec-18</div>
-    </div>
-</div>
-<script>
-    // Disable right-click
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
-    document.onkeydown = function(e) {
-        if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
-            e.preventDefault();
-            return false;
-        }
-    };
-</script>
+    <script>
+        // Disable right-click
+        // document.addEventListener('contextmenu', event => event.preventDefault());
+        // // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
+        // document.onkeydown = function (e) {
+        //     if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+        //         e.preventDefault();
+        //         return false;
+        //     }
+        // };
+    </script>
 </body>
 </html>
