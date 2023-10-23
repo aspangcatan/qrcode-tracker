@@ -122,6 +122,10 @@
             margin-top: 30px;
         }
 
+        .mt-5{
+            margin-top:70px
+        }
+
         .text-center {
             text-align: center;
         }
@@ -226,7 +230,7 @@
         </table>
     </div>
 
-    <div class="doctor-container mt-3">
+    <div class="doctor-container mt-5">
         <div><u>{{ $certificate->doctor }}</u></div>
         <div>{{ $certificate->doctor_designation }}</div>
         <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>

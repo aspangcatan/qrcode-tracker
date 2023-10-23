@@ -1224,6 +1224,14 @@
             width: '100%'
         });
 
+        $('#filter_patient').on('keyup', function (e) {
+            if (e.key === 'Enter') {
+                getCertificates();
+            } else if ($(this).val() === '') {
+                getCertificates();
+            }
+        });
+
 
         $('input[name="datefilter"]').daterangepicker({
             autoUpdateInput: false,
