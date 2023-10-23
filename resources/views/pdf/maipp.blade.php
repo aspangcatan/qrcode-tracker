@@ -326,7 +326,7 @@
             </tr>
         </table>
     </div>
-    <div class="mt-3" style="float:right">
+    <div style="float:right;margin-top:15px">
         <div>AHQM-REC-FM-03 Rev.0</div>
         <div>20 February 2023</div>
     </div>
