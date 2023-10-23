@@ -32,7 +32,7 @@ class CreateCertificatesTable extends Migration
             $table->string('relationship', 200);
             $table->text('purpose')->nullable();
             $table->text('second_purpose')->nullable();
-            $table->string('or_no', 200);
+            $table->string('or_no', 200)->nullable();
             $table->string('amount', 100);
             $table->string('type', 100);
             $table->integer('days_barred')->nullable();

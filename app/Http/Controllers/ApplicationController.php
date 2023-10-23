@@ -289,11 +289,12 @@ class ApplicationController extends Controller
             $templatePath = public_path('excel/SUMMARY_TEMPLATE.xlsx'); // Replace with the actual path to your template
             $spreadsheet = IOFactory::load($templatePath);
             $sheet = $spreadsheet->getActiveSheet();
-            $records = $this->certificateService->generateReport($request->month, $request->year);
+            $records = $this->certificateService->generateReport($request->from_date, $request->to_date);
+
 
             $carbon = Carbon::create()->month($request->month);
             $monthString = strtoupper($carbon->format('F'));
-            $sheet->setCellValue('C1', "SUMMARY REPORT FOR THE MONTH OF " .$monthString . ' ' . $request->year);
+            $sheet->setCellValue('C1', $request->title);
             $row = 7;
             $sheet->insertNewRowBefore($row, count($records));
             for ($i = 0; $i < count($records); $i++) {

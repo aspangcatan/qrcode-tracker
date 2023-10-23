@@ -109,7 +109,7 @@ class CertificateService
             ->delete();
     }
 
-    public function generateReport($month, $year)
+    public function generateReport($from_date, $to_date)
     {
         return DB::table('qr_tracker.certificates')
             ->select([
@@ -129,8 +129,7 @@ class CertificateService
                 'registry_no',
                 DB::raw('DATE_FORMAT(date_finished, "%m/%d/%Y %h:%i %p") AS date_finished')
             ])
-            ->whereMonth('created_at', $month)
-            ->whereYear('created_at', $year)
+            ->whereBetween('created_at', [$from_date, $to_date])
             ->get();
     }
 }

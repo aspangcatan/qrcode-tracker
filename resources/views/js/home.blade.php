@@ -1223,6 +1223,22 @@
             dropdownParent: $("#doctor_modal"),
             width: '100%'
         });
+
+        $('input[name="datefilter"]').daterangepicker({
+            autoUpdateInput: false,
+            locale: {
+                cancelLabel: 'Clear'
+            }
+        });
+
+        $('input[name="datefilter"]').on('apply.daterangepicker', function (ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        $('input[name="datefilter"]').on('cancel.daterangepicker', function (ev, picker) {
+            $(this).val('');
+        });
+
         $("body").on("change", "#purpose", function () {
             $("#purpose_container").addClass("d-none");
             $("#second_purpose").val("");
@@ -1236,9 +1252,34 @@
         });
 
         $("#btn_generate_report").click(function () {
-            const month = $("#monthSelect").val();
-            const year = $("#yearSelect").val();
-            window.open("/qrcode-tracker/generate_report?month=" + month + "&year=" + year, "_blank");
+            const filtered_date = $("#filter_date").val();
+
+            if (filtered_date == "") {
+                alert("Please specify date range");
+                return;
+            }
+
+
+            let from_date = moment(filtered_date.split("-")[0].trim(), "MM/DD/YYYY");
+            let to_date = moment(filtered_date.split("-")[1].trim(), "MM/DD/YYYY");
+
+
+            let to_month_name = "";
+            if (from_date.format("M") !== to_date.format("M")) {
+                to_month_name = to_date.format("MMMM");
+            }
+
+            let title = "SUMMARY REPORT FOR THE MONTH OF " + from_date.format("MMMM") + " " + from_date.format("D");
+            if (to_month_name === "") {
+                if (from_date.format("D") === to_date.format("D"))
+                    title += to_date.format(", YYYY");
+                else {
+                    title += to_date.format("-D, YYYY");
+                }
+            } else
+                title += " - " + to_month_name + " " + to_date.format("D, YYYY");
+
+            window.open("/qrcode-tracker/generate_report?from_date=" + from_date.format("YYYY-MM-DD") + "&to_date=" + to_date.format("YYYY-MM-DD") + "&title=" + title, "_blank");
         });
 
         $("#btn_search").click(function () {

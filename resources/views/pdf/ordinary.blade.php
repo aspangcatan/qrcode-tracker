@@ -22,7 +22,7 @@
             font-family: Arial, sans-serif;
         }
         .container {
-            margin-top: 160px;
+            margin-top: 100px;
             margin-left: 20px;
             margin-right: 20px;
         }
@@ -132,11 +132,12 @@
 <div class="container">
     <table style="width: 100%">
         <tr>
-            <td></td>
+            <td>
+                {!! QrCode::size(100)->generate($certificate->url) !!}
+            </td>
             <td>
                 <div class="certificate-details">
-                    {!! QrCode::size(100)->generate($certificate->url) !!}
-                    <div class="mt-3">
+                    <div>
                         Certificate No:
                         <div class="small">{{ $certificate->certificate_no }}</div>
                     </div>
