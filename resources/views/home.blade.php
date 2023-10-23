@@ -3,10 +3,10 @@
     <div class="col-12">
         <div class="d-flex justify-content-end mb-2">
             <div>
-                <input class="form-control" placeholder="Filter patient" id="filter_patient"/>
+                <input class="form-control" placeholder="Search patient" id="filter_patient"/>
             </div>
             <div class="ms-2 me-1">
-                <input type="date" class="form-control" placeholder="Filter date issued" id="filter_date_issued"/>
+                <input type="date" class="form-control" placeholder="Search date issued" id="filter_date_issued"/>
             </div>
             <div class="ms-1">
                 <button class="btn btn-success" id="btn_search">

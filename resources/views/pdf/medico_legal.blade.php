@@ -216,7 +216,7 @@
     </table>
     <div style="color:white">A</div>
     <div style="color:white">A</div>
-    <div style="margin-left: 35%">
+    <div>
         @for($i=0; $i<count($diagnosis); $i++)
             <div>{{ $diagnosis[$i]->diagnosis }}</div>
         @endfor

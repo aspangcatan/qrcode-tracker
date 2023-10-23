@@ -86,7 +86,6 @@
 
         .certificate-diagnosis {
             margin-top: 20px;
-            text-align: center;
         }
 
         .mt-1 {
