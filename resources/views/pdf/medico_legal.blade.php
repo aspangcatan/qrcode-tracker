@@ -130,6 +130,8 @@
     </style>
 </head>
 <body>
+<div style="color: white">A</div>
+<div style="color: white">A</div>
 <div class="container">
     <table style="width: 100%">
         <tr>
