@@ -92,11 +92,11 @@
                     <tr>
                         <td style='width: 90%'>{{ $item->diagnosis }}</td>
                         <td style='width: 5%'>
-                            <button class='btn btn-sm btn-transparent' onClick='editDiagnosis(this)'><i
+                            <button type="button" class='btn btn-sm btn-transparent' onClick='editDiagnosis(this)'><i
                                     class='bi bi-pencil-fill text-success'></i></button>
                         </td>
                         <td style='width: 5%'>
-                            <button class='btn btn-sm btn-transparent' onClick='deleteDiagnosis(this)'><i
+                            <button type="button" class='btn btn-sm btn-transparent' onClick='deleteDiagnosis(this)'><i
                                     class='bi bi-trash-fill text-danger'></i></button>
                         </td>
                     </tr>
