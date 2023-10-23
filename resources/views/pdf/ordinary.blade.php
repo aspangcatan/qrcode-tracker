@@ -267,7 +267,7 @@
             </tr>
         </table>
     </div>
-    <div class="mt-3" style="float:right">
+    <div style="float:right;margin-top:30px;font-size: 13px">
         <div>MPS - REC - FM - 06</div>
         <div>07-Dec-18</div>
     </div>

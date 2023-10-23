@@ -185,11 +185,11 @@
             </td>
         </tr>
     </table>
-    <table style="width: 100%;margin-top:15px">
+    <table style="width: 100%">
         <tr>
-            <td class="border-bottom text-center" style="width: 48%">{{ $certificate->address }}</td>
-            <td class="border-bottom text-center" style="width: 30%">, {{ $certificate->age }} </td>
-            <td class="border-bottom text-center" style="width: 17%">, {{ $certificate->sex }}</td>
+            <td class="border-bottom text-center" style="width: 48%;vertical-align: bottom">{{ $certificate->address }}</td>
+            <td class="border-bottom text-center" style="width: 30%;vertical-align: bottom">, {{ $certificate->age }} </td>
+            <td class="border-bottom text-center" style="width: 17%;vertical-align: bottom">, {{ $certificate->sex }}</td>
             <td style="width: 5%">
                 <div style="margin-left: 5px;">, was</div>
             </td>
@@ -326,21 +326,21 @@
             </tr>
         </table>
     </div>
-    <div style="float:right;margin-top:30px">
+    <div style="float:right;margin-top:30px;font-size: 13px">
         <div>AHQM-REC-FM-03 Rev.0</div>
         <div>20 February 2023</div>
     </div>
 </div>
 <script>
     // Disable right-click
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
-    document.onkeydown = function (e) {
-        if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
-            e.preventDefault();
-            return false;
-        }
-    };
+    // document.addEventListener('contextmenu', event => event.preventDefault());
+    // // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
+    // document.onkeydown = function (e) {
+    //     if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+    //         e.preventDefault();
+    //         return false;
+    //     }
+    // };
 </script>
 </body>
 </html>
