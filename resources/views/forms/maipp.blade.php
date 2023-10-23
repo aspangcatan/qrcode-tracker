@@ -137,7 +137,7 @@
                 @if(isset($diagnosis) && $diagnosis)
                     @foreach($diagnosis as $item)
                         <tr>
-                            <td style='width: 90%'>{{ $item->diagnosis }}</td>
+                            <td style='width: 90%'>{!! $item->diagnosis !!}</td>
                             <td style='width: 5%'>
                                 <button type="button" class='btn btn-sm btn-transparent' onClick='editDiagnosis(this)'><i
                                         class='bi bi-pencil-fill text-success'></i></button>

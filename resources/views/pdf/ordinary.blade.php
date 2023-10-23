@@ -196,7 +196,7 @@
     <div style="color:white">A</div>
     <div class="certificate-diagnosis" style="margin-left: 35%">
         @for($i=0; $i<count($diagnosis); $i++)
-            <div>{{ $diagnosis[$i]->diagnosis }}</div>
+            <div>{!! $diagnosis[$i]->diagnosis !!}</div>
         @endfor
     </div>
     <div style="color:white">A</div>

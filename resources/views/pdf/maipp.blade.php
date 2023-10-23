@@ -250,9 +250,9 @@
     <div style="margin-top:10px">DIAGNOSIS:</div>
     <div style="color:white">A</div>
     <div style="color:white">A</div>
-    <div style="margin-left: 35%">
+    <div style="margin-left: 90px">
         @for($i=0; $i<count($diagnosis); $i++)
-            <div>{{ $diagnosis[$i]->diagnosis }}</div>
+            <div class="centered-element">{!! $diagnosis[$i]->diagnosis !!}</div>
         @endfor
     </div>
     <div style="color:white">A</div>

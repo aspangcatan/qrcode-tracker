@@ -150,7 +150,7 @@
                 @if(isset($diagnosis) && $diagnosis)
                     @foreach($diagnosis as $item)
                         <tr>
-                            <td style='width: 90%'>{{ $item->diagnosis }}</td>
+                            <td style='width: 90%'>{!! $item->diagnosis !!}</td>
                             <td style='width: 5%'>
                                 <button type="button" class='btn btn-sm btn-transparent' onClick='editDiagnosis(this)'><i
                                         class='bi bi-pencil-fill text-success'></i></button>
@@ -357,7 +357,7 @@
                     <td>
                         <div class="medium">
                             @if(isset($certificates) && $certificates)
-                                <input type="datetime-local" id="date_requested" value="{{ $certificates->amount }}"/>
+                                <input type="datetime-local" id="date_requested" value="{{ $certificates->date_requested }}"/>
                             @else
                                 <input type="datetime-local" id="date_requested"/>
                             @endif
@@ -372,7 +372,7 @@
                     <td>
                         <div class="medium">
                             @if(isset($certificates) && $certificates)
-                                <input type="datetime-local" id="date_finished" value="{{ $certificates->amount }}" disabled>
+                                <input type="datetime-local" id="date_finished" value="{{ $certificates->date_finished }}" disabled>
                             @else
                                 <input type="datetime-local" id="date_finished" disabled>
                             @endif

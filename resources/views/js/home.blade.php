@@ -1393,13 +1393,15 @@
 
 
         $("#btn_save_diagnosis").click(function () {
-            const diagnosis = $("#diagnosis").val().trim();
+            let diagnosis = $("#diagnosis").val();
+            diagnosis = diagnosis.replace(/\n/g, "<br>");
+
             if (diagnosis == '') {
                 alert("Please fill in diagnosis");
                 return;
             }
             if (diagnosis_index > -1) {
-                $("#diagnosis_list tr:eq(" + diagnosis_index + ") td:eq(0)").text(diagnosis);
+                $("#diagnosis_list tr:eq(" + diagnosis_index + ") td:eq(0)").html(diagnosis);
                 $("#diagnosis_modal").modal("hide");
                 diagnosis_index = -1;
             } else {

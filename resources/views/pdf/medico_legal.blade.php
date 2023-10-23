@@ -235,7 +235,7 @@
         @for($i=0; $i<count($diagnosis); $i++)
             <tr>
                 <td style="width: 15%;color:white">sustained by:</td>
-                <td>{{ $diagnosis[$i]->diagnosis }}</td>
+                <td>{!! $diagnosis[$i]->diagnosis !!}</td>
             </tr>
         @endfor
     </table>
