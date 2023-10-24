@@ -104,7 +104,7 @@
             </p>
             <p class="disclaimer" style="text-align: left;margin-top: 10px;font-size: 14px">
                 Telephone Number: (032) 265-5986 local 47<br>
-                E-mail address: medicalrecordstdh@gmail.com<br/>
+                E-mail address: himd@csmc.doh.gov.ph<br/>
             </p>
         </footer>
     </div>
