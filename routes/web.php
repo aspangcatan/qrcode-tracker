@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/print-preview', [\App\Http\Controllers\ApplicationController::class, 'printPreview'])->name('printPreview');
 
     Route::get('/generate_report', [\App\Http\Controllers\ApplicationController::class, 'generateReport'])->name('generateReport');
+    Route::get('/generate_table_report', [\App\Http\Controllers\ApplicationController::class, 'generateTableReport'])->name('generateTableReport');
 
 
 });

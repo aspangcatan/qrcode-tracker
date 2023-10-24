@@ -98,7 +98,10 @@
         </main>
         <footer>
             <p class="disclaimer">To verify the authenticity of this certificate, please contact Cebu South Medical
-                Center - Health Information Management Department (Medical Records Office). Thank you.</p>
+                Center - Health Information Management Department (Medical Records Office) <br>
+                Telephone Number: (032) 265-5986 local 47<br>
+                E-mail address: medicalrecordstdh@gmail.com<br/>
+                . Thank you.</p>
         </footer>
     </div>
 </div>

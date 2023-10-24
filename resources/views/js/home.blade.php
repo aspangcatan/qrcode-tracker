@@ -1224,7 +1224,7 @@
             width: '100%'
         });
 
-        $("#diagnosis").on("keypress", function(e) {
+        $("#diagnosis").on("keypress", function (e) {
             // Check if the pressed key is Enter (key code 13)
             if (e.which == 13) {
                 // Prevent the default behavior of Enter key (which creates a new line)
@@ -1268,7 +1268,7 @@
             $("#report_modal").modal("show");
         });
 
-        $("#btn_generate_report").click(function () {
+        $("#btn_download_report").click(function () {
             const filtered_date = $("#filter_date").val();
 
             if (filtered_date == "") {
@@ -1297,6 +1297,41 @@
                 title += " - " + to_month_name + " " + to_date.format("D, YYYY");
 
             window.open("/qrcode-tracker/generate_report?from_date=" + from_date.format("YYYY-MM-DD") + "&to_date=" + to_date.format("YYYY-MM-DD") + "&title=" + title, "_blank");
+        });
+
+        $("#btn_generate_report").click(async function () {
+            const filtered_date = $("#filter_date").val();
+
+            if (filtered_date == "") {
+                alert("Please specify date range");
+                return;
+            }
+
+
+            let from_date = moment(filtered_date.split("-")[0].trim(), "MM/DD/YYYY");
+            let to_date = moment(filtered_date.split("-")[1].trim(), "MM/DD/YYYY");
+
+            const response = await fetch('{{ route('generateTableReport') }}?from_date=' + from_date.format("YYYY-MM-DD") + "&to_date=" + to_date.format("YYYY-MM-DD"));
+            const data = await response.json();
+
+            $("#report_list").empty();
+            data.forEach(it => {
+                const date_requested = (it.date_requested) ? moment(it.date_requested).format("MM/DD/YYYY hh:mm A") : "";
+                const date_finished = (it.date_finished) ? moment(it.date_finished).format("MM/DD/YYYY hh:mm A") : "";
+                const tr = `
+                <tr>
+                    <td>` + it.patient + `</td>
+                    <td>` + it.type + `</td>
+                    <td>` + it.charge_slip_no + `</td>
+                    <td>` + it.or_no + `</td>
+                    <td>` + it.requesting_person + `</td>
+                    <td>` + it.relationship + `</td>
+                    <td>` + date_requested + `</td>
+                    <td>` + it.registry_no + `</td>
+                    <td>` + date_finished + `</td>
+                </tr>`;
+                $("#report_list").append(tr);
+            });
         });
 
         $("#btn_search").click(function () {

@@ -146,7 +146,7 @@ class ApplicationController extends Controller
                 $this->certificateService->updateCertificate($certificate_id, $params);
 
                 //UNDO DATETIME FINISHED
-                $this->certificateService->updateDateFinished($certificate_id,null,$prepared_by);
+                $this->certificateService->updateDateFinished($certificate_id, null, $prepared_by);
                 $message = 'Record updated';
             } else {
                 $certificate_id = $this->certificateService->store($params);
@@ -186,23 +186,24 @@ class ApplicationController extends Controller
         }
     }
 
-    public function tagCertificate(Request  $request){
-        try{
+    public function tagCertificate(Request $request)
+    {
+        try {
             $mi = (Auth::user()->mname) ? Auth::user()->mname[0] . '.' : '';
             $prepared_by = strtoupper(Auth::user()->fname . ' ' . $mi . ' ' . Auth::user()->lname);
             $certificate = $this->certificateService->getCertificateById($request->id);
             if (!$certificate) {
-                return response()->json(['message'=>'Certificate ID dont exists'],404);
+                return response()->json(['message' => 'Certificate ID dont exists'], 404);
             }
 
-            if($certificate->date_finished){
-                return response()->json(['message'=>'Certificate already tagged as DONE',500]);
+            if ($certificate->date_finished) {
+                return response()->json(['message' => 'Certificate already tagged as DONE', 500]);
             }
 
-            $this->certificateService->updateDateFinished($certificate->id,Carbon::now()->format('Y-m-d\TH:i'),$prepared_by);
-            return response()->json(['message'=>'Tagged successfully by '.$prepared_by]);
-        }catch (\Exception $exception){
-            return response()->json(['message'=>$exception->getMessage()],500);
+            $this->certificateService->updateDateFinished($certificate->id, Carbon::now()->format('Y-m-d\TH:i'), $prepared_by);
+            return response()->json(['message' => 'Tagged successfully by ' . $prepared_by]);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 
@@ -280,6 +281,16 @@ class ApplicationController extends Controller
             }
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()]);
+        }
+    }
+
+    public function generateTableReport(Request $request)
+    {
+        try {
+            $response = $this->certificateService->generateReport($request->from_date, $request->to_date);
+            return response()->json($response);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 

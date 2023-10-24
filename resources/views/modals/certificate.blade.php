@@ -59,7 +59,7 @@
 </div>
 
 <div class="modal fade" id="report_modal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
                 <div class="card-title p-1" style="font-size: 24px">Generate Report</div>
@@ -68,10 +68,32 @@
                 <div class="ms-1">
                     <input name="datefilter" class="form-control" placeholder="Select daterange" id="filter_date" readonly/>
                 </div>
+                <hr />
+                <div class="table-responsive">
+                    <table class="table table-striped text-center">
+                        <thead>
+                            <tr>
+                                <th>PATIENT</th>
+                                <th>DOCUMENT REQUESTED</th>
+                                <th>CHARGE SLIP</th>
+                                <th>OR NO.</th>
+                                <th>REQUESTED BY</th>
+                                <th>RELATIONSHIP</th>
+                                <th>DATE REQUESTED</th>
+                                <th>REGISTRY NO.</th>
+                                <th>DATE FINISHED</th>
+                            </tr>
+                        </thead>
+                        <tbody id="report_list">
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
-                <button class="btn btn-success ml-1" id="btn_generate_report">GENERATE</button>
+                <button class="btn btn-success mr-1 ml-1" id="btn_generate_report">GENERATE</button>
+                <button class="btn btn-danger ml-1" id="btn_download_report">DOWNLOAD</button>
             </div>
         </div>
     </div>
