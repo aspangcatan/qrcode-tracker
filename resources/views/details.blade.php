@@ -89,7 +89,9 @@
                     <p><strong>Patient:</strong> {{ $data->patient }}</p>
                     <p><strong>Health Record No.:</strong> {{ $data->health_record_no }}</p>
                     <p><strong>Certificate No:</strong> {{ $data->certificate_no }}</p>
-                    <p><strong>Date Issued:</strong> {{ \Illuminate\Support\Carbon::parse($data->date_issued)->format('F d, Y') }}</p>
+                    <p><strong>Date
+                            Issued:</strong> {{ \Illuminate\Support\Carbon::parse($data->date_issued)->format('F d, Y') }}
+                    </p>
                 </div>
             @else
                 <i class="fas fa-times-circle not-found-icon fa-4x"></i>
@@ -98,10 +100,12 @@
         </main>
         <footer>
             <p class="disclaimer">To verify the authenticity of this certificate, please contact Cebu South Medical
-                Center - Health Information Management Department (Medical Records Office) <br>
+                Center - Health Information Management Department (Medical Records Office)
+            </p>
+            <p class="disclaimer" style="text-align: left;margin-top: 10px;font-size: 14px">
                 Telephone Number: (032) 265-5986 local 47<br>
                 E-mail address: medicalrecordstdh@gmail.com<br/>
-                . Thank you.</p>
+            </p>
         </footer>
     </div>
 </div>
