@@ -273,9 +273,9 @@
             <div>
                 <div style="display: inline">
                     @if($certificate->purpose == 'Financial and Medical Assistance Program available in the hospital')
-                        <input type="checkbox" checked disabled/>
+                        <input type="checkbox" checked/>
                     @else
-                        <input type="checkbox" disabled/>
+                        <input type="checkbox"/>
                     @endif
                 </div>
                 <span>Financial and Medical Assistance Program available in the hospital</span>
@@ -286,9 +286,9 @@
             <div>
                 <div style="display: inline">
                     @if($certificate->purpose == 'School Related Purposes, except for insurance claims or any legal claim')
-                        <input type="checkbox" checked disabled/>
+                        <input type="checkbox" checked/>
                     @else
-                        <input type="checkbox" disabled/>
+                        <input type="checkbox"/>
                     @endif
                 </div>
                 <span>School Related Purposes, except for insurance claims or any legal claim</span>
@@ -296,9 +296,9 @@
             <div>
                 <div style="display: inline">
                     @if($certificate->purpose == 'Work Related-Purposes, except for insurance claims or any legal claim')
-                        <input type="checkbox" checked disabled/>
+                        <input type="checkbox" checked/>
                     @else
-                        <input type="checkbox" disabled/>
+                        <input type="checkbox"/>
                     @endif
                 </div>
                 <span>Work Related-Purposes, except for insurance claims or any legal claim</span>
