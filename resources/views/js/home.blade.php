@@ -1224,6 +1224,15 @@
             width: '100%'
         });
 
+        $("#diagnosis").on("keypress", function(e) {
+            // Check if the pressed key is Enter (key code 13)
+            if (e.which == 13) {
+                // Prevent the default behavior of Enter key (which creates a new line)
+                // Append a <br> tag to the textarea's value
+                $("#diagnosis").val($(this).val() + '<br>');
+            }
+        });
+
         $('#filter_patient').on('keyup', function (e) {
             if (e.key === 'Enter') {
                 getCertificates();
@@ -1231,7 +1240,6 @@
                 getCertificates();
             }
         });
-
 
         $('input[name="datefilter"]').daterangepicker({
             autoUpdateInput: false,
@@ -1363,6 +1371,7 @@
 
         $("#btn_add_diagnosis").click(function () {
             diagnosis_index = -1;
+            $("#diagnosis").val("");
             $("#diagnosis_modal").modal("show");
         });
 
@@ -1394,7 +1403,7 @@
 
         $("#btn_save_diagnosis").click(function () {
             let diagnosis = $("#diagnosis").val();
-            diagnosis = diagnosis.replace(/\n/g, "<br>");
+            diagnosis = diagnosis.replace(/\n/g, "");
 
             if (diagnosis == '') {
                 alert("Please fill in diagnosis");
@@ -1882,7 +1891,8 @@
         diagnosis_index = tr.index();
 
         $("#diagnosis_modal").modal("show");
-        $("#diagnosis").val(diagnosis);
+        const textWithLineBreaks = diagnosis.replace(/<br>/g, '<br>\n');
+        $("#diagnosis").val(textWithLineBreaks);
     }
 
     function deleteDiagnosis(button) {
