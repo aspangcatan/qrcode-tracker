@@ -1878,7 +1878,7 @@
 
     function editDiagnosis(button) {
         const tr = $(button).closest('tr');
-        const diagnosis = tr.find('td:first').text();
+        const diagnosis = tr.find('td:first').html();
         diagnosis_index = tr.index();
 
         $("#diagnosis_modal").modal("show");
