@@ -27,7 +27,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-floating mb-3">
-                    <textarea type="text" class="form-control" id="diagnosis" style="height: 100px"></textarea>
+                    <textarea type="text" class="form-control" id="diagnosis" style="height: 300px"></textarea>
                     <label>Enter here</label>
                 </div>
             </div>

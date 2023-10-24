@@ -114,10 +114,13 @@
         }
 
         .doctor-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .doctor-container div {
             text-align: center;
-            margin-left: 400px;
-            margin-right: 30px;
-            width: 250px;
         }
 
         .mt-3 {
@@ -285,16 +288,12 @@
         </table>
     </div>
     <div class="doctor-container mt-5">
-        @if(strlen($certificate->doctor) >= 20)
-            <div style="font-size: 12px">
-                @else
-                    <div>
-                        @endif
-                        <div><u>{{ $certificate->doctor }}</u></div>
-                        <div>{{ $certificate->doctor_designation }}</div>
-                        <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>
-                    </div>
-            </div>
+        <div>
+            <div><u>{{ $certificate->doctor }}</u></div>
+            <div>{{ $certificate->doctor_designation }}</div>
+            <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>
+        </div>
+    </div>
 
     <div class="mt-3">
         <div>(NOT VALID WITHOUT SEAL)</div>
@@ -334,14 +333,14 @@
 </div>
 <script>
     // Disable right-click
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
-    document.onkeydown = function(e) {
-        if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
-            e.preventDefault();
-            return false;
-        }
-    };
+    // document.addEventListener('contextmenu', event => event.preventDefault());
+    // // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
+    // document.onkeydown = function(e) {
+    //     if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+    //         e.preventDefault();
+    //         return false;
+    //     }
+    // };
 </script>
 </body>
 </html>

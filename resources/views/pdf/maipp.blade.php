@@ -221,11 +221,7 @@
     <table style="width: 100%">
         <tr>
             <td style="width: 20%">under the care of</td>
-            @if(strlen($certificate->doctor) >= 20)
-                <td class="border-bottom text-center" style="width: 49%;font-size: 12px">{{ $certificate->doctor }}</td>
-            @else
-                <td class="border-bottom text-center" style="width: 49%">{{ $certificate->doctor }}</td>
-            @endif
+            <td class="border-bottom text-center" style="width: 49%">{{ $certificate->doctor }}</td>
             <td style="width: 2%">-</td>
             <td class="text-center" style="width: 18%">
                 @if(strlen($certificate->doctor) >= 20)

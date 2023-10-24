@@ -113,10 +113,13 @@
         }
 
         .doctor-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .doctor-container div {
             text-align: center;
-            margin-left: 400px;
-            margin-right: 30px;
-            width: 250px;
         }
 
         .mt-3 {
@@ -235,63 +238,58 @@
     </div>
 
     <div class="doctor-container mt-5">
-        @if(strlen($certificate->doctor) >= 20)
-            <div style="font-size: 12px">
-                @else
-                    <div>
-                        @endif
-                        <div><u>{{ $certificate->doctor }}</u></div>
-                        <div>{{ $certificate->doctor_designation }}</div>
-                        <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>
-                    </div>
-            </div>
-
-            <div class="mt-3">
-                <div>(NOT VALID WITHOUT SEAL)</div>
-                <table style="width: 100%">
-                    <tr>
-                        <td style="width: 18%">OR NO</td>
-                        <td style="width: 3%">:</td>
-                        <td style="width: 49%">{{ $certificate->or_no }}</td>
-                        <td style="width: 30%"></td>
-                    </tr>
-                    <tr>
-                        <td>AMOUNT</td>
-                        <td>:</td>
-                        <td>₱{{ number_format($certificate->amount,2) }}</td>
-                        <td>
-                            <small></small>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Prepared by</td>
-                        <td>:</td>
-                        <td>
-                            {{ \Illuminate\Support\Facades\Auth::user()->fname }}
-                            {{ \Illuminate\Support\Facades\Auth::user()->mname ? \Illuminate\Support\Facades\Auth::user()->mname[0].'.' : '' }}
-                            {{ \Illuminate\Support\Facades\Auth::user()->lname }}
-                        </td>
-                        <td>
-                            <small></small>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div style="float:right;margin-top:30px;font-size: 13px">
-                <div>MPS - REC - FM - 06</div>
-                <div>07-Dec-18</div>
-            </div>
+        <div>
+            <div><u>{{ $certificate->doctor }}</u></div>
+            <div>{{ $certificate->doctor_designation }}</div>
+            <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>
+        </div>
     </div>
-    <script>
-        // Disable right-click
-        document.addEventListener('contextmenu', event => event.preventDefault());
-        // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
-        document.onkeydown = function (e) {
-            if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
-                e.preventDefault();
-                return false;
-            }
-        };
-    </script>
+    <div class="mt-3">
+        <div>(NOT VALID WITHOUT SEAL)</div>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 18%">OR NO</td>
+                <td style="width: 3%">:</td>
+                <td style="width: 49%">{{ $certificate->or_no }}</td>
+                <td style="width: 30%"></td>
+            </tr>
+            <tr>
+                <td>AMOUNT</td>
+                <td>:</td>
+                <td>₱{{ number_format($certificate->amount,2) }}</td>
+                <td>
+                    <small></small>
+                </td>
+            </tr>
+            <tr>
+                <td>Prepared by</td>
+                <td>:</td>
+                <td>
+                    {{ \Illuminate\Support\Facades\Auth::user()->fname }}
+                    {{ \Illuminate\Support\Facades\Auth::user()->mname ? \Illuminate\Support\Facades\Auth::user()->mname[0].'.' : '' }}
+                    {{ \Illuminate\Support\Facades\Auth::user()->lname }}
+                </td>
+                <td>
+                    <small></small>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div style="float:right;margin-top:30px;font-size: 13px">
+        <div>MPS - REC - FM - 06</div>
+        <div>07-Dec-18</div>
+    </div>
+</div>
+<script>
+    // Disable right-click
+    // document.addEventListener('contextmenu', event => event.preventDefault());
+    // // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
+    // document.onkeydown = function (e) {
+    //     if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+    //         e.preventDefault();
+    //         return false;
+    //     }
+    // };
+</script>
 </body>
 </html>
