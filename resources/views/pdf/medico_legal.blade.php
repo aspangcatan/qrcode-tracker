@@ -334,14 +334,14 @@
 </div>
 <script>
     // Disable right-click
-    // document.addEventListener('contextmenu', event => event.preventDefault());
-    // // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
-    // document.onkeydown = function(e) {
-    //     if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
-    //         e.preventDefault();
-    //         return false;
-    //     }
-    // };
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
+    document.onkeydown = function(e) {
+        if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+            e.preventDefault();
+            return false;
+        }
+    };
 </script>
 </body>
 </html>
