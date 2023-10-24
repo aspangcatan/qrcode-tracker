@@ -1400,6 +1400,7 @@
                 alert("Please fill in diagnosis");
                 return;
             }
+
             if (diagnosis_index > -1) {
                 $("#diagnosis_list tr:eq(" + diagnosis_index + ") td:eq(0)").html(diagnosis);
                 $("#diagnosis_modal").modal("hide");
@@ -1442,7 +1443,7 @@
             const diagnosis_array = [];
 
             for (let i = 0; i < $("#diagnosis_list tr").length; i++) {
-                const diagnosis = $("#diagnosis_list tr:eq(" + i + ") td:eq(0)").text().trim();
+                const diagnosis = $("#diagnosis_list tr:eq(" + i + ") td:eq(0)").html().trim();
                 diagnosis_array.push({
                     diagnosis: diagnosis
                 });
