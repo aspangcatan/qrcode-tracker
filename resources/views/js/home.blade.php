@@ -597,6 +597,7 @@
             .then(response => response.text()) // Convert response to text
             .then(html => {
                 $("#certificate_modal #certificate_form").html(html);
+                $("#purpose").val($("#purpose").val()).change();
                 $("#certificate_modal .modal-footer").removeClass("d-none");
             })
             .catch(error => console.error(error));

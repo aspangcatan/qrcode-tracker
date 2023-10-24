@@ -286,9 +286,9 @@
                     <td>
                         <div class="medium">
                             @if(isset($certificates) && $certificates)
-                                <input type="text" id="registry_no" value="{{ $certificates->registry_no }}">
+                                <input type="text" id="registry_no" value="{{ $certificates->registry_no }}" disabled>
                             @else
-                                <input type="text" id="registry_no">
+                                <input type="text" id="registry_no" disabled>
                             @endif
                         </div>
                     </td>
