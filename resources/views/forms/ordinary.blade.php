@@ -8,9 +8,10 @@
                         Certificate No:
                         <div class="small">
                             @if(isset($certificates) && $certificates)
-                                <input type="text" id="certificate_no" value="{{ $certificates->certificate_no }}"/>
+                                <input type="text" id="certificate_no" value="{{ $certificates->certificate_no }}"
+                                       disabled/>
                             @else
-                                <input type="text" id="certificate_no"/>
+                                <input type="text" id="certificate_no" disabled/>
                             @endif
                         </div>
                     </div>
@@ -60,7 +61,8 @@
                 @else
                     <input type="text" id="age" placeholder="age"/>
                 @endif
-            </div>, of
+            </div>
+            , of
         </div>
         <div>
             <div class="long">
@@ -158,7 +160,8 @@
         <div>Designation:
             <div class="medium ml-1">
                 @if(isset($certificates) && $certificates)
-                    <input type="text" id="doctor_designation" value="{{ $certificates->doctor_designation }}" disabled/>
+                    <input type="text" id="doctor_designation" value="{{ $certificates->doctor_designation }}"
+                           disabled/>
                 @else
                     <input type="text" id="doctor_designation" disabled/>
                 @endif
@@ -228,9 +231,9 @@
                 <td>
                     <div class="medium">
                         @if(isset($certificates) && $certificates)
-                            <input type="text" id="registry_no" value="{{ $certificates->registry_no }}">
+                            <input type="text" id="registry_no" value="{{ $certificates->registry_no }}" disabled>
                         @else
-                            <input type="text" id="registry_no">
+                            <input type="text" id="registry_no" disabled>
                         @endif
                     </div>
                 </td>
@@ -243,9 +246,10 @@
                 <td>
                     <div class="medium">
                         @if(isset($certificates) && $certificates)
-                            <input type="datetime-local" id="date_requested" value="{{ $certificates->date_requested }}" />
+                            <input type="datetime-local" id="date_requested"
+                                   value="{{ $certificates->date_requested }}"/>
                         @else
-                            <input type="datetime-local" id="date_requested" />
+                            <input type="datetime-local" id="date_requested"/>
                         @endif
                     </div>
                 </td>
@@ -258,7 +262,8 @@
                 <td>
                     <div class="medium">
                         @if(isset($certificates) && $certificates)
-                            <input type="datetime-local" id="date_finished" value="{{ $certificates->date_finished }}" disabled>
+                            <input type="datetime-local" id="date_finished" value="{{ $certificates->date_finished }}"
+                                   disabled>
                         @else
                             <input type="datetime-local" id="date_finished" disabled>
                         @endif
@@ -266,6 +271,16 @@
                 </td>
                 <td>
                 </td>
+            </tr>
+            <tr id="no_copies_container" class="d-none">
+                <td>Number of Copies</td>
+                <td>:</td>
+                <td>
+                    <div class="medium">
+                        <input type="number" id="no_copies"/>
+                    </div>
+                </td>
+                <td></td>
             </tr>
         </table>
     </div>

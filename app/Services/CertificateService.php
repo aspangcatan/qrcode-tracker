@@ -52,7 +52,6 @@ class CertificateService
         DB::table('qr_tracker.certificates')
             ->where('id', '=', $id)
             ->update([
-                'certificate_no' => $data['certificate_no'],
                 'health_record_no' => $data['health_record_no'],
                 'date_issued' => $data['date_issued'],
                 'patient' => $data['patient'],
@@ -71,7 +70,6 @@ class CertificateService
                 'or_no' => $data['or_no'],
                 'amount' => $data['amount'],
                 'charge_slip_no' => $data['charge_slip_no'],
-                'registry_no' => $data['registry_no'],
                 'date_requested' => $data['date_requested'],
                 'date_finished' => $data['date_finished'],
                 'days_barred' => $data['days_barred'],
@@ -80,13 +78,23 @@ class CertificateService
             ]);
     }
 
-    public function updateDateFinished($id, $date_finished,$prepared_by)
+    public function updateDateFinished($id, $date_finished, $prepared_by)
     {
         DB::table('qr_tracker.certificates')
             ->where('id', '=', $id)
             ->update([
                 'date_finished' => $date_finished,
                 'prepared_by' => $prepared_by,
+                'updated_at' => now()
+            ]);
+    }
+
+    public function updateStatus($id, $status)
+    {
+        DB::table('qr_tracker.certificates')
+            ->where('id', '=', $id)
+            ->update([
+                'status' => $status,
                 'updated_at' => now()
             ]);
     }
@@ -127,9 +135,20 @@ class CertificateService
                 'date_requested',
                 DB::raw('DATE_FORMAT(date_requested, "%m/%d/%Y %h:%i %p") AS date_requested'),
                 'registry_no',
-                DB::raw('DATE_FORMAT(date_finished, "%m/%d/%Y %h:%i %p") AS date_finished')
+                DB::raw('DATE_FORMAT(date_finished, "%m/%d/%Y %h:%i %p") AS date_finished'),
+                'status'
             ])
-            ->whereBetween('created_at', [$from_date, $to_date])
+            ->where(function ($query) use ($from_date, $to_date) {
+                $query->whereDate('created_at', '>=', $from_date);
+                $query->whereDate('created_at', '<=', $to_date);
+            })
             ->get();
+    }
+
+    public function getLatestId()
+    {
+        return DB::table('qr_tracker.certificates')
+            ->orderBy('id', 'desc') // Orders by ID in descending order to get the latest one
+            ->first();
     }
 }

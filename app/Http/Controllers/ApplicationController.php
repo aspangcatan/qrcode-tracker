@@ -108,78 +108,88 @@ class ApplicationController extends Controller
 
             $mi = (Auth::user()->mname) ? Auth::user()->mname[0] . '.' : '';
             $prepared_by = strtoupper(Auth::user()->fname . ' ' . $mi . ' ' . Auth::user()->lname);
-            $params = [
-                'user_id' => Auth::id(),
-                'certificate_no' => $request->certificate_no,
-                'health_record_no' => $request->health_record_no,
-                'date_issued' => $request->date_issued,
-                'patient' => $request->patient,
-                'age' => $request->age,
-                'sex' => $request->sex,
-                'civil_status' => $request->civil_status,
-                'address' => $request->address,
-                'date_examined' => $request->date_examined,
-                'doctor' => $request->doctor,
-                'doctor_designation' => $request->doctor_designation,
-                'doctor_license' => $request->doctor_license,
-                'requesting_person' => $request->requesting_person,
-                'relationship' => $request->relationship,
-                'purpose' => $request->purpose,
-                'second_purpose' => $request->second_purpose,
-                'or_no' => $request->or_no,
-                'amount' => $request->amount,
-                'charge_slip_no' => $request->charge_slip_no,
-                'registry_no' => $request->registry_no,
-                'date_requested' => $request->date_requested,
-                'date_finished' => $request->date_finished,
-                'days_barred' => $request->days_barred,
-                'type' => $request->type,
-                'prepared_by' => $prepared_by,
-                'created_at' => now()
-            ];
 
-            //CHECK IF ID EXISTS
-            $certificate = $this->certificateService->getCertificateById($request->id);
-            if ($certificate) {
-                //UPDATE INFORMATION
-                $certificate_id = $request->id;
-                $this->certificateService->updateCertificate($certificate_id, $params);
-
-                //UNDO DATETIME FINISHED
-                $this->certificateService->updateDateFinished($certificate_id, null, $prepared_by);
-                $message = 'Record updated';
-            } else {
-                $certificate_id = $this->certificateService->store($params);
-                $data = now() . $certificate_id;
-                $hashedValue = hash('sha256', $data);
-                $shortenedHash = substr($hashedValue, 0, 8); // Shorten if needed
-                $url = env('APP_URL') . '/qrcode-details?_q=' . $shortenedHash;
-                $this->certificateService->appendHashedValue($certificate_id, $url, $shortenedHash);
-                $message = 'New record added';
-            }
-
-            //INSERT DIAGNOSIS
-            if ($request->diagnosis) {
-                $diagnosis = $request->diagnosis;
-                $diagnosis_params = [];
-                for ($i = 0; $i < count($diagnosis); $i++) {
-                    $diagnosis_params[] = [
-                        'certificate_id' => $certificate_id,
-                        'diagnosis' => $diagnosis[$i]['diagnosis']
-                    ];
+            for ($i = 0; $i < $request->no_copies; $i++) {
+                $latest_id = $this->certificateService->getLatestId();
+                $registry_no = "000001";
+                if ($latest_id) {
+                    $registry_no = str_pad(($latest_id->id + 1), 6, "0", STR_PAD_LEFT);
                 }
 
-                $this->diagnosisService->delete($certificate_id);
-                $this->diagnosisService->store($diagnosis_params);
-            }
+                //ACCORDING TO CLIENT REGISTRY NO. AND CERTIFICATE NO. IS THE SAME
 
-            if ($request->sustained) {
-                $this->sustainedService->delete($certificate_id);
-                $sustained = $request->sustained;
-                $sustained['certificate_id'] = $certificate_id;
-                $this->sustainedService->store($sustained);
-            }
+                $params = [
+                    'user_id' => Auth::id(),
+                    'certificate_no' => $registry_no,
+                    'health_record_no' => $request->health_record_no,
+                    'date_issued' => $request->date_issued,
+                    'patient' => $request->patient,
+                    'age' => $request->age,
+                    'sex' => $request->sex,
+                    'civil_status' => $request->civil_status,
+                    'address' => $request->address,
+                    'date_examined' => $request->date_examined,
+                    'doctor' => $request->doctor,
+                    'doctor_designation' => $request->doctor_designation,
+                    'doctor_license' => $request->doctor_license,
+                    'requesting_person' => $request->requesting_person,
+                    'relationship' => $request->relationship,
+                    'purpose' => $request->purpose,
+                    'second_purpose' => $request->second_purpose,
+                    'or_no' => $request->or_no,
+                    'amount' => $request->amount,
+                    'charge_slip_no' => $request->charge_slip_no,
+                    'registry_no' => $registry_no,
+                    'date_requested' => $request->date_requested,
+                    'date_finished' => $request->date_finished,
+                    'days_barred' => $request->days_barred,
+                    'type' => $request->type,
+                    'prepared_by' => $prepared_by,
+                    'created_at' => now()
+                ];
 
+                //CHECK IF ID EXISTS
+                $certificate = $this->certificateService->getCertificateById($request->id);
+                if ($certificate) {
+                    //UPDATE INFORMATION
+                    $certificate_id = $request->id;
+                    $this->certificateService->updateCertificate($certificate_id, $params);
+
+                    //UNDO DATETIME FINISHED
+                    $this->certificateService->updateDateFinished($certificate_id, null, $prepared_by);
+                    $message = 'Record updated';
+                } else {
+                    $certificate_id = $this->certificateService->store($params);
+                    $data = now() . $certificate_id;
+                    $hashedValue = hash('sha256', $data);
+                    $shortenedHash = substr($hashedValue, 0, 8); // Shorten if needed
+                    $url = env('APP_URL') . '/qrcode-details?_q=' . $shortenedHash;
+                    $this->certificateService->appendHashedValue($certificate_id, $url, $shortenedHash);
+                    $message = 'New record added';
+                }
+
+                //INSERT DIAGNOSIS
+                if ($request->diagnosis) {
+                    $diagnosis = $request->diagnosis;
+                    $diagnosis_params = [];
+                    for ($i = 0; $i < count($diagnosis); $i++) {
+                        $diagnosis_params[] = [
+                            'certificate_id' => $certificate_id,
+                            'diagnosis' => $diagnosis[$i]['diagnosis']
+                        ];
+                    }
+
+                    $this->diagnosisService->delete($certificate_id);
+                    $this->diagnosisService->store($diagnosis_params);
+                }
+
+                if ($request->sustained) {
+                    $this->sustainedService->delete($certificate_id);
+                    $sustained = $request->sustained;
+                    $sustained['certificate_id'] = $certificate_id;
+                    $this->sustainedService->store($sustained);
+                }
+            }
             return response()->json(['message' => $message]);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
@@ -216,11 +226,7 @@ class ApplicationController extends Controller
                 return response()->json(['message' => 'QR not found'], 404);
             }
 
-            if ($certificate->user_id !== Auth::id()) {
-                return response()->json(['message' => 'Permission denied'], 404);
-            }
-
-            $this->certificateService->delete($request->id);
+            $this->certificateService->updateStatus($request->id, 'CANCELLED');
             return response()->json(['message' => 'Record removed']);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()]);
@@ -316,12 +322,13 @@ class ApplicationController extends Controller
                 $sheet->setCellValue('E' . $row, $records[$i]->requesting_person);
                 $sheet->setCellValue('F' . $row, $records[$i]->relationship);
                 $sheet->setCellValue('G' . $row, $records[$i]->date_requested);
-                $sheet->setCellValue('H' . $row, $records[$i]->registry_no);
+                $sheet->setCellValue('H' . $row, $records[$i]->certificate_no);
                 $sheet->setCellValue('I' . $row, $records[$i]->date_finished);
+                $sheet->setCellValue('J' . $row, $records[$i]->status);
 
-                $sheet->getStyle('B' . $row . ':I' . $row)->getAlignment()->setWrapText(true);
-                $sheet->getStyle('B' . $row . ':I' . $row)->getAlignment()->setHorizontal('center');
-                $sheet->getStyle('B' . $row . ':I' . $row)->getAlignment()->setVertical('middle');
+                $sheet->getStyle('B' . $row . ':J' . $row)->getAlignment()->setWrapText(true);
+                $sheet->getStyle('B' . $row . ':J' . $row)->getAlignment()->setHorizontal('center');
+                $sheet->getStyle('B' . $row . ':J' . $row)->getAlignment()->setVertical('middle');
                 $row++;
             }
 

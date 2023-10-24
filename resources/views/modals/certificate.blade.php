@@ -80,8 +80,9 @@
                                 <th>REQUESTED BY</th>
                                 <th>RELATIONSHIP</th>
                                 <th>DATE REQUESTED</th>
-                                <th>REGISTRY NO.</th>
+                                <th>CERTIFICATE NO.</th>
                                 <th>DATE FINISHED</th>
+                                <th>STATUS</th>
                             </tr>
                         </thead>
                         <tbody id="report_list">

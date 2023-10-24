@@ -8,9 +8,9 @@
                         Certificate No:
                         <div class="small">
                             @if(isset($certificates) && $certificates)
-                                <input type="text" id="certificate_no" value="{{ $certificates->certificate_no }}"/>
+                                <input type="text" id="certificate_no" value="{{ $certificates->certificate_no }}" disabled/>
                             @else
-                                <input type="text" id="certificate_no"/>
+                                <input type="text" id="certificate_no" disabled/>
                             @endif
                         </div>
                     </div>
@@ -326,6 +326,16 @@
                     </td>
                     <td>
                     </td>
+                </tr>
+                <tr id="no_copies_container" class="d-none">
+                    <td>Number of Copies</td>
+                    <td>:</td>
+                    <td>
+                        <div class="medium">
+                            <input type="number" id="no_copies" />
+                        </div>
+                    </td>
+                    <td></td>
                 </tr>
             </table>
         </div>

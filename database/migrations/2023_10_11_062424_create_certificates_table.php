@@ -43,6 +43,7 @@ class CreateCertificatesTable extends Migration
             $table->string('registry_no', 200);
             $table->string('date_requested', 200);
             $table->string('date_finished', 200)->nullable();
+            $table->string('status', 20)->nullable();
             $table->timestamps();
         });
     }
