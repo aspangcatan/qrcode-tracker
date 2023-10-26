@@ -116,7 +116,7 @@
 
             $("#report_list").empty();
             if (data.length === 0) {
-                $("#report_list").append("<tr><td colspan='9' class='text-center'>No record found</td></tr>");
+                $("#report_list").append("<tr><td colspan='15' class='text-center'>No record found</td></tr>");
                 return;
             }
             data.forEach(it => {
@@ -743,7 +743,7 @@
         $("#certificate_lists").empty();
         $("#btn_next").addClass("d-none");
         if (data.length < 1) {
-            $("#certificate_lists").append("<tr><td colspan='8'>No record found</td></tr>");
+            $("#certificate_lists").append("<tr><td colspan='15'>No record found</td></tr>");
             return;
         }
 
