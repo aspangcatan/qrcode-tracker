@@ -8,7 +8,8 @@
                         Certificate No:
                         <div class="small">
                             @if(isset($certificates) && $certificates)
-                                <input type="text" id="certificate_no" value="{{ $certificates->certificate_no }}" disabled/>
+                                <input type="text" id="certificate_no" value="{{ $certificates->certificate_no }}"
+                                       disabled/>
                             @else
                                 @if(isset($certificate_no) && $certificate_no)
                                     <input type="text" id="certificate_no" value="{{ $certificate_no }}" disabled/>
@@ -141,11 +142,13 @@
                         <tr>
                             <td style='width: 90%'>{!! $item->diagnosis !!}</td>
                             <td style='width: 5%'>
-                                <button type="button" class='btn btn-sm btn-transparent' onClick='editDiagnosis(this)'><i
+                                <button type="button" class='btn btn-sm btn-transparent' onClick='editDiagnosis(this)'>
+                                    <i
                                         class='bi bi-pencil-fill text-success'></i></button>
                             </td>
                             <td style='width: 5%'>
-                                <button type="button" class='btn btn-sm btn-transparent' onClick='deleteDiagnosis(this)'><i
+                                <button type="button" class='btn btn-sm btn-transparent'
+                                        onClick='deleteDiagnosis(this)'><i
                                         class='bi bi-trash-fill text-danger'></i></button>
                             </td>
                         </tr>
@@ -334,7 +337,11 @@
                     <td>:</td>
                     <td>
                         <div class="medium">
-                            <input type="number" id="no_copies" />
+                            <select id="no_copies" class="w-100 text-center">
+                                @for($i=1; $i<=5; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
                         </div>
                     </td>
                     <td></td>

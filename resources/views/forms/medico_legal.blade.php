@@ -394,7 +394,11 @@
                     <td>:</td>
                     <td>
                         <div class="medium">
-                            <input type="number" id="no_copies"/>
+                            <select id="no_copies" class="w-100 text-center">
+                                @for($i=1; $i<=5; $i++)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
                         </div>
                     </td>
                     <td></td>
