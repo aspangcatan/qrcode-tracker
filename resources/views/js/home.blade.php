@@ -790,11 +790,11 @@
                         <td>` + date_requested + `</td>
                         <td>` + moment(it.created_at).format("MM/DD/YYYY hh:mm A") + `</td>
                         <td>` + date_issued + `</td>
+                        <td>` + it.prepared_by + `</td>
+                        <td>` + released_by + `</td>
                         <td>
                             <span class="badge text-white text-center ` + bg + `">` + status + `</span>
                         </td>
-                        <td>` + it.prepared_by + `</td>
-                        <td>` + released_by + `</td>
                         <td>
                             <button class="btn btn-sm btn-info" onclick="printPreview(` + it.id + `)">
                                 <i class="bi bi-qr-code"></i>
