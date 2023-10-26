@@ -89,6 +89,17 @@ class CertificateService
             ]);
     }
 
+    public function updateDateCompleted($id, $date_completed, $prepared_by)
+    {
+        DB::table('qr_tracker.certificates')
+            ->where('id', '=', $id)
+            ->update([
+                'date_completed' => $date_completed,
+                'prepared_by' => $prepared_by,
+                'updated_at' => now()
+            ]);
+    }
+
     public function updateStatus($id, $status)
     {
         DB::table('qr_tracker.certificates')

@@ -623,9 +623,29 @@
         }
     }
 
-    async function deleteCertificate(id) {
+    async function tagAsComplete(id) {
+        if (confirm("Are you sure you want to tag this as completed?")) {
+            const response = await fetch('{{ route('tagAsComplete') }}', {
+                method: "PUT",
+                headers: HEADERS,
+                body: JSON.stringify({id: id})
+            });
+
+            if (!response.ok) {
+                toastr.error("Something went wrong", "Ooops");
+                console.log(response);
+                return;
+            }
+
+            const data = await response.json();
+            toastr.success(data.message, "Information");
+            getCertificates();
+        }
+    }
+
+    async function cancelCertificate(id) {
         if (confirm("Are you sure you want to cancel this record?")) {
-            const response = await fetch('{{ route('deleteCertificate') }}', {
+            const response = await fetch('{{ route('cancelCertificate') }}', {
                 method: "DELETE",
                 headers: HEADERS,
                 body: JSON.stringify({id: id})
@@ -702,11 +722,11 @@
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-sm btn-success" onclick="editCertificate(` + it.id + `)">
+                            <button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used editing the certificate information" onclick="editCertificate(` + it.id + `)">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
                         </td>`;
-            if (it.date_finished)
+            if (it.date_finished || !it.date_completed)
                 tr += `
                         <td>
                             <button class="btn btn-sm btn-secondary" disabled>
@@ -716,21 +736,36 @@
             else
                 tr += `
                         <td>
-                            <button class="btn btn-sm btn-warning" onclick="tagCertificate(` + it.id + `)">
+                            <button class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used for tagging the certificate as finished" onclick="tagCertificate(` + it.id + `)">
                                 <i class="bi bi-tag-fill"></i>
+                            </button>
+                        </td>`;
+
+            if (it.date_completed)
+                tr += `
+                        <td>
+                            <button class="btn btn-sm btn-secondary" disabled>
+                                <i class="bi bi-check"></i>
+                            </button>
+                        </td>`;
+            else
+                tr += `
+                        <td>
+                            <button class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used for tagging the certificate as complete" onclick="tagAsComplete(` + it.id + `)">
+                                <i class="bi bi-check"></i>
                             </button>
                         </td>`;
 
             if (it.status)
                 tr += `<td>
-                            <button class="btn btn-sm btn-danger" onclick="deleteCertificate(` + it.id + `)" disabled>
+                            <button class="btn btn-sm btn-danger" disabled>
                                 <i class="bi bi-x-octagon"></i>
                             </button>
                         </td>
                     </tr>`;
             else
                 tr += `<td>
-                            <button class="btn btn-sm btn-danger" onclick="deleteCertificate(` + it.id + `)">
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used for tagging the certificate as cancelled" onclick="cancelCertificate(` + it.id + `)">
                                 <i class="bi bi-x-octagon"></i>
                             </button>
                         </td>

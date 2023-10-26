@@ -10,7 +10,9 @@
                             @if(isset($certificates) && $certificates)
                                 <input type="text" id="certificate_no" value="{{ $certificates->certificate_no }}" disabled/>
                             @else
-                                <input type="text" id="certificate_no" disabled/>
+                                @if(isset($certificate_no) && $certificate_no)
+                                    <input type="text" id="certificate_no" value="{{ $certificate_no }}" disabled/>
+                                @endif
                             @endif
                         </div>
                     </div>
@@ -30,7 +32,7 @@
                             @if(isset($certificates) && $certificates)
                                 <input type="date" id="date_issued" value="{{ $certificates->date_issued }}"/>
                             @else
-                                <input type="date" id="date_issued"/>
+                                <input type="date" id="date_issued" value="{{ now()->format('Y-m-d') }}" disabled/>
                             @endif
                         </div>
                     </div>
@@ -280,7 +282,7 @@
                     <td>
                     </td>
                 </tr>
-                <tr>
+                <tr class="d-none">
                     <td>Registry No.</td>
                     <td>:</td>
                     <td>

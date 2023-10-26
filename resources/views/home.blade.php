@@ -48,7 +48,7 @@
                             <th>Certificate No.</th>
                             <th>Date Issued</th>
                             <th>Date Created</th>
-                            <th colspan="4" style="width:12%"></th>
+                            <th colspan="5" style="width:12%"></th>
                         </tr>
                         </thead>
                         <tbody id="certificate_lists">

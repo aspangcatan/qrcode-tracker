@@ -90,7 +90,7 @@
                     <p><strong>Health Record No.:</strong> {{ $data->health_record_no }}</p>
                     <p><strong>Certificate No:</strong> {{ $data->certificate_no }}</p>
                     <p><strong>Date
-                            Issued:</strong> {{ \Illuminate\Support\Carbon::parse($data->date_issued)->format('F d, Y') }}
+                            Requested:</strong> {{ \Illuminate\Support\Carbon::parse($data->date_issued)->format('F d, Y') }}
                     </p>
                 </div>
             @else

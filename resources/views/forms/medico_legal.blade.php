@@ -8,9 +8,12 @@
                         Certificate No:
                         <div class="small">
                             @if(isset($certificates) && $certificates)
-                                <input type="text" id="certificate_no" value="{{ $certificates->certificate_no }}" disabled/>
+                                <input type="text" id="certificate_no" value="{{ $certificates->certificate_no }}"
+                                       disabled/>
                             @else
-                                <input type="text" id="certificate_no" disabled/>
+                                @if(isset($certificate_no) && $certificate_no)
+                                    <input type="text" id="certificate_no" value="{{ $certificate_no }}" disabled/>
+                                @endif
                             @endif
                         </div>
                     </div>
@@ -30,7 +33,7 @@
                             @if(isset($certificates) && $certificates)
                                 <input type="date" id="date_issued" value="{{ $certificates->date_issued }}"/>
                             @else
-                                <input type="date" id="date_issued"/>
+                                <input type="date" id="date_issued" value="{{ now()->format('Y-m-d') }}" disabled/>
                             @endif
                         </div>
                     </div>
@@ -152,11 +155,13 @@
                         <tr>
                             <td style='width: 90%'>{!! $item->diagnosis !!}</td>
                             <td style='width: 5%'>
-                                <button type="button" class='btn btn-sm btn-transparent' onClick='editDiagnosis(this)'><i
+                                <button type="button" class='btn btn-sm btn-transparent' onClick='editDiagnosis(this)'>
+                                    <i
                                         class='bi bi-pencil-fill text-success'></i></button>
                             </td>
                             <td style='width: 5%'>
-                                <button type="button" class='btn btn-sm btn-transparent' onClick='deleteDiagnosis(this)'><i
+                                <button type="button" class='btn btn-sm btn-transparent'
+                                        onClick='deleteDiagnosis(this)'><i
                                         class='bi bi-trash-fill text-danger'></i></button>
                             </td>
                         </tr>
@@ -273,7 +278,8 @@
             <div>Designation:
                 <div class="medium ml-1">
                     @if(isset($certificates) && $certificates)
-                        <input type="text" id="doctor_designation" value="{{ $certificates->doctor_designation }}" disabled/>
+                        <input type="text" id="doctor_designation" value="{{ $certificates->doctor_designation }}"
+                               disabled/>
                     @else
                         <input type="text" id="doctor_designation" disabled/>
                     @endif
@@ -336,7 +342,7 @@
                     <td>
                     </td>
                 </tr>
-                <tr>
+                <tr class="d-none">
                     <td>Registry No.</td>
                     <td>:</td>
                     <td>
@@ -357,7 +363,8 @@
                     <td>
                         <div class="medium">
                             @if(isset($certificates) && $certificates)
-                                <input type="datetime-local" id="date_requested" value="{{ $certificates->date_requested }}"/>
+                                <input type="datetime-local" id="date_requested"
+                                       value="{{ $certificates->date_requested }}"/>
                             @else
                                 <input type="datetime-local" id="date_requested"/>
                             @endif
@@ -372,7 +379,8 @@
                     <td>
                         <div class="medium">
                             @if(isset($certificates) && $certificates)
-                                <input type="datetime-local" id="date_finished" value="{{ $certificates->date_finished }}" disabled>
+                                <input type="datetime-local" id="date_finished"
+                                       value="{{ $certificates->date_finished }}" disabled>
                             @else
                                 <input type="datetime-local" id="date_finished" disabled>
                             @endif
@@ -386,7 +394,7 @@
                     <td>:</td>
                     <td>
                         <div class="medium">
-                            <input type="number" id="no_copies" />
+                            <input type="number" id="no_copies"/>
                         </div>
                     </td>
                     <td></td>

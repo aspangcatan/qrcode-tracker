@@ -41,7 +41,38 @@
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
     <style>
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border: 1px solid #333;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
 
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Style the tooltip text */
+        .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
         .banner img {
             display: block;
             max-width: 100%;

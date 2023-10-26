@@ -217,7 +217,28 @@ class ApplicationController extends Controller
         }
     }
 
-    public function deleteCertificate(Request $request)
+    public function tagAsComplete(Request $request)
+    {
+        try {
+            $mi = (Auth::user()->mname) ? Auth::user()->mname[0] . '.' : '';
+            $prepared_by = strtoupper(Auth::user()->fname . ' ' . $mi . ' ' . Auth::user()->lname);
+            $certificate = $this->certificateService->getCertificateById($request->id);
+            if (!$certificate) {
+                return response()->json(['message' => 'Certificate ID dont exists'], 404);
+            }
+
+            if ($certificate->date_completed) {
+                return response()->json(['message' => 'Certificate already tagged as DONE', 500]);
+            }
+
+            $this->certificateService->updateDateCompleted($certificate->id, Carbon::now()->format('Y-m-d\TH:i'), $prepared_by);
+            return response()->json(['message' => 'Tagged successfully by ' . $prepared_by]);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
+        }
+    }
+
+    public function cancelCertificate(Request $request)
     {
         try {
             $certificate = $this->certificateService->getCertificateById($request->id);
@@ -237,29 +258,47 @@ class ApplicationController extends Controller
     {
         switch ($request->type) {
             case "ordinary":
+                $latest_id = $this->certificateService->getLatestId();
+                $certificate_no = "000001";
+                if ($latest_id) {
+                    $certificate_no = str_pad(($latest_id->id + 1), 6, "0", STR_PAD_LEFT);
+                }
+
                 if ($request->has('id')) {
                     $certificates = $this->certificateService->getCertificateById($request->id);
                     $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
                     return view('forms.ordinary', compact('certificates', 'diagnosis'));
                 }
 
-                return view('forms.ordinary');
+                return view('forms.ordinary',compact('certificate_no'));
             case "maipp":
+                $latest_id = $this->certificateService->getLatestId();
+                $certificate_no = "000001";
+                if ($latest_id) {
+                    $certificate_no = str_pad(($latest_id->id + 1), 6, "0", STR_PAD_LEFT);
+                }
+
                 if ($request->has('id')) {
                     $certificates = $this->certificateService->getCertificateById($request->id);
                     $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
                     return view('forms.maipp', compact('certificates', 'diagnosis'));
                 }
 
-                return view('forms.maipp');
+                return view('forms.maipp',compact('certificate_no'));
             case "medico_legal":
+                $latest_id = $this->certificateService->getLatestId();
+                $certificate_no = "000001";
+                if ($latest_id) {
+                    $certificate_no = str_pad(($latest_id->id + 1), 6, "0", STR_PAD_LEFT);
+                }
+
                 if ($request->has('id')) {
                     $certificates = $this->certificateService->getCertificateById($request->id);
                     $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
                     $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
                     return view('forms.medico_legal', compact('certificates', 'diagnosis', 'sustained'));
                 }
-                return view('forms.medico_legal');
+                return view('forms.medico_legal',compact('certificate_no'));
         }
     }
 

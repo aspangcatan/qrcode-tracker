@@ -41,8 +41,9 @@ class CreateCertificatesTable extends Migration
             $table->string('prepared_by', 200);
             $table->string('charge_slip_no', 200);
             $table->string('registry_no', 200);
-            $table->string('date_requested', 200);
-            $table->string('date_finished', 200)->nullable();
+            $table->dateTime('date_requested');
+            $table->dateTime('date_completed')->nullable();
+            $table->dateTime('date_finished')->nullable();
             $table->string('status', 20)->nullable();
             $table->timestamps();
         });
