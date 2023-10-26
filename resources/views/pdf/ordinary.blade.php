@@ -265,9 +265,7 @@
                 <td>Prepared by</td>
                 <td>:</td>
                 <td>
-                    {{ \Illuminate\Support\Facades\Auth::user()->fname }}
-                    {{ \Illuminate\Support\Facades\Auth::user()->mname ? \Illuminate\Support\Facades\Auth::user()->mname[0].'.' : '' }}
-                    {{ \Illuminate\Support\Facades\Auth::user()->lname }}
+                    {{ $certificate->prepared_by }}
                 </td>
                 <td>
                     <small></small>
