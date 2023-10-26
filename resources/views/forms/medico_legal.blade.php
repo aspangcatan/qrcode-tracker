@@ -394,7 +394,7 @@
                     <td>:</td>
                     <td>
                         <div class="medium">
-                            <select id="received_by" class="w-100 text-center">
+                            <select class="js-example-basic-single w-100"  id="received_by" class="w-100 text-center">
                                 <option></option>
                                 @if(isset($certificates) && $certificates)
                                     <option {{ $certificates->received_by === "Jenifer P. Filomeno" ? 'selected' : '' }}>Jenifer P. Filomeno</option>

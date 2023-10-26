@@ -65,7 +65,7 @@
                 <div class="card-title p-1" style="font-size: 24px">Tag as:</div>
             </div>
             <div class="modal-body w-100">
-                <select class="js-example-basic-single p-3 w-100" name="doctor"  id="select_tag">
+                <select class="js-example-basic-single w-100" name="doctor"  id="select_tag">
                     <option>COMPLETED</option>
                     <option>FINISHED</option>
                     <option>RELEASED</option>

@@ -182,6 +182,11 @@
                     $("#certificate_modal #certificate_form").html(html);
                     $("#certificate_modal .modal-footer").removeClass("d-none");
                     $("#no_copies_container").removeClass("d-none");
+
+                    $("#received_by").select2({
+                        dropdownParent: $("#certificate_modal .modal-body"),
+                        width: '100%'
+                    });
                 })
                 .catch(error => console.error(error));
         });
@@ -199,6 +204,11 @@
                     $("#certificate_modal #certificate_form").html(html);
                     $("#certificate_modal .modal-footer").removeClass("d-none");
                     $("#no_copies_container").removeClass("d-none");
+
+                    $("#received_by").select2({
+                        dropdownParent: $("#certificate_modal .modal-body"),
+                        width: '100%'
+                    });
                 })
                 .catch(error => console.error(error));
         });
@@ -216,6 +226,11 @@
                     $("#certificate_modal #certificate_form").html(html);
                     $("#certificate_modal .modal-footer").removeClass("d-none");
                     $("#no_copies_container").removeClass("d-none");
+
+                    $("#received_by").select2({
+                        dropdownParent: $("#certificate_modal .modal-body"),
+                        width: '100%'
+                    });
                 })
                 .catch(error => console.error(error));
         });
@@ -644,6 +659,11 @@
                 $("#certificate_modal #certificate_form").html(html);
                 $("#purpose").val($("#purpose").val()).change();
                 $("#certificate_modal .modal-footer").removeClass("d-none");
+
+                $("#received_by").select2({
+                    dropdownParent: $("#certificate_modal .modal-body"),
+                    width: '100%'
+                });
             })
             .catch(error => console.error(error));
     }
