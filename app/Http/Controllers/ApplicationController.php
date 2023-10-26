@@ -173,7 +173,7 @@ class ApplicationController extends Controller
                     for ($j = 0; $j < count($diagnosis); $j++) {
                         $diagnosis_params[] = [
                             'certificate_id' => $certificate_id,
-                            'diagnosis' => $diagnosis[$i]['diagnosis']
+                            'diagnosis' => $diagnosis[$j]['diagnosis']
                         ];
                     }
 

@@ -780,6 +780,7 @@
                     bg = "bg-danger";
                     break;
             }
+            const released_by = (it.released_by) ? it.released_by : "";
             let tr = `
                     <tr id="certificate_id_` + it.id + `">
                         <td>` + it.type + `</td>
@@ -792,6 +793,8 @@
                         <td>
                             <span class="badge text-white text-center ` + bg + `">` + status + `</span>
                         </td>
+                        <td>` + it.prepared_by + `</td>
+                        <td>` + released_by + `</td>
                         <td>
                             <button class="btn btn-sm btn-info" onclick="printPreview(` + it.id + `)">
                                 <i class="bi bi-qr-code"></i>
