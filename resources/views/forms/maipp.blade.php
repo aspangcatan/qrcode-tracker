@@ -338,7 +338,7 @@
                     <td>
                         <div class="medium">
                             <select id="no_copies" class="w-100 text-center">
-                                @for($i=1; $i<=5; $i++)
+                                @for($i=1; $i<=6; $i++)
                                     <option value="{{ $i }}">{{ $i }}</option>
                                 @endfor
                             </select>
