@@ -433,7 +433,7 @@
 
             if (!received_by) {
                 toastr.error('Received by is required');
-                $("#address").addClass("is-invalid");
+                $("#received_by").addClass("is-invalid");
                 is_valid = false;
             }
 
