@@ -46,8 +46,10 @@
                             <th>Patient</th>
                             <th>Health Record No.</th>
                             <th>Certificate No.</th>
-                            <th>Date Issued</th>
+                            <th>Date Requested</th>
                             <th>Date Created</th>
+                            <th>Date Issued</th>
+                            <th>Status</th>
                             <th colspan="5" style="width:12%"></th>
                         </tr>
                         </thead>

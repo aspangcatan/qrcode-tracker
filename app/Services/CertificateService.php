@@ -53,7 +53,6 @@ class CertificateService
             ->where('id', '=', $id)
             ->update([
                 'health_record_no' => $data['health_record_no'],
-                'date_issued' => $data['date_issued'],
                 'patient' => $data['patient'],
                 'age' => $data['age'],
                 'sex' => $data['sex'],
@@ -74,29 +73,42 @@ class CertificateService
                 'date_finished' => $data['date_finished'],
                 'days_barred' => $data['days_barred'],
                 'prepared_by' => $data['prepared_by'],
+                'received_by' => $data['received_by'],
                 'updated_at' => now()
             ]);
     }
 
-    public function updateDateFinished($id, $date_finished, $prepared_by)
+    public function updateDateFinished($id, $date_finished)
     {
         DB::table('qr_tracker.certificates')
             ->where('id', '=', $id)
             ->update([
                 'date_finished' => $date_finished,
-                'prepared_by' => $prepared_by,
-                'updated_at' => now()
+                'updated_at' => now(),
+                'status' => 'FINISHED'
             ]);
     }
 
-    public function updateDateCompleted($id, $date_completed, $prepared_by)
+    public function updateDateCompleted($id, $date_completed)
     {
         DB::table('qr_tracker.certificates')
             ->where('id', '=', $id)
             ->update([
                 'date_completed' => $date_completed,
-                'prepared_by' => $prepared_by,
-                'updated_at' => now()
+                'updated_at' => now(),
+                'status' => 'COMPLETED'
+            ]);
+    }
+
+    public function updateDateIssued($id, $date_issued, $released_by)
+    {
+        DB::table('qr_tracker.certificates')
+            ->where('id', '=', $id)
+            ->update([
+                'date_issued' => $date_issued,
+                'released_by' => $released_by,
+                'updated_at' => now(),
+                'status' => 'RELEASED'
             ]);
     }
 
@@ -141,12 +153,16 @@ class CertificateService
         END AS type'), // Display type with custom values
                 'charge_slip_no',
                 'or_no',
+                'received_by',
+                'prepared_by',
                 'requesting_person',
                 'relationship',
-                'date_requested',
                 DB::raw('DATE_FORMAT(date_requested, "%m/%d/%Y %h:%i %p") AS date_requested'),
-                'registry_no',
+                DB::raw('DATE_FORMAT(date_completed, "%m/%d/%Y %h:%i %p") AS date_completed'),
                 DB::raw('DATE_FORMAT(date_finished, "%m/%d/%Y %h:%i %p") AS date_finished'),
+                'certificate_no',
+                DB::raw('DATE_FORMAT(date_issued, "%m/%d/%Y %h:%i %p") AS date_issued'),
+                'released_by',
                 'status'
             ])
             ->where(function ($query) use ($from_date, $to_date) {

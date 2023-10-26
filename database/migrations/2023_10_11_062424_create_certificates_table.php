@@ -18,7 +18,7 @@ class CreateCertificatesTable extends Migration
             $table->integer('user_id');
             $table->string('certificate_no', 100);
             $table->string('health_record_no', 100);
-            $table->date('date_issued');
+            $table->date('date_issued')->nullable();
             $table->string('patient', 150);
             $table->text('age');
             $table->string('sex', 10)->nullable();
@@ -38,7 +38,9 @@ class CreateCertificatesTable extends Migration
             $table->integer('days_barred')->nullable();
             $table->text('url')->nullable();
             $table->text('hashed_value')->nullable();
+            $table->string('received_by', 200);
             $table->string('prepared_by', 200);
+            $table->string('released_by', 200)->nullable();
             $table->string('charge_slip_no', 200);
             $table->string('registry_no', 200);
             $table->dateTime('date_requested');

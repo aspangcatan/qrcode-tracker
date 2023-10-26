@@ -13,7 +13,12 @@
 
     $(document).ready(() => {
         $("#select_doctor").select2({
-            dropdownParent: $("#doctor_modal"),
+            dropdownParent: $("#doctor_modal .modal-body"),
+            width: '100%'
+        });
+
+        $("#select_tag").select2({
+            dropdownParent: $("#tagging_modal .modal-body"),
             width: '100%'
         });
 
@@ -117,19 +122,27 @@
             data.forEach(it => {
                 console.log(it);
                 const date_requested = (it.date_requested) ? moment(it.date_requested).format("MM/DD/YYYY hh:mm A") : "";
+                const date_completed = (it.date_completed) ? moment(it.date_completed).format("MM/DD/YYYY hh:mm A") : "";
                 const date_finished = (it.date_finished) ? moment(it.date_finished).format("MM/DD/YYYY hh:mm A") : "";
+                const date_released = (it.date_released) ? moment(it.date_released).format("MM/DD/YYYY hh:mm A") : "";
                 const status = (it.status) ? it.status : "";
+                const released_by = (it.released_by) ? it.released_by : "";
                 const tr = `
                 <tr>
                     <td>` + it.patient + `</td>
                     <td>` + it.type + `</td>
                     <td>` + it.charge_slip_no + `</td>
                     <td>` + it.or_no + `</td>
+                    <td>` + it.received_by + `</td>
+                    <td>` + it.prepared_by + `</td>
                     <td>` + it.requesting_person + `</td>
                     <td>` + it.relationship + `</td>
                     <td>` + date_requested + `</td>
-                    <td>` + it.registry_no + `</td>
+                    <td>` + date_completed + `</td>
                     <td>` + date_finished + `</td>
+                    <td>` + it.certificate_no + `</td>
+                    <td>` + date_released + `</td>
+                    <td>` + released_by + `</td>
                     <td>` + status + `</td>
                 </tr>`;
                 $("#report_list").append(tr);
@@ -288,6 +301,7 @@
             const date_requested = $("#date_requested").val().trim();
             const date_finished = $("#date_finished").val().trim();
             const no_copies = $("#no_copies").val();
+            const received_by = $("#received_by").val();
             const diagnosis_array = [];
 
             for (let i = 0; i < $("#diagnosis_list tr").length; i++) {
@@ -341,6 +355,7 @@
                 "type": type,
                 "diagnosis": diagnosis_array,
                 "sustained": (noi === undefined) ? null : sustained,
+                "received_by": received_by,
                 "no_copies": (no_copies && certificate_id === 0) ? no_copies : 1
             }
 
@@ -576,6 +591,30 @@
             }
         });
 
+        $("#btn_save_tag").click(async function () {
+            const status = $("#select_tag").val();
+            if (!status) {
+                toastr.error("Ooops", "Specify tag status");
+                return;
+            }
+            if (confirm("Are you sure you want to tag this as done?")) {
+                const response = await fetch('{{ route('tagCertificate') }}', {
+                    method: "PUT",
+                    headers: HEADERS,
+                    body: JSON.stringify({id: certificate_id, status: status})
+                });
+
+                const data = await response.json();
+                if (!response.ok) {
+                    toastr.error(data.message, "Ooops");
+                    return;
+                }
+
+                toastr.success(data.message, "Information");
+                getCertificates();
+            }
+        });
+
         getCertificates();
         appendDoctors();
     });
@@ -604,23 +643,8 @@
     }
 
     async function tagCertificate(id) {
-        if (confirm("Are you sure you want to tag this as done?")) {
-            const response = await fetch('{{ route('tagCertificate') }}', {
-                method: "PUT",
-                headers: HEADERS,
-                body: JSON.stringify({id: id})
-            });
-
-            if (!response.ok) {
-                toastr.error("Something went wrong", "Ooops");
-                console.log(response);
-                return;
-            }
-
-            const data = await response.json();
-            toastr.success(data.message, "Information");
-            getCertificates();
-        }
+        certificate_id = id;
+        $("#tagging_modal").modal("show");
     }
 
     async function tagAsComplete(id) {
@@ -708,14 +732,40 @@
         $("#page_items_count").text(((page * 10) + 1) + " - " + ((page * 10) + max_visible));
         for (let i = 0; i < max_visible; i++) {
             const it = data[i];
+            const date_requested = (it.date_requested) ? moment(it.date_requested).format("MM/DD/YYYY hh:mm A") : "";
+            const date_issued = (it.date_issued) ? moment(it.date_issued).format("MM/DD/YYYY hh:mm A") : "";
+            const status = (it.status) ? it.status : "";
+            let bg = "bg-secondary";
+
+            switch (status) {
+                case "COMPLETED":
+                    bg = "bg-secondary";
+                    break;
+
+                case "FINISHED":
+                    bg = "bg-info";
+                    break;
+
+                case "RELEASED":
+                    bg = "bg-success";
+                    break;
+
+                case "CANCELLED":
+                    bg = "bg-danger";
+                    break;
+            }
             let tr = `
                     <tr id="certificate_id_` + it.id + `">
                         <td>` + it.type + `</td>
                         <td>` + it.patient + `</td>
                         <td>` + it.health_record_no + `</td>
                         <td>` + it.certificate_no + `</td>
-                        <td>` + it.date_issued + `</td>
-                        <td>` + it.created_at + `</td>
+                        <td>` + date_requested + `</td>
+                        <td>` + moment(it.created_at).format("MM/DD/YYYY hh:mm A") + `</td>
+                        <td>` + date_issued + `</td>
+                        <td>
+                            <span class="badge text-white text-center ` + bg + `">` + status + `</span>
+                        </td>
                         <td>
                             <button class="btn btn-sm btn-info" onclick="printPreview(` + it.id + `)">
                                 <i class="bi bi-qr-code"></i>
@@ -725,52 +775,12 @@
                             <button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used editing the certificate information" onclick="editCertificate(` + it.id + `)">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
-                        </td>`;
-            if (it.date_finished || !it.date_completed)
-                tr += `
-                        <td>
-                            <button class="btn btn-sm btn-secondary" disabled>
-                                <i class="bi bi-tag-fill"></i>
-                            </button>
-                        </td>`;
-            else
-                tr += `
+                        </td>
                         <td>
                             <button class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used for tagging the certificate as finished" onclick="tagCertificate(` + it.id + `)">
                                 <i class="bi bi-tag-fill"></i>
                             </button>
                         </td>`;
-
-            if (it.date_completed)
-                tr += `
-                        <td>
-                            <button class="btn btn-sm btn-secondary" disabled>
-                                <i class="bi bi-check"></i>
-                            </button>
-                        </td>`;
-            else
-                tr += `
-                        <td>
-                            <button class="btn btn-sm btn-info" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used for tagging the certificate as complete" onclick="tagAsComplete(` + it.id + `)">
-                                <i class="bi bi-check"></i>
-                            </button>
-                        </td>`;
-
-            if (it.status)
-                tr += `<td>
-                            <button class="btn btn-sm btn-danger" disabled>
-                                <i class="bi bi-x-octagon"></i>
-                            </button>
-                        </td>
-                    </tr>`;
-            else
-                tr += `<td>
-                            <button class="btn btn-sm btn-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used for tagging the certificate as cancelled" onclick="cancelCertificate(` + it.id + `)">
-                                <i class="bi bi-x-octagon"></i>
-                            </button>
-                        </td>
-                    </tr>`
-
             $("#certificate_lists").append(tr);
         }
     }

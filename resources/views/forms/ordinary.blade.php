@@ -274,6 +274,27 @@
                 <td>
                 </td>
             </tr>
+            <tr>
+                <td>Received by</td>
+                <td>:</td>
+                <td>
+                    <div class="medium">
+                        <select id="received_by" class="w-100 text-center">
+                            <option></option>
+                            @if(isset($certificates) && $certificates)
+                                <option {{ $certificates->received_by === "Staff 1" ? 'selected' : '' }}>Staff 1</option>
+                                <option {{ $certificates->received_by === "Staff 2" ? 'selected' : '' }}>Staff 2</option>
+                                <option {{ $certificates->received_by === "Staff 3" ? 'selected' : '' }}>Staff 3</option>
+                            @else
+                                <option>Staff 1</option>
+                                <option>Staff 2</option>
+                                <option>Staff 3</option>
+                            @endif
+                        </select>
+                    </div>
+                </td>
+                <td></td>
+            </tr>
             <tr id="no_copies_container" class="d-none">
                 <td>Number of Copies</td>
                 <td>:</td>

@@ -105,10 +105,8 @@ class ApplicationController extends Controller
     public function storeCertificate(Request $request)
     {
         try {
-
             $mi = (Auth::user()->mname) ? Auth::user()->mname[0] . '.' : '';
             $prepared_by = strtoupper(Auth::user()->fname . ' ' . $mi . ' ' . Auth::user()->lname);
-
             for ($i = 0; $i < $request->no_copies; $i++) {
                 $latest_id = $this->certificateService->getLatestId();
                 $registry_no = "000001";
@@ -122,7 +120,6 @@ class ApplicationController extends Controller
                     'user_id' => Auth::id(),
                     'certificate_no' => $registry_no,
                     'health_record_no' => $request->health_record_no,
-                    'date_issued' => $request->date_issued,
                     'patient' => $request->patient,
                     'age' => $request->age,
                     'sex' => $request->sex,
@@ -144,6 +141,7 @@ class ApplicationController extends Controller
                     'date_finished' => $request->date_finished,
                     'days_barred' => $request->days_barred,
                     'type' => $request->type,
+                    'received_by' => $request->received_by,
                     'prepared_by' => $prepared_by,
                     'created_at' => now()
                 ];
@@ -172,7 +170,7 @@ class ApplicationController extends Controller
                 if ($request->diagnosis) {
                     $diagnosis = $request->diagnosis;
                     $diagnosis_params = [];
-                    for ($i = 0; $i < count($diagnosis); $i++) {
+                    for ($j = 0; $j < count($diagnosis); $j++) {
                         $diagnosis_params[] = [
                             'certificate_id' => $certificate_id,
                             'diagnosis' => $diagnosis[$i]['diagnosis']
@@ -190,6 +188,7 @@ class ApplicationController extends Controller
                     $this->sustainedService->store($sustained);
                 }
             }
+
             return response()->json(['message' => $message]);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
@@ -198,6 +197,7 @@ class ApplicationController extends Controller
 
     public function tagCertificate(Request $request)
     {
+        //TAG CERTIFICATE CHECK WHAT TYPE
         try {
             $mi = (Auth::user()->mname) ? Auth::user()->mname[0] . '.' : '';
             $prepared_by = strtoupper(Auth::user()->fname . ' ' . $mi . ' ' . Auth::user()->lname);
@@ -206,11 +206,39 @@ class ApplicationController extends Controller
                 return response()->json(['message' => 'Certificate ID dont exists'], 404);
             }
 
-            if ($certificate->date_finished) {
-                return response()->json(['message' => 'Certificate already tagged as DONE', 500]);
-            }
+            switch ($request->status) {
+                case "COMPLETED":
+                    if ($certificate->date_completed) {
+                        return response()->json(['message' => 'Certificate already tagged as completed'], 500);
+                    }
 
-            $this->certificateService->updateDateFinished($certificate->id, Carbon::now()->format('Y-m-d\TH:i'), $prepared_by);
+                    $this->certificateService->updateDateCompleted($certificate->id, Carbon::now()->format('Y-m-d\TH:i'));
+                    break;
+                case "FINISHED":
+                    if ($certificate->date_finished) {
+                        return response()->json(['message' => 'Certificate already tagged as finished'], 500);
+                    }
+
+                    $this->certificateService->updateDateFinished($certificate->id, Carbon::now()->format('Y-m-d\TH:i'));
+                    break;
+                case "RELEASED":
+                    if ($certificate->date_issued) {
+                        return response()->json(['message' => 'Certificate already tagged as released'], 500);
+                    }
+                    $this->certificateService->updateDateIssued($certificate->id, Carbon::now()->format('Y-m-d\TH:i'), $prepared_by);
+                    break;
+                case "CANCELLED":
+                    if ($certificate->status == "CANCELLED") {
+                        return response()->json(['message' => 'Certificate already tagged as CANCELLED'], 500);
+                    }
+
+                    if ($certificate->date_issued) {
+                        return response()->json(['message' => 'Certificate already tagged as RELEASED'], 500);
+                    }
+
+                    $this->certificateService->updateStatus($certificate->id, 'CANCELLED');
+                    break;
+            }
             return response()->json(['message' => 'Tagged successfully by ' . $prepared_by]);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
@@ -270,7 +298,7 @@ class ApplicationController extends Controller
                     return view('forms.ordinary', compact('certificates', 'diagnosis'));
                 }
 
-                return view('forms.ordinary',compact('certificate_no'));
+                return view('forms.ordinary', compact('certificate_no'));
             case "maipp":
                 $latest_id = $this->certificateService->getLatestId();
                 $certificate_no = "000001";
@@ -284,7 +312,7 @@ class ApplicationController extends Controller
                     return view('forms.maipp', compact('certificates', 'diagnosis'));
                 }
 
-                return view('forms.maipp',compact('certificate_no'));
+                return view('forms.maipp', compact('certificate_no'));
             case "medico_legal":
                 $latest_id = $this->certificateService->getLatestId();
                 $certificate_no = "000001";
@@ -298,7 +326,7 @@ class ApplicationController extends Controller
                     $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
                     return view('forms.medico_legal', compact('certificates', 'diagnosis', 'sustained'));
                 }
-                return view('forms.medico_legal',compact('certificate_no'));
+                return view('forms.medico_legal', compact('certificate_no'));
         }
     }
 
@@ -358,16 +386,21 @@ class ApplicationController extends Controller
                 $sheet->setCellValue('B' . $row, $records[$i]->type);
                 $sheet->setCellValue('C' . $row, $records[$i]->charge_slip_no);
                 $sheet->setCellValue('D' . $row, $records[$i]->or_no);
-                $sheet->setCellValue('E' . $row, $records[$i]->requesting_person);
-                $sheet->setCellValue('F' . $row, $records[$i]->relationship);
-                $sheet->setCellValue('G' . $row, $records[$i]->date_requested);
-                $sheet->setCellValue('H' . $row, $records[$i]->certificate_no);
-                $sheet->setCellValue('I' . $row, $records[$i]->date_finished);
-                $sheet->setCellValue('J' . $row, $records[$i]->status);
+                $sheet->setCellValue('E' . $row, $records[$i]->received_by);
+                $sheet->setCellValue('F' . $row, $records[$i]->prepared_by);
+                $sheet->setCellValue('G' . $row, $records[$i]->requesting_person);
+                $sheet->setCellValue('H' . $row, $records[$i]->relationship);
+                $sheet->setCellValue('I' . $row, $records[$i]->date_requested);
+                $sheet->setCellValue('J' . $row, $records[$i]->date_completed);
+                $sheet->setCellValue('K' . $row, $records[$i]->date_finished);
+                $sheet->setCellValue('L' . $row, $records[$i]->certificate_no);
+                $sheet->setCellValue('M' . $row, $records[$i]->date_issued);
+                $sheet->setCellValue('N' . $row, $records[$i]->released_by);
+                $sheet->setCellValue('O' . $row, $records[$i]->status);
 
-                $sheet->getStyle('B' . $row . ':J' . $row)->getAlignment()->setWrapText(true);
-                $sheet->getStyle('B' . $row . ':J' . $row)->getAlignment()->setHorizontal('center');
-                $sheet->getStyle('B' . $row . ':J' . $row)->getAlignment()->setVertical('middle');
+                $sheet->getStyle('A' . $row . ':O' . $row)->getAlignment()->setWrapText(true);
+                $sheet->getStyle('A' . $row . ':O' . $row)->getAlignment()->setHorizontal('center');
+                $sheet->getStyle('A' . $row . ':O' . $row)->getAlignment()->setVertical('middle');
                 $row++;
             }
 
