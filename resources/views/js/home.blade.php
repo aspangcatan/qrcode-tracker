@@ -123,8 +123,7 @@
                 console.log(it);
                 const date_requested = (it.date_requested) ? moment(it.date_requested).format("MM/DD/YYYY hh:mm A") : "";
                 const date_completed = (it.date_completed) ? moment(it.date_completed).format("MM/DD/YYYY hh:mm A") : "";
-                const date_finished = (it.date_finished) ? moment(it.date_finished).format("MM/DD/YYYY hh:mm A") : "";
-                const date_released = (it.date_released) ? moment(it.date_released).format("MM/DD/YYYY hh:mm A") : "";
+                const date_issued = (it.date_issued) ? moment(it.date_issued).format("MM/DD/YYYY hh:mm A") : "";
                 const status = (it.status) ? it.status : "";
                 const released_by = (it.released_by) ? it.released_by : "";
                 const tr = `
@@ -139,9 +138,8 @@
                     <td>` + it.relationship + `</td>
                     <td>` + date_requested + `</td>
                     <td>` + date_completed + `</td>
-                    <td>` + date_finished + `</td>
                     <td>` + it.certificate_no + `</td>
-                    <td>` + date_released + `</td>
+                    <td>` + date_issued + `</td>
                     <td>` + released_by + `</td>
                     <td>` + status + `</td>
                 </tr>`;
@@ -618,7 +616,7 @@
                 toastr.error("Ooops", "Specify tag status");
                 return;
             }
-            if (confirm("Are you sure you want to tag this as done?")) {
+            if (confirm("Are you sure you want to tag this record?")) {
                 const response = await fetch('{{ route('tagCertificate') }}', {
                     method: "PUT",
                     headers: HEADERS,
@@ -764,11 +762,11 @@
             let bg = "bg-secondary";
 
             switch (status) {
-                case "COMPLETED":
+                case "PENDING":
                     bg = "bg-secondary";
                     break;
 
-                case "FINISHED":
+                case "FOR RELEASE":
                     bg = "bg-info";
                     break;
 

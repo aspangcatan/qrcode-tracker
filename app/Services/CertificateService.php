@@ -70,22 +70,11 @@ class CertificateService
                 'amount' => $data['amount'],
                 'charge_slip_no' => $data['charge_slip_no'],
                 'date_requested' => $data['date_requested'],
-                'date_finished' => $data['date_finished'],
+                'date_completed' => null,
                 'days_barred' => $data['days_barred'],
                 'prepared_by' => $data['prepared_by'],
                 'received_by' => $data['received_by'],
                 'updated_at' => now()
-            ]);
-    }
-
-    public function updateDateFinished($id, $date_finished)
-    {
-        DB::table('qr_tracker.certificates')
-            ->where('id', '=', $id)
-            ->update([
-                'date_finished' => $date_finished,
-                'updated_at' => now(),
-                'status' => 'FINISHED'
             ]);
     }
 
@@ -96,7 +85,7 @@ class CertificateService
             ->update([
                 'date_completed' => $date_completed,
                 'updated_at' => now(),
-                'status' => 'COMPLETED'
+                'status' => 'FOR RELEASE'
             ]);
     }
 
@@ -159,7 +148,6 @@ class CertificateService
                 'relationship',
                 DB::raw('DATE_FORMAT(date_requested, "%m/%d/%Y %h:%i %p") AS date_requested'),
                 DB::raw('DATE_FORMAT(date_completed, "%m/%d/%Y %h:%i %p") AS date_completed'),
-                DB::raw('DATE_FORMAT(date_finished, "%m/%d/%Y %h:%i %p") AS date_finished'),
                 'certificate_no',
                 DB::raw('DATE_FORMAT(date_issued, "%m/%d/%Y %h:%i %p") AS date_issued'),
                 'released_by',

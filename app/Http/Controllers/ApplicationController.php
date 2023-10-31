@@ -138,11 +138,11 @@ class ApplicationController extends Controller
                     'charge_slip_no' => $request->charge_slip_no,
                     'registry_no' => $registry_no,
                     'date_requested' => $request->date_requested,
-                    'date_finished' => $request->date_finished,
                     'days_barred' => $request->days_barred,
                     'type' => $request->type,
                     'received_by' => $request->received_by,
                     'prepared_by' => $prepared_by,
+                    'status' => 'PENDING',
                     'created_at' => now()
                 ];
 
@@ -150,11 +150,12 @@ class ApplicationController extends Controller
                 $certificate = $this->certificateService->getCertificateById($request->id);
                 if ($certificate) {
                     //UPDATE INFORMATION
+                    if ($certificate->date_issued) {
+                        return response()->json(['message' => 'Certificate already issued'], 500);
+                    }
+
                     $certificate_id = $request->id;
                     $this->certificateService->updateCertificate($certificate_id, $params);
-
-                    //UNDO DATETIME FINISHED
-                    $this->certificateService->updateDateFinished($certificate_id, null, $prepared_by);
                     $message = 'Record updated';
                 } else {
                     $certificate_id = $this->certificateService->store($params);
@@ -197,7 +198,6 @@ class ApplicationController extends Controller
 
     public function tagCertificate(Request $request)
     {
-        //TAG CERTIFICATE CHECK WHAT TYPE
         try {
             $mi = (Auth::user()->mname) ? Auth::user()->mname[0] . '.' : '';
             $prepared_by = strtoupper(Auth::user()->fname . ' ' . $mi . ' ' . Auth::user()->lname);
@@ -207,23 +207,18 @@ class ApplicationController extends Controller
             }
 
             switch ($request->status) {
-                case "COMPLETED":
+                case "FOR RELEASE":
                     if ($certificate->date_completed) {
-                        return response()->json(['message' => 'Certificate already tagged as completed'], 500);
+                        return response()->json(['message' => 'Certificate already tagged as for release'], 500);
                     }
-
                     $this->certificateService->updateDateCompleted($certificate->id, Carbon::now()->format('Y-m-d\TH:i'));
-                    break;
-                case "FINISHED":
-                    if ($certificate->date_finished) {
-                        return response()->json(['message' => 'Certificate already tagged as finished'], 500);
-                    }
-
-                    $this->certificateService->updateDateFinished($certificate->id, Carbon::now()->format('Y-m-d\TH:i'));
                     break;
                 case "RELEASED":
                     if ($certificate->date_issued) {
                         return response()->json(['message' => 'Certificate already tagged as released'], 500);
+                    }
+                    if (!$certificate->date_completed) {
+                        return response()->json(['message' => 'Certificate not yet for release'], 500);
                     }
                     $this->certificateService->updateDateIssued($certificate->id, Carbon::now()->format('Y-m-d\TH:i'), $prepared_by);
                     break;
@@ -333,16 +328,12 @@ class ApplicationController extends Controller
     public function printPreview(Request $request)
     {
         try {
-
             $certificate = $this->certificateService->getCertificateById($request->id);
-
-            //CHECK CERTIFICATE TYPE
             if (!$certificate) {
                 return response()->json(['message' => 'Certificate record dont exists'], 404);
             }
 
             $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
-
             switch ($certificate->type) {
                 case "ordinary":
                     return view('pdf.ordinary', ['certificate' => $certificate, 'diagnosis' => $diagnosis]);
@@ -370,16 +361,12 @@ class ApplicationController extends Controller
     public function generateReport(Request $request)
     {
         try {
+            $row = 7;
+            $records = $this->certificateService->generateReport($request->from_date, $request->to_date);
             $templatePath = public_path('excel/SUMMARY_TEMPLATE.xlsx'); // Replace with the actual path to your template
             $spreadsheet = IOFactory::load($templatePath);
             $sheet = $spreadsheet->getActiveSheet();
-            $records = $this->certificateService->generateReport($request->from_date, $request->to_date);
-
-
-            $carbon = Carbon::create()->month($request->month);
-            $monthString = strtoupper($carbon->format('F'));
             $sheet->setCellValue('B1', $request->title);
-            $row = 7;
             $sheet->insertNewRowBefore($row, count($records));
             for ($i = 0; $i < count($records); $i++) {
                 $sheet->setCellValue('A' . $row, $records[$i]->patient);
@@ -392,15 +379,14 @@ class ApplicationController extends Controller
                 $sheet->setCellValue('H' . $row, $records[$i]->relationship);
                 $sheet->setCellValue('I' . $row, $records[$i]->date_requested);
                 $sheet->setCellValue('J' . $row, $records[$i]->date_completed);
-                $sheet->setCellValue('K' . $row, $records[$i]->date_finished);
-                $sheet->setCellValue('L' . $row, $records[$i]->certificate_no);
-                $sheet->setCellValue('M' . $row, $records[$i]->date_issued);
-                $sheet->setCellValue('N' . $row, $records[$i]->released_by);
-                $sheet->setCellValue('O' . $row, $records[$i]->status);
+                $sheet->setCellValue('K' . $row, $records[$i]->certificate_no);
+                $sheet->setCellValue('L' . $row, $records[$i]->date_issued);
+                $sheet->setCellValue('M' . $row, $records[$i]->released_by);
+                $sheet->setCellValue('N' . $row, $records[$i]->status);
 
-                $sheet->getStyle('A' . $row . ':O' . $row)->getAlignment()->setWrapText(true);
-                $sheet->getStyle('A' . $row . ':O' . $row)->getAlignment()->setHorizontal('center');
-                $sheet->getStyle('A' . $row . ':O' . $row)->getAlignment()->setVertical('middle');
+                $sheet->getStyle('A' . $row . ':N' . $row)->getAlignment()->setWrapText(true);
+                $sheet->getStyle('A' . $row . ':N' . $row)->getAlignment()->setHorizontal('center');
+                $sheet->getStyle('A' . $row . ':N' . $row)->getAlignment()->setVertical('middle');
                 $row++;
             }
 
@@ -411,11 +397,9 @@ class ApplicationController extends Controller
                 function () use ($writer) {
                     $writer->save('php://output');
                 },
-                200,
-                [
+                200, [
                     'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    'Content-Disposition' => 'attachment; filename="' . $filename . '"',
-                ]
+                    'Content-Disposition' => 'attachment; filename="' . $filename . '"',]
             );
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);

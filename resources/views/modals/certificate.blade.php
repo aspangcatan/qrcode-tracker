@@ -66,8 +66,7 @@
             </div>
             <div class="modal-body w-100">
                 <select class="js-example-basic-single w-100" name="doctor"  id="select_tag">
-                    <option>COMPLETED</option>
-                    <option>FINISHED</option>
+                    <option>FOR RELEASE</option>
                     <option>RELEASED</option>
                     <option>CANCELLED</option>
                 </select>
@@ -105,7 +104,6 @@
                                 <th>RELATIONSHIP</th>
                                 <th>DATE/TIME REQUESTED</th>
                                 <th>DATE/TIME COMPLETED</th>
-                                <th>DATE/TIME FINISHED</th>
                                 <th>CERT NO.</th>
                                 <th>DATE/TIME RELEASED</th>
                                 <th>RELEASED BY</th>
