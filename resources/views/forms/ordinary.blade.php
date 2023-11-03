@@ -31,7 +31,7 @@
                         Date:
                         <div class="small">
                             @if(isset($certificates) && $certificates)
-                                <input type="date" id="date_issued" value="{{ $certificates->date_issued }}" disabled/>
+                                <input type="date" id="date_issued" value="{{ date('Y-m-d', strtotime($certificates->created_at)) }}" disabled/>
                             @else
                                 <input type="date" id="date_issued" value="{{ now()->format('Y-m-d') }}" disabled/>
                             @endif

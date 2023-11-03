@@ -405,12 +405,6 @@
                 is_valid = false;
             }
 
-            if (!date_issued) {
-                toastr.error('Date issued is required');
-                $("#date_issued").addClass("is-invalid");
-                is_valid = false;
-            }
-
             if (!patient) {
                 toastr.error('Patient is required');
                 $("#patient").addClass("is-invalid");
