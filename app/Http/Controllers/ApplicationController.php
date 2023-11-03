@@ -235,7 +235,7 @@ class ApplicationController extends Controller
                         return response()->json(['message' => 'Certificate already tagged as RELEASED'], 500);
                     }
 
-                    $this->certificateService->updateStatus($certificate->id, 'CANCELLED');
+                    $this->certificateService->updateStatus($certificate->id, 'CANCELLED', $prepared_by);
                     break;
             }
             return response()->json(['message' => 'Tagged successfully by ' . $prepared_by]);
@@ -326,6 +326,21 @@ class ApplicationController extends Controller
                     return view('forms.medico_legal', compact('certificates', 'diagnosis', 'sustained'));
                 }
                 return view('forms.medico_legal', compact('certificate_no'));
+
+            case "maipp_inpatient":
+                $latest_id = $this->certificateService->getLatestId();
+                $certificate_no = "000001";
+                if ($latest_id) {
+                    $certificate_no = str_pad(($latest_id->id + 1), 6, "0", STR_PAD_LEFT);
+                }
+
+                if ($request->has('id')) {
+                    $certificates = $this->certificateService->getCertificateById($request->id);
+                    $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
+                    return view('forms.maipp', compact('certificates', 'diagnosis'));
+                }
+
+                return view('forms.maipp_inpatient', compact('certificate_no'));
         }
     }
 

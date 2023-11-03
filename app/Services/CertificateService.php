@@ -102,12 +102,13 @@ class CertificateService
             ]);
     }
 
-    public function updateStatus($id, $status)
+    public function updateStatus($id, $status,$released_by)
     {
         DB::table('qr_tracker.certificates')
             ->where('id', '=', $id)
             ->update([
                 'status' => $status,
+                'released_by' => $released_by,
                 'updated_at' => now()
             ]);
     }

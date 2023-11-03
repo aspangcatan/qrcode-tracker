@@ -62,6 +62,51 @@
             }
         });
 
+        $("#btn_add_certificate").click(function () {
+            certificate_id = 0;
+            $("#choose_certificate_modal").modal("show");
+        });
+
+        $("#btn_set_certificate").click(function () {
+            const certificate = $("#select_certificate").val();
+            switch (certificate) {
+                case "1":
+                    type = "ordinary";
+                    break;
+                case "2":
+                    type = "maipp";
+                    break;
+                case "3":
+                    type = "medico_legal";
+                    break;
+                case "4":
+                    type = "original_inpatient";
+                    break;
+                case "5":
+                    type = "maipp_inpatient";
+                    break;
+            }
+
+            $("#choose_certificate_modal").modal("hide");
+            $("#certificate_modal").modal('show');
+            showSpinner();
+            fetch('/qrcode-tracker/partial-form?type=' + type, {
+                method: "GET"
+            })
+                .then(response => response.text()) // Convert response to text
+                .then(html => {
+                    $("#certificate_modal #certificate_form").html(html);
+                    $("#certificate_modal .modal-footer").removeClass("d-none");
+                    $("#no_copies_container").removeClass("d-none");
+
+                    $("#received_by").select2({
+                        dropdownParent: $("#certificate_modal .modal-body"),
+                        width: '100%'
+                    });
+                })
+                .catch(error => console.error(error));
+        });
+
         $("#btn_add_report").click(function () {
             $("#filter_date").val("");
             $("#report_list").empty();
@@ -165,72 +210,6 @@
             }
             page--;
             getCertificates();
-        });
-
-        $("#btn_add_ordinary").click(() => {
-            certificate_id = 0;
-            type = "ordinary";
-            $("#certificate_modal").modal('show');
-            showSpinner();
-            fetch('/qrcode-tracker/partial-form?type=' + type, {
-                method: "GET"
-            })
-                .then(response => response.text()) // Convert response to text
-                .then(html => {
-                    $("#certificate_modal #certificate_form").html(html);
-                    $("#certificate_modal .modal-footer").removeClass("d-none");
-                    $("#no_copies_container").removeClass("d-none");
-
-                    $("#received_by").select2({
-                        dropdownParent: $("#certificate_modal .modal-body"),
-                        width: '100%'
-                    });
-                })
-                .catch(error => console.error(error));
-        });
-
-        $("#btn_add_maipp").click(() => {
-            certificate_id = 0;
-            type = "maipp";
-            $("#certificate_modal").modal('show');
-            showSpinner();
-            fetch('/qrcode-tracker/partial-form?type=' + type, {
-                method: "GET"
-            })
-                .then(response => response.text()) // Convert response to text
-                .then(html => {
-                    $("#certificate_modal #certificate_form").html(html);
-                    $("#certificate_modal .modal-footer").removeClass("d-none");
-                    $("#no_copies_container").removeClass("d-none");
-
-                    $("#received_by").select2({
-                        dropdownParent: $("#certificate_modal .modal-body"),
-                        width: '100%'
-                    });
-                })
-                .catch(error => console.error(error));
-        });
-
-        $("#btn_add_medico_legal").click(() => {
-            certificate_id = 0;
-            type = "medico_legal";
-            $("#certificate_modal").modal('show');
-            showSpinner();
-            fetch('/qrcode-tracker/partial-form?type=' + type, {
-                method: "GET"
-            })
-                .then(response => response.text()) // Convert response to text
-                .then(html => {
-                    $("#certificate_modal #certificate_form").html(html);
-                    $("#certificate_modal .modal-footer").removeClass("d-none");
-                    $("#no_copies_container").removeClass("d-none");
-
-                    $("#received_by").select2({
-                        dropdownParent: $("#certificate_modal .modal-body"),
-                        width: '100%'
-                    });
-                })
-                .catch(error => console.error(error));
         });
 
         $("#btn_add_diagnosis").click(function () {
@@ -801,7 +780,7 @@
                         </td>`;
             if (status === "CANCELLED" || status === "RELEASED")
                 tr += `<td></td><td></td>`;
-            else{
+            else {
                 tr +=
                     `<td>
                             <button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used editing the certificate information" onclick="editCertificate(` + it.id + `)">

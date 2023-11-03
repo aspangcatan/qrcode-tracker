@@ -23,16 +23,8 @@
                             Generate Report
                             <i class="bi bi-file-excel ms-2"></i>
                         </button>
-                        <button class="btn btn-success me-3" id="btn_add_ordinary">
-                            Create Original
-                            <i class="bi bi-plus-lg ms-2"></i>
-                        </button>
-                        <button class="btn btn-info me-3" id="btn_add_maipp">
-                            Create MAIPP
-                            <i class="bi bi-plus-lg ms-2"></i>
-                        </button>
-                        <button class="btn btn-warning me-3" id="btn_add_medico_legal">
-                            Create Medico Legal
+                        <button class="btn btn-success me-3" id="btn_add_certificate">
+                            Create Certificate
                             <i class="bi bi-plus-lg ms-2"></i>
                         </button>
                     </div>

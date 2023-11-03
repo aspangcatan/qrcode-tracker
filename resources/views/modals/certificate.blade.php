@@ -46,7 +46,7 @@
                 <div class="card-title p-1" style="font-size: 24px">Select physician</div>
             </div>
             <div class="modal-body w-100">
-                <select class="js-example-basic-single w-100" name="doctor"  id="select_doctor">
+                <select class="js-example-basic-single w-100" name="doctor" id="select_doctor">
 
                 </select>
             </div>
@@ -78,6 +78,30 @@
     </div>
 </div>
 
+<div class="modal fade" id="choose_certificate_modal" tabindex="-1" aria-labelledby="updateModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title p-1" style="font-size: 24px">Choose certificate</div>
+            </div>
+            <div class="modal-body w-100">
+                <select class="form-control" id="select_certificate">
+                    <option value="1">Original</option>
+                    <option value="2">MAIPP</option>
+                    <option value="3">Medico Legal</option>
+                    <option value="4" disabled>Original - Inpatient (Under development)</option>
+                    <option value="5" disabled>MAIPP - Inpatient (Under development)</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
+                <button class="btn btn-success ml-1" id="btn_set_certificate">SET</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="tagging_modal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -85,7 +109,7 @@
                 <div class="card-title p-1" style="font-size: 24px">Tag as:</div>
             </div>
             <div class="modal-body w-100">
-                <select class="js-example-basic-single w-100" name="doctor"  id="select_tag">
+                <select class="js-example-basic-single w-100" name="doctor" id="select_tag">
                     <option>FOR RELEASE</option>
                     <option>RELEASED</option>
                     <option>CANCELLED</option>
@@ -107,28 +131,29 @@
             </div>
             <div class="modal-body">
                 <div class="ms-1">
-                    <input name="datefilter" class="form-control" placeholder="Select daterange" id="filter_date" readonly/>
+                    <input name="datefilter" class="form-control" placeholder="Select daterange" id="filter_date"
+                           readonly/>
                 </div>
-                <hr />
+                <hr/>
                 <div class="table-responsive">
                     <table class="table table-striped text-center" style="font-size: 13px">
                         <thead>
-                            <tr>
-                                <th>PATIENT</th>
-                                <th>DOCUMENT REQUESTED</th>
-                                <th>CS NO.</th>
-                                <th>OR NO.</th>
-                                <th>RECEIVED BY</th>
-                                <th>PREPARED BY</th>
-                                <th>REQUESTED BY</th>
-                                <th>RELATIONSHIP</th>
-                                <th>DATE/TIME REQUESTED</th>
-                                <th>DATE/TIME COMPLETED</th>
-                                <th>CERT NO.</th>
-                                <th>DATE/TIME RELEASED</th>
-                                <th>RELEASED BY</th>
-                                <th>STATUS</th>
-                            </tr>
+                        <tr>
+                            <th>PATIENT</th>
+                            <th>DOCUMENT REQUESTED</th>
+                            <th>CS NO.</th>
+                            <th>OR NO.</th>
+                            <th>RECEIVED BY</th>
+                            <th>PREPARED BY</th>
+                            <th>REQUESTED BY</th>
+                            <th>RELATIONSHIP</th>
+                            <th>DATE/TIME REQUESTED</th>
+                            <th>DATE/TIME COMPLETED</th>
+                            <th>CERT NO.</th>
+                            <th>DATE/TIME RELEASED</th>
+                            <th>RELEASED/CANCELLED BY</th>
+                            <th>STATUS</th>
+                        </tr>
                         </thead>
                         <tbody id="report_list">
 
