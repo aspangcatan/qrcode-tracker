@@ -380,7 +380,7 @@
                         <div class="medium">
                             @if(isset($certificates) && $certificates)
                                 <input type="datetime-local" id="date_finished"
-                                       value="{{ $certificates->date_finished }}" disabled>
+                                       value="{{ $certificates->date_completed }}" disabled>
                             @else
                                 <input type="datetime-local" id="date_finished" disabled>
                             @endif
