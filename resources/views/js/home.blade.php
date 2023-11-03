@@ -289,6 +289,12 @@
             $("#diagnosis").val("");
         });
 
+        $("#btn_print_certificate").click(function () {
+            const title = $("#select_heading").val();
+            if (title == "") return;
+            window.open("https://dohcsmc.site/qrcode-tracker/print-preview?id=" + certificate_id + "&title=" + title, '_blank');
+        });
+
         $("#btn_save").click(async function () {
             const certificate_no = $("#certificate_no").val().trim();
             const health_record_no = $("#health_record_no").val().trim();
@@ -632,8 +638,9 @@
         appendDoctors();
     });
 
-    async function printPreview(id) {
-        window.open("https://dohcsmc.site/qrcode-tracker/print-preview?id=" + id, '_blank');
+    function printPreview(id) {
+        certificate_id = id;
+        $("#heading_modal").modal("show");
     }
 
     function editCertificate(id) {
@@ -791,17 +798,22 @@
                             <button class="btn btn-sm btn-info" onclick="printPreview(` + it.id + `)">
                                 <i class="bi bi-qr-code"></i>
                             </button>
-                        </td>
-                        <td>
+                        </td>`;
+            if (status === "CANCELLED" || status === "RELEASED")
+                tr += `<td></td><td></td>`;
+            else{
+                tr +=
+                    `<td>
                             <button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used editing the certificate information" onclick="editCertificate(` + it.id + `)">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
-                        </td>
-                        <td>
-                            <button class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used for tagging the certificate as finished" onclick="tagCertificate(` + it.id + `)">
+                         </td>
+                    <td>
+                           <button class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used for tagging the certificate as finished" onclick="tagCertificate(` + it.id + `)">
                                 <i class="bi bi-tag-fill"></i>
                             </button>
                         </td>`;
+            }
             $("#certificate_lists").append(tr);
         }
     }

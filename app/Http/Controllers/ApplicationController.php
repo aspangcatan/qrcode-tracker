@@ -206,6 +206,10 @@ class ApplicationController extends Controller
                 return response()->json(['message' => 'Certificate ID dont exists'], 404);
             }
 
+            if ($certificate->status === "CANCELLED" || $certificate->status === "RELEASED") {
+                return response()->json(['message' => 'Cannot tag ' . $certificate->status . ' records'], 500);
+            }
+
             switch ($request->status) {
                 case "FOR RELEASE":
                     if ($certificate->date_completed) {
@@ -336,12 +340,12 @@ class ApplicationController extends Controller
             $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
             switch ($certificate->type) {
                 case "ordinary":
-                    return view('pdf.ordinary', ['certificate' => $certificate, 'diagnosis' => $diagnosis]);
+                    return view('pdf.ordinary', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'title' => $request->title]);
                 case "maipp":
-                    return view('pdf.maipp', ['certificate' => $certificate, 'diagnosis' => $diagnosis]);
+                    return view('pdf.maipp', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'title' => $request->title]);
                 case "medico_legal":
                     $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
-                    return view('pdf.medico_legal', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'sustained' => $sustained]);
+                    return view('pdf.medico_legal', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'sustained' => $sustained, 'title' => $request->title]);
             }
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()]);

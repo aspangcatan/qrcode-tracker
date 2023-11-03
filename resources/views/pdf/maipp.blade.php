@@ -169,7 +169,7 @@
     </table>
 
     <div class="certificate-title">
-        MEDICAL CERTIFICATE
+        {{ $title }}
     </div>
     <div style="margin-top:30px">
         TO WHOM IT MAY CONCERN:

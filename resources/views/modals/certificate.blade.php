@@ -58,6 +58,26 @@
     </div>
 </div>
 
+<div class="modal fade" id="heading_modal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title p-1" style="font-size: 24px">Choose heading</div>
+            </div>
+            <div class="modal-body w-100">
+                <select class="form-control" id="select_heading">
+                    <option>MEDICAL CERTIFICATE</option>
+                    <option>DENTAL CERTIFICATE</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
+                <button class="btn btn-success ml-1" id="btn_print_certificate">PRINT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="tagging_modal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">

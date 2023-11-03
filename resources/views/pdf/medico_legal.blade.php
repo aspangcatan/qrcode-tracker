@@ -175,7 +175,7 @@
     </table>
 
     <div class="certificate-title">
-        MEDICO LEGAL CERTIFICATE
+        {{ $title }}
     </div>
     <table style="width: 100%;margin-top:15px">
         <tr>
