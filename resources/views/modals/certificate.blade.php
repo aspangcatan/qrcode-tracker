@@ -87,7 +87,7 @@
             </div>
             <div class="modal-body w-100">
                 <select class="form-control" id="select_certificate">
-                    <option value="1">Original</option>
+                    <option value="1">Ordinary</option>
                     <option value="2">MAIPP</option>
                     <option value="3">Medico Legal</option>
                     <option value="4" disabled>Original - Inpatient (Under development)</option>
