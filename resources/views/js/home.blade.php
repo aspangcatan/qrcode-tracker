@@ -80,7 +80,7 @@
                     type = "medico_legal";
                     break;
                 case "4":
-                    type = "original_inpatient";
+                    type = "ordinary_inpatient";
                     break;
                 case "5":
                     type = "maipp_inpatient";
@@ -283,7 +283,8 @@
             const sex = $("#sex").val();
             const civil_status = $("#civil_status").val();
             const address = $("#address").val().trim();
-            const date_examined = $("#date_examined").val().trim();
+            const date_examined = $("#date_examined").val();
+            const date_discharged = $("#date_discharged").val();
             const days_barred = $("#days_barred").val();
             const doctor = $("#doctor").val().trim();
             const doctor_designation = $("#doctor_designation").val();
@@ -332,6 +333,7 @@
                 "civil_status": (civil_status === undefined) ? null : civil_status,
                 "address": address,
                 "date_examined": date_examined,
+                "date_discharged": (date_discharged === undefined) ? null : date_discharged,
                 "days_barred": (days_barred === undefined) ? null : days_barred,
                 "doctor": doctor,
                 "doctor_designation": (doctor_designation === undefined) ? null : doctor_designation,
@@ -635,9 +637,7 @@
             .then(response => response.text()) // Convert response to text
             .then(html => {
                 $("#certificate_modal #certificate_form").html(html);
-                $("#purpose").val($("#purpose").val()).change();
                 $("#certificate_modal .modal-footer").removeClass("d-none");
-
                 $("#received_by").select2({
                     dropdownParent: $("#certificate_modal .modal-body"),
                     width: '100%'

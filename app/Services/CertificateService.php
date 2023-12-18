@@ -60,6 +60,7 @@ class CertificateService
                 'civil_status' => $data['civil_status'],
                 'address' => $data['address'],
                 'date_examined' => $data['date_examined'],
+                'date_discharged' => $data['date_discharged'],
                 'doctor' => $data['doctor'],
                 'doctor_designation' => $data['doctor_designation'],
                 'doctor_license' => $data['doctor_license'],

@@ -132,7 +132,7 @@
 
         .very-small {
             text-align: center;
-            width: 60px; /* Adjust the width as needed */
+            width: 90px; /* Adjust the width as needed */
             border-bottom: 1px solid black;
             display: inline-block;
         }
@@ -147,7 +147,7 @@
 
         .very-small input {
             text-align: center;
-            width: 100%;
+            width: 130%;
             border: 0px solid transparent;
         }
 

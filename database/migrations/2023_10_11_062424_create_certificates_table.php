@@ -25,6 +25,7 @@ class CreateCertificatesTable extends Migration
             $table->string('civil_status', 20)->nullable();
             $table->string('address', 200);
             $table->dateTime('date_examined');
+            $table->dateTime('date_discharged')->nullable();
             $table->string('doctor', 200);
             $table->string('doctor_designation', 200)->nullable();
             $table->string('doctor_license', 30);

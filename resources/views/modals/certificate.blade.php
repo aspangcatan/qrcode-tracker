@@ -90,8 +90,8 @@
                     <option value="1">Ordinary</option>
                     <option value="2">MAIPP</option>
                     <option value="3">Medico Legal</option>
-                    <option value="4" disabled>Original - Inpatient (Under development)</option>
-                    <option value="5" disabled>MAIPP - Inpatient (Under development)</option>
+                    <option value="4">Original - Inpatient</option>
+                    <option value="5">MAIPP - Inpatient</option>
                 </select>
             </div>
             <div class="modal-footer">

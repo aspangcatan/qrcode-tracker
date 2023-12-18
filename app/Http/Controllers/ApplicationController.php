@@ -126,6 +126,7 @@ class ApplicationController extends Controller
                     'civil_status' => $request->civil_status,
                     'address' => $request->address,
                     'date_examined' => $request->date_examined,
+                    'date_discharged' => $request->date_discharged,
                     'doctor' => $request->doctor,
                     'doctor_designation' => $request->doctor_designation,
                     'doctor_license' => $request->doctor_license,
@@ -298,6 +299,20 @@ class ApplicationController extends Controller
                 }
 
                 return view('forms.ordinary', compact('certificate_no'));
+            case "ordinary_inpatient":
+                $latest_id = $this->certificateService->getLatestId();
+                $certificate_no = "000001";
+                if ($latest_id) {
+                    $certificate_no = str_pad(($latest_id->id + 1), 6, "0", STR_PAD_LEFT);
+                }
+
+                if ($request->has('id')) {
+                    $certificates = $this->certificateService->getCertificateById($request->id);
+                    $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
+                    return view('forms.ordinary_inpatient', compact('certificates', 'diagnosis'));
+                }
+
+                return view('forms.ordinary_inpatient', compact('certificate_no'));
             case "maipp":
                 $latest_id = $this->certificateService->getLatestId();
                 $certificate_no = "000001";
@@ -312,6 +327,20 @@ class ApplicationController extends Controller
                 }
 
                 return view('forms.maipp', compact('certificate_no'));
+            case "maipp_inpatient":
+                $latest_id = $this->certificateService->getLatestId();
+                $certificate_no = "000001";
+                if ($latest_id) {
+                    $certificate_no = str_pad(($latest_id->id + 1), 6, "0", STR_PAD_LEFT);
+                }
+
+                if ($request->has('id')) {
+                    $certificates = $this->certificateService->getCertificateById($request->id);
+                    $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
+                    return view('forms.maipp_inpatient', compact('certificates', 'diagnosis'));
+                }
+
+                return view('forms.maipp_inpatient', compact('certificate_no'));
             case "medico_legal":
                 $latest_id = $this->certificateService->getLatestId();
                 $certificate_no = "000001";
@@ -356,8 +385,12 @@ class ApplicationController extends Controller
             switch ($certificate->type) {
                 case "ordinary":
                     return view('pdf.ordinary', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'title' => $request->title]);
+                case "ordinary_inpatient":
+                    return view('pdf.ordinary_inpatient', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'title' => $request->title]);
                 case "maipp":
                     return view('pdf.maipp', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'title' => $request->title]);
+                case "maipp_inpatient":
+                    return view('pdf.maipp_inpatient', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'title' => $request->title]);
                 case "medico_legal":
                     $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
                     return view('pdf.medico_legal', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'sustained' => $sustained, 'title' => $request->title]);

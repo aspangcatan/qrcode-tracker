@@ -74,7 +74,7 @@
                     <input type="text" id="age" placeholder="age"/>
                 @endif
             </div>
-            <div class="small">
+            <div class="very-small">
                 @if(isset($certificates) && $certificates)
                     <select id="sex" class="w-100 text-center">
                         <option></option>
@@ -113,7 +113,7 @@
             <span>to</span>
             <div class="small">
                 @if(isset($certificates) && $certificates)
-                    <input type="date" id="date_discharged" />
+                    <input type="date" id="date_discharged"   value="{{ \Illuminate\Support\Carbon::parse($certificates->date_discharged)->format('Y-m-d') }}"/>
                 @else
                     <input type="date" id="date_discharged" />
                 @endif
@@ -213,7 +213,6 @@
         <div id="purpose_container">
             <div>2nd Purpose</div>
             <select id="second_purpose">
-                <option></option>
                 @if(isset($certificates) && $certificates)
                     @if($certificates->second_purpose == '(AKSYON AGAD)')
                         <option selected>(AKSYON AGAD)</option>
