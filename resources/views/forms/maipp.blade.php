@@ -101,7 +101,7 @@
             , was<br/>
         </div>
         <div>
-            examined and treated in this hospital on
+            examined and treated/confined in this hospital on
             <div class="small">
                 @if(isset($certificates) && $certificates)
                     <input type="date" id="date_examined"

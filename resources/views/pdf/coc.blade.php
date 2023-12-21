@@ -5,9 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MEDICO LEGAL CERTIFICATE</title>
+    <title>Ordinary Medical Certificate</title>
     <style>
-
         @media print {
             body {
                 margin: 0 !important;
@@ -197,166 +196,123 @@
     <div class="certificate-title">
         {{ $title }}
     </div>
-    <table style="width: 100%;margin-top:15px">
-        <tr>
-            <td style="width: 27%">
-                <p>This is to certify that</p>
-            </td>
-            <td class="border-bottom text-center fw-bold" style="width: 50%">
-                {{ $certificate->patient }}
-            </td>
-            <td>,</td>
-            <td style="width: 30%" class="border-bottom text-center fw-bold">{{ $certificate->age }} </td>
-            <td>,</td>
-        </tr>
-        <tr class="text-center">
-            <td></td>
-            <td>
-                <small>Name of requesting</small>
-            </td>
-            <td></td>
-            <td>
-                <small>Age</small>
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%">
-        <tr>
-            <td colspan="4">
-                <div style="word-spacing: 8px;">
-                    @if(strtoupper($certificate->sex) == 'MALE') <u>male</u>
-                    @else male
-                    @endif /
-                    @if(strtoupper($certificate->sex) == 'FEMALE')
-                        <u>female</u>
-                    @else female
-                    @endif ,
-                    @if(strtoupper($certificate->civil_status) == 'SINGLE')<u>single</u>
-                    @else single
-                    @endif /
-                    @if(strtoupper($certificate->civil_status) == 'MARRIED')<u>married</u>
-                    @else married
-                    @endif /
-                    @if(strtoupper($certificate->civil_status) == 'CHILD')<u>child</u>
-                    @else child
-                    @endif /
-                    @if(strtoupper($certificate->civil_status) == 'WIDOW/ER')<u>widow/er</u>
-                    @else widow/er
-                    @endif, <strong>Filipino</strong>, and a resident of
-                </div>
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%">
-        <tr>
-            <td style="width: 45%" class="border-bottom text-center fw-bold">{{ $certificate->address }}</td>
-            <td style="width: 10%" class="text-center">on</td>
-            <td style="width: 40%"
-                class="border-bottom text-center fw-bold">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}</td>
-        </tr>
-        <tr class="text-center">
-            <td>
-                <small>Address</small>
-            </td>
-            <td></td>
-            <td>
-                <small>Date</small>
-            </td>
-        </tr>
-    </table>
-    <table style="width: 100%">
-        <tr>
-            <td style="width: 10%">at about</td>
-            <td class="border-bottom text-center fw-bold"
-                style="width: 20%">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('h:iA')) }}</td>
-            <td style="width: 70%;">
-                for the following lesion / injury;
-            </td>
-        </tr>
-        <tr class="text-center">
-            <td></td>
-            <td>
-                <small>Time</small>
-            </td>
-        </tr>
-    </table>
-    <div style="color:white">A</div>
-    <div style="color:white">A</div>
-    <table style="width: 100%">
-        @for($i=0; $i<count($diagnosis); $i++)
+    <div class="certificate-text">
+        <table style="width: 100%" class="word-spacing">
             <tr>
-                <td style="width: 15%;color:white">sustained by:</td>
-                <td>{!! $diagnosis[$i]->diagnosis !!}</td>
+                <td style="width: 25%">
+                    <p>This is to certify that</p>
+                </td>
+                <td class="border-bottom text-center fw-bold" style="width: 43%">
+                    {{ $certificate->patient }}
+                </td>
+                <td>,</td>
+                <td class="border-bottom text-center fw-bold" style="width: 25%">
+                    {{ $certificate->age }}
+                </td>
+                <td>
+                    <p>of</p>
+                </td>
             </tr>
+            <tr class="text-center no-spacing">
+                <td></td>
+                <td>
+                    <small>Name of patient</small>
+                </td>
+                <td></td>
+                <td>
+                    <small>Age</small>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%">
+            <tr>
+                <td class="border-bottom text-center fw-bold" style="width:55%">
+                    {{ $certificate->address }}
+                </td>
+                <td>
+                    <p style="margin-left: 10px">has been confined in this hospital from</p>
+                </td>
+            </tr>
+            <tr class="text-center no-spacing">
+                <td>
+                    <small>Address</small>
+                </td>
+            </tr>
+        </table>
+        <table style="width: 100%">
+            <tr>
+                <td class="border-bottom text-center fw-bold" style="width:40%">
+                    {{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}
+                </td>
+                <td>
+                    <p style="margin-left: 10px;margin-right: 10px">to</p>
+                </td>
+                <td class="border-bottom text-center fw-bold" style="width:40%">
+                    present
+                </td>
+                <td style="width: 20%"></td>
+            </tr>
+            <tr class="text-center no-spacing">
+                <td>
+                    <small>Date of admission</small>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
+    <div style="color:white">A</div>
+    <div style="color:white">A</div>
+    <div class="certificate-diagnosis" style="margin-left: 35%">
+        @for($i=0; $i<count($diagnosis); $i++)
+            <div>{!! $diagnosis[$i]->diagnosis !!}</div>
         @endfor
-    </table>
+    </div>
     <div style="color:white">A</div>
     <div style="color:white">A</div>
-    <table style="width: 100%">
-        <tr>
-            <td style="width: 15%">sustained by:</td>
-            <td>NOI: {{ $sustained->noi }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>DOI: {{ $sustained->doi }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>POI: {{ $sustained->poi }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>TOI: {{ $sustained->toi }}</td>
-        </tr>
-    </table>
     <div class="certificate-text">
         <table style="width: 100%">
             <tr>
-                <td colspan="3">
-                    <div>In my opinion, the injuries sustained by the patient will
-                        incapacitate or require medical
-                    </div>
+                <td style="width: 60%">
+                    <p>This certification is being issued at the request of</p>
+                </td>
+                <td class="border-bottom text-center fw-bold">
+                    <div class="ml-1">{{ $certificate->requesting_person }}</div>
                 </td>
             </tr>
             <tr>
-                <td style="width: 25%">attention for a period of</td>
-                <td style="width: 30%" class="border-bottom text-center">
-                    {{ $certificate->days_barred }}
+                <td></td>
+                <td class="text-center">
+                    <small>Name of Person Requesting</small>
                 </td>
-                <td>day/days barring complications.</td>
+            </tr>
+        </table>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 1%">for</td>
+                <td class="border-bottom fw-bold text-center" style="width: 65%">
+                    <div class="ml-1">{{ $certificate->purpose }}</div>
+                </td>
+                <td style="width: 35%"></td>
             </tr>
             <tr>
-                <td colspan="3">
-                    <div>
-                        Otherwise, the period of healing will vary accordingly.
-                    </div>
+                <td></td>
+                <td class="text-center">
+                    <small>Purpose</small>
                 </td>
             </tr>
         </table>
     </div>
     <div class="doctor-container mt-5">
-        <table style="width: 100%">
-            <tr>
+        <table style="width: 100%" class="text-center">
+            <tr class="fw-bold">
                 <td style="width: 50%"></td>
-                <td style="width: 40%">
-                    <u class="fw-bold">{{ $certificate->doctor }}</u>
+                <td style="width: 50%" class="border-bottom">
+                    MYLA D. BORROMEO
                 </td>
-                <td style="width: 10%"></td>
             </tr>
             <tr>
                 <td></td>
-                <td>
-                    {{ $certificate->doctor_designation }}
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span>
-                </td>
-                <td></td>
+                <td>Administrative Officer V</td>
             </tr>
         </table>
     </div>
@@ -390,20 +346,20 @@
         </table>
     </div>
     <div style="float:right;margin-top:30px;font-size: 13px">
-        <div>MPS - REC - FM - 05</div>
+        <div>MPS - REC - FM - 03</div>
         <div>07-Dec-18</div>
     </div>
 </div>
 <script>
-    // // Disable right-click
-    // document.addEventListener('contextmenu', event => event.preventDefault());
-    // // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
-    // document.onkeydown = function (e) {
-    //     if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
-    //         e.preventDefault();
-    //         return false;
-    //     }
-    // };
+    // Disable right-click
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
+    document.onkeydown = function (e) {
+        if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+            e.preventDefault();
+            return false;
+        }
+    };
 </script>
 </body>
 </html>

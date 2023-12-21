@@ -101,7 +101,7 @@
 
         .certificate-text {
             margin-top: 20px;
-            margin-left: 20%;
+            margin-left: 15%;
             margin-right: 10%;
         }
 

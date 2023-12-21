@@ -85,6 +85,9 @@
                 case "5":
                     type = "maipp_inpatient";
                     break;
+                case "6":
+                    type = "coc";
+                    break;
             }
 
             $("#choose_certificate_modal").modal("hide");
@@ -362,15 +365,9 @@
             let is_valid = true;
             $(".is-invalid").removeClass("is-invalid");
 
-            if (!requesting_person) {
+            if (!requesting_person && type != "medico_legal") {
                 toastr.error('Requesting person is required');
                 $("#requesting_person").addClass("is-invalid");
-                is_valid = false;
-            }
-
-            if (!relationship) {
-                toastr.error('Relationship is required');
-                $("#relationship").addClass("is-invalid");
                 is_valid = false;
             }
 
@@ -381,7 +378,7 @@
             }
 
             if (!date_requested) {
-                toastr.error('Requesting person is required');
+                toastr.error('Date requested is required');
                 $("#date_requested").addClass("is-invalid");
                 is_valid = false;
             }
@@ -759,6 +756,27 @@
                     break;
             }
             const released_by = (it.released_by) ? it.released_by : "";
+            // let _type = "";
+            // switch (it.type) {
+            //     case "ordinary":
+            //         _type = "ORDINARY MED CERT - ER/OPD";
+            //         break;
+            //     case "ordinary_inpatient":
+            //         _type = "ORDINARY MED CERT - INPATIENT";
+            //         break;
+            //     case "maipp":
+            //         _type = "PRESIGNED - ER/OPD";
+            //         break;
+            //     case "maipp_inpatient":
+            //         _type = "PRESIGNED - INPATIENT";
+            //         break;
+            //     case "medico_legal":
+            //         _type = "MEDICO LEGAL";
+            //         break;
+            //     case "coc":
+            //         _type = "CERTIFICATE OF CONFINEMENT";
+            //         break;
+            // }
             let tr = `
                     <tr id="certificate_id_` + it.id + `">
                         <td>` + it.type + `</td>

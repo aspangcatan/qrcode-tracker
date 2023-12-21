@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Ordinary Medical Certificate</title>
     <style>
+
         @media print {
             body {
                 margin: 0 !important;
@@ -20,6 +21,10 @@
             margin-right: 30%;
             font-size: 16px;
             font-family: Arial, sans-serif;
+        }
+
+        .fw-bold {
+            font-weight: bold;
         }
 
         .container {
@@ -52,10 +57,11 @@
             text-align: center;
             margin-top: 20px;
             font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 30px;
         }
 
         .certificate-text {
-            text-align: center;
             margin-top: 20px;
         }
 
@@ -133,6 +139,21 @@
         .text-center {
             text-align: center;
         }
+
+        table {
+            border-collapse: separate;
+            border-spacing: 0 3px;
+        }
+
+        table p {
+            word-spacing: 5px;
+            padding: 0px;
+            margin: 0px;
+        }
+
+        table tr.no-spacing {
+            border-spacing: 0 !important; /* Set border-spacing to 0 for the specific class */
+        }
     </style>
 </head>
 <body>
@@ -150,7 +171,7 @@
             <td>
                 <div style="text-align: right">
                     Certificate No:
-                    <div class="small">{{ $certificate->certificate_no }}</div>
+                    <div class="small fw-bold">{{ $certificate->certificate_no }}</div>
                 </div>
             </td>
         </tr>
@@ -158,7 +179,7 @@
             <td>
                 <div style="text-align: right">
                     Health Record No:
-                    <div class="small">{{ $certificate->health_record_no }}</div>
+                    <div class="small fw-bold">{{ $certificate->health_record_no }}</div>
                 </div>
             </td>
         </tr>
@@ -167,7 +188,7 @@
                 <div style="text-align: right">
                     Date:
                     <div
-                        class="small">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}</div>
+                        class="small fw-bold">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}</div>
                 </div>
             </td>
         </tr>
@@ -179,12 +200,14 @@
     <div class="certificate-text" style="text-align: start">
         <table style="width: 100%">
             <tr>
-                <td>This is to certify that</td>
-                <td class="border-bottom text-center" style="width: 50%">
+                <td>
+                    <p>This is to certify that</p>
+                </td>
+                <td class="border-bottom text-center fw-bold" style="width: 50%">
                     {{ $certificate->patient }}
                 </td>
                 <td>,</td>
-                <td class="border-bottom text-center" style="width: 20%">
+                <td class="border-bottom text-center fw-bold" style="width: 20%">
                     {{ $certificate->age }}
                 </td>
                 <td>of</td>
@@ -192,7 +215,7 @@
             <tr class="text-center">
                 <td></td>
                 <td>
-                    <small>Name of requesting patient</small>
+                    <small>Name of Patient</small>
                 </td>
                 <td></td>
                 <td>
@@ -202,10 +225,12 @@
         </table>
         <table style="width: 100%">
             <tr>
-                <td class="border-bottom text-center" style="width: 50%">
+                <td class="border-bottom text-center fw-bold" style="width: 50%">
                     {{ $certificate->address }}
                 </td>
-                <td>was examined and treated / confined in</td>
+                <td>
+                    <p>was examined and treated / confined in</p>
+                </td>
             </tr>
             <tr>
                 <td class="text-center">
@@ -216,7 +241,7 @@
         <table style="width: 100%;text-align: start">
             <tr>
                 <td>
-                    this hospital on/from
+                    <p>this hospital on/from</p>
                 </td>
                 <td class="border-bottom text-center fw-bold" style="width: 26%">
                     {{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}
@@ -229,12 +254,24 @@
                         still admitted
                     @endif
                 </td>
-                <td>with the following</td>
+                <td style="width: 20%">
+                    <p>with the following</p>
+                </td>
+            </tr>
+            <tr class="text-center">
+                <td></td>
+                <td>
+                   <small>Date of admission</small>
+                </td>
+                <td></td>
+                <td>
+                    <small>Date of discharge</small>
+                </td>
             </tr>
             <tr>
-                <td>
+                <td colspan="2">
                     <div style="padding-top: 10px">
-                        findings and/or diagnosis:
+                        <p>findings and/or diagnosis:</p>
                     </div>
                 </td>
             </tr>
@@ -252,12 +289,14 @@
     <div class="certificate-text">
         <table style="width: 100%">
             <tr>
-                <td style="width: 60%">This certification is being issued at the requested of</td>
+                <td style="width: 60%">
+                    <p>This certification is being issued at the request of</p>
+                </td>
                 <td>
-                    <div class="border-bottom ml-1">{{ $certificate->requesting_person }}</div>
+                    <div class="border-bottom text-center fw-bold ml-1">{{ $certificate->requesting_person }}</div>
                 </td>
             </tr>
-            <tr>
+            <tr class="text-center">
                 <td></td>
                 <td>
                     <small>Name of Person Requesting</small>
@@ -266,13 +305,13 @@
         </table>
         <table style="width: 100%">
             <tr>
-                <td style="width: 10%">for</td>
-                <td style="width: 65%">
-                    <div class="border-bottom ml-1">{{ $certificate->purpose }}</div>
+                <td style="width: 2%">for</td>
+                <td style="width: 30%">
+                    <div class="border-bottom text-center fw-bold ml-1">{{ $certificate->purpose }}</div>
                 </td>
                 <td style="width: 20%"></td>
             </tr>
-            <tr>
+            <tr class="text-center">
                 <td></td>
                 <td>
                     <small>Purpose</small>
@@ -283,11 +322,29 @@
     </div>
 
     <div class="doctor-container mt-5">
-        <div>
-            <div><u>{{ $certificate->doctor }}</u></div>
-            <div>{{ $certificate->doctor_designation }}</div>
-            <div>License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span></div>
-        </div>
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 50%"></td>
+                <td style="width: 40%">
+                    <u class="fw-bold">{{ $certificate->doctor }}</u>
+                </td>
+                <td style="width: 10%"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    {{ $certificate->doctor_designation }}
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span>
+                </td>
+                <td></td>
+            </tr>
+        </table>
     </div>
     <div class="mt-3">
         <div>(NOT VALID WITHOUT SEAL)</div>

@@ -31,7 +31,8 @@
                         Date:
                         <div class="small">
                             @if(isset($certificates) && $certificates)
-                                <input type="date" id="date_issued" value="{{ date('Y-m-d', strtotime($certificates->created_at)) }}" disabled/>
+                                <input type="date" id="date_issued"
+                                       value="{{ date('Y-m-d', strtotime($certificates->created_at)) }}" disabled/>
                             @else
                                 <input type="date" id="date_issued" value="{{ now()->format('Y-m-d') }}" disabled/>
                             @endif
@@ -74,10 +75,9 @@
                     <input type="text" id="address" placeholder="address"/>
                 @endif
             </div>
-            was examined and treated in this<br/>
+            has been confined in this hospital from
         </div>
         <div>
-            hospital on/from
             <div class="small">
                 @if(isset($certificates) && $certificates)
                     <input type="date" id="date_examined"
@@ -86,7 +86,10 @@
                     <input type="date" id="date_examined"/>
                 @endif
             </div>
-            with the following findings and/or diagnosis:
+            <span> to </span>
+            <div class="small text-center">
+                present
+            </div>
         </div>
     </div>
     <div class="d-flex justify-content-center mt-3 mb-3">
@@ -111,7 +114,7 @@
     <div class="certificate-text">
         <table style="width: 100%">
             <tr>
-                <td>This certification is being issued at the request of</td>
+                <td>This certification is being issued at the requested of</td>
                 <td>
                     <div class="small">
                         @if(isset($certificates) && $certificates)
@@ -279,23 +282,51 @@
                 <td>:</td>
                 <td>
                     <div class="medium">
-                        <select class="js-example-basic-single w-100"  id="received_by" class="w-100 text-center">
+                        <select class="js-example-basic-single w-100" id="received_by" class="w-100 text-center">
                             <option></option>
                             @if(isset($certificates) && $certificates)
-                                <option {{ $certificates->received_by === "Jenifer P. Filomeno" ? 'selected' : '' }}>Jenifer P. Filomeno</option>
-                                <option {{ $certificates->received_by === "Jean C. Gapay" ? 'selected' : '' }}>Jean C. Gapay</option>
-                                <option {{ $certificates->received_by === "Frank Bryll R. Sabido" ? 'selected' : '' }}>Frank Bryll R. Sabido</option>
-                                <option {{ $certificates->received_by === "Niño G. Nakila" ? 'selected' : '' }}>Niño G. Nakila</option>
-                                <option {{ $certificates->received_by === "Shaira Joyce L. Castañares" ? 'selected' : '' }}>Shaira Joyce L. Castañares</option>
-                                <option {{ $certificates->received_by === "Shane Marigold L. Oliveros" ? 'selected' : '' }}>Shane Marigold L. Oliveros</option>
-                                <option {{ $certificates->received_by === "Myla D. Borromeo" ? 'selected' : '' }}>Myla D. Borromeo</option>
-                                <option {{ $certificates->received_by === "James Phillip M. Padillo" ? 'selected' : '' }}>James Phillip M. Padillo</option>
-                                <option {{ $certificates->received_by === "Jemark C. Garcia" ? 'selected' : '' }}>Jemark C. Garcia</option>
-                                <option {{ $certificates->received_by === "Jane Villagorda" ? 'selected' : '' }}>Jane Villagorda</option>
-                                <option {{ $certificates->received_by === "Arjay P. Murro" ? 'selected' : '' }}>Arjay P. Murro</option>
-                                <option {{ $certificates->received_by === "Albert Glenn G. Asentista" ? 'selected' : '' }}>Albert Glenn G. Asentista</option>
-                                <option {{ $certificates->received_by === "Jessa Mae L. Vasaya" ? 'selected' : '' }}>Jessa Mae L. Vasaya</option>
-                                <option {{ $certificates->received_by === "Consuelo D. Gum-os" ? 'selected' : '' }}>Consuelo D. Gum-os</option>
+                                <option {{ $certificates->received_by === "Jenifer P. Filomeno" ? 'selected' : '' }}>
+                                    Jenifer P. Filomeno
+                                </option>
+                                <option {{ $certificates->received_by === "Jean C. Gapay" ? 'selected' : '' }}>Jean C.
+                                    Gapay
+                                </option>
+                                <option {{ $certificates->received_by === "Frank Bryll R. Sabido" ? 'selected' : '' }}>
+                                    Frank Bryll R. Sabido
+                                </option>
+                                <option {{ $certificates->received_by === "Niño G. Nakila" ? 'selected' : '' }}>Niño G.
+                                    Nakila
+                                </option>
+                                <option {{ $certificates->received_by === "Shaira Joyce L. Castañares" ? 'selected' : '' }}>
+                                    Shaira Joyce L. Castañares
+                                </option>
+                                <option {{ $certificates->received_by === "Shane Marigold L. Oliveros" ? 'selected' : '' }}>
+                                    Shane Marigold L. Oliveros
+                                </option>
+                                <option {{ $certificates->received_by === "Myla D. Borromeo" ? 'selected' : '' }}>Myla
+                                    D. Borromeo
+                                </option>
+                                <option {{ $certificates->received_by === "James Phillip M. Padillo" ? 'selected' : '' }}>
+                                    James Phillip M. Padillo
+                                </option>
+                                <option {{ $certificates->received_by === "Jemark C. Garcia" ? 'selected' : '' }}>Jemark
+                                    C. Garcia
+                                </option>
+                                <option {{ $certificates->received_by === "Jane Villagorda" ? 'selected' : '' }}>Jane
+                                    Villagorda
+                                </option>
+                                <option {{ $certificates->received_by === "Arjay P. Murro" ? 'selected' : '' }}>Arjay P.
+                                    Murro
+                                </option>
+                                <option {{ $certificates->received_by === "Albert Glenn G. Asentista" ? 'selected' : '' }}>
+                                    Albert Glenn G. Asentista
+                                </option>
+                                <option {{ $certificates->received_by === "Jessa Mae L. Vasaya" ? 'selected' : '' }}>
+                                    Jessa Mae L. Vasaya
+                                </option>
+                                <option {{ $certificates->received_by === "Consuelo D. Gum-os" ? 'selected' : '' }}>
+                                    Consuelo D. Gum-os
+                                </option>
                             @else
                                 <option>Jenifer P. Filomeno</option>
                                 <option>Jean C. Gapay</option>

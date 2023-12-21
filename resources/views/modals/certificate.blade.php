@@ -68,6 +68,7 @@
                 <select class="form-control" id="select_heading">
                     <option>MEDICAL CERTIFICATE</option>
                     <option>DENTAL CERTIFICATE</option>
+                    <option>CERTIFICATE OF CONFINEMENT</option>
                 </select>
             </div>
             <div class="modal-footer">
@@ -87,11 +88,12 @@
             </div>
             <div class="modal-body w-100">
                 <select class="form-control" id="select_certificate">
-                    <option value="1">Ordinary</option>
-                    <option value="2">MAIPP</option>
-                    <option value="3">Medico Legal</option>
-                    <option value="4">Original - Inpatient</option>
-                    <option value="5">MAIPP - Inpatient</option>
+                    <option value="1">ORDINARY MEDCERT - ER/OPD</option>
+                    <option value="2">PREDESIGNED - ER/OPD</option>
+                    <option value="3">MEDICO LEGAL</option>
+                    <option value="4">ORDINARY MEDCERT - INPATIENT</option>
+                    <option value="5">PRESIGNED - INPATIENT</option>
+                    <option value="6">COC</option>
                 </select>
             </div>
             <div class="modal-footer">
