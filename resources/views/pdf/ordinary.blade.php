@@ -261,7 +261,7 @@
     </div>
     <div style="color:white">A</div>
     <div style="color:white">A</div>
-    <div class="certificate-diagnosis" style="margin-left: 35%">
+    <div class="certificate-diagnosis" style="margin-left: 130px">
         @for($i=0; $i<count($diagnosis); $i++)
             <div>{!! $diagnosis[$i]->diagnosis !!}</div>
         @endfor
