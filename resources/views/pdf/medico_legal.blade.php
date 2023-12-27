@@ -372,7 +372,11 @@
             <tr>
                 <td>AMOUNT</td>
                 <td>:</td>
-                <td>₱{{ number_format($certificate->amount,2) }}</td>
+                @if(is_numeric($certificate->amount))
+                    <td>₱{{ number_format($certificate->amount,2) }}</td>
+                @else
+                    <td>{{ $certificate->amount }}</td>
+                @endif
                 <td>
                     <small></small>
                 </td>
