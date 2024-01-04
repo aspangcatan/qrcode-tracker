@@ -14,7 +14,7 @@ class SustainedService
             ->first();
     }
 
-    public function store($data)
+    public function  store($data)
     {
         return DB::table('qr_tracker.sustained_details')->insert($data);
     }

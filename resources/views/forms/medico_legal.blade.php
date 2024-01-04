@@ -194,9 +194,24 @@
                     <td>
                         <div class="medium">
                             @if(isset($sustained) && $sustained)
-                                <input type="text" id="doi" value="{{ $sustained->doi }}"/>
+                                <input type="date" id="doi" value="{{ $sustained->doi }}"/>
                             @else
-                                <input type="text" id="doi"/>
+                                <input type="date" id="doi"/>
+                            @endif
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <div class="d-block">TOI:</div>
+                    </td>
+                    <td>
+                        <div class="medium">
+                            @if(isset($sustained) && $sustained)
+                                <input type="time" id="toi" value="{{ $sustained->toi }}"/>
+                            @else
+                                <input type="time" id="toi"/>
                             @endif
                         </div>
                     </td>
@@ -212,21 +227,6 @@
                                 <input type="text" id="poi" value="{{ $sustained->poi }}"/>
                             @else
                                 <input type="text" id="poi"/>
-                            @endif
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td>
-                        <div class="d-block">TOI:</div>
-                    </td>
-                    <td>
-                        <div class="medium">
-                            @if(isset($sustained) && $sustained)
-                                <input type="text" id="toi" value="{{ $sustained->toi }}"/>
-                            @else
-                                <input type="text" id="toi"/>
                             @endif
                         </div>
                     </td>
@@ -318,9 +318,9 @@
                     <td>
                         <div class="medium">
                             @if(isset($certificates) && $certificates)
-                                <input type="text" id="amount" value="{{ $certificates->amount }}">
+                                <input type="text" id="amount" value="{{ $certificates->amount }}" disabled>
                             @else
-                                <input type="text" id="amount">
+                                <input type="text" id="amount" value="150.00" disabled>
                             @endif
                         </div>
                     </td>
@@ -425,7 +425,7 @@
                                     <option>Arjay P. Murro</option>
                                     <option>Albert Glenn G. Asentista</option>
                                     <option>Jessa Mae L. Vasaya</option>
-                                    <option>Consuelo D. Gum-os</option>
+                                    <option>Aiza Marie M. Francisco</option>
                                 @endif
                             </select>
                         </div>

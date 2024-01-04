@@ -324,8 +324,8 @@
                                 <option {{ $certificates->received_by === "Jessa Mae L. Vasaya" ? 'selected' : '' }}>
                                     Jessa Mae L. Vasaya
                                 </option>
-                                <option {{ $certificates->received_by === "Consuelo D. Gum-os" ? 'selected' : '' }}>
-                                    Consuelo D. Gum-os
+                                <option {{ $certificates->received_by === "Aiza Marie M. Francisco" ? 'selected' : '' }}>
+                                    Aiza Marie M. Francisco
                                 </option>
                             @else
                                 <option>Jenifer P. Filomeno</option>
@@ -341,7 +341,7 @@
                                 <option>Arjay P. Murro</option>
                                 <option>Albert Glenn G. Asentista</option>
                                 <option>Jessa Mae L. Vasaya</option>
-                                <option>Consuelo D. Gum-os</option>
+                                <option>Aiza Marie M. Francisco</option>
                             @endif
                         </select>
                     </div>

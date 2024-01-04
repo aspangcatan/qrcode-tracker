@@ -141,6 +141,8 @@
                     <table class="table table-striped text-center" style="font-size: 13px">
                         <thead>
                         <tr>
+                            <th>DATE/TIME REQUESTED</th>
+                            <th>CERT NO.</th>
                             <th>PATIENT</th>
                             <th>DOCUMENT REQUESTED</th>
                             <th>CS NO.</th>
@@ -149,9 +151,7 @@
                             <th>PREPARED BY</th>
                             <th>REQUESTED BY</th>
                             <th>RELATIONSHIP</th>
-                            <th>DATE/TIME REQUESTED</th>
                             <th>DATE/TIME COMPLETED</th>
-                            <th>CERT NO.</th>
                             <th>DATE/TIME RELEASED</th>
                             <th>RELEASED/CANCELLED BY</th>
                             <th>STATUS</th>

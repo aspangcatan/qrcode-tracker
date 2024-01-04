@@ -176,6 +176,8 @@
                 const released_by = (it.released_by) ? it.released_by : "";
                 const tr = `
                 <tr>
+                    <td>` + date_requested + `</td>
+                    <td>` + it.certificate_no + `</td>
                     <td>` + it.patient + `</td>
                     <td>` + it.type + `</td>
                     <td>` + it.charge_slip_no + `</td>
@@ -184,9 +186,7 @@
                     <td>` + it.prepared_by + `</td>
                     <td>` + it.requesting_person + `</td>
                     <td>` + it.relationship + `</td>
-                    <td>` + date_requested + `</td>
                     <td>` + date_completed + `</td>
-                    <td>` + it.certificate_no + `</td>
                     <td>` + date_issued + `</td>
                     <td>` + released_by + `</td>
                     <td>` + status + `</td>
@@ -315,8 +315,8 @@
 
             const noi = $("#noi").val();
             const doi = $("#doi").val();
-            const poi = $("#poi").val();
             const toi = $("#toi").val();
+            const poi = $("#poi").val();
 
             const sustained = {
                 "noi": (noi === undefined) ? null : noi,
@@ -550,6 +550,7 @@
                         $("#doi").addClass("is-invalid");
                         is_valid = false;
                     }
+
 
                     if (!poi) {
                         toastr.error('POI is required');

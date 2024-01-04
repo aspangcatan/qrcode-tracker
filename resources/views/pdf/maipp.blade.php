@@ -352,28 +352,6 @@
         </div>
     </div>
 
-    <div style="margin-top: 40px">
-        <table style="width: 100%" class="text-center">
-            <tr class="fw-bold">
-                <td style="width: 40%"></td>
-                <td style="width: 50%" class="border-bottom">
-                    MYLA D. BORROMEO
-                </td>
-                <td style="width: 10%"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Administrative Officer V</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Health Information Management Department</td>
-                <td></td>
-            </tr>
-        </table>
-    </div>
-
     <div style="margin-top:40px">
         <div class="fw-bold">(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">

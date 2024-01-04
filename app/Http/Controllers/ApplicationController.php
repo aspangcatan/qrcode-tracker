@@ -386,17 +386,17 @@ class ApplicationController extends Controller
             $sheet->setCellValue('B1', $request->title);
             $sheet->insertNewRowBefore($row, count($records));
             for ($i = 0; $i < count($records); $i++) {
-                $sheet->setCellValue('A' . $row, $records[$i]->patient);
-                $sheet->setCellValue('B' . $row, $records[$i]->type);
-                $sheet->setCellValue('C' . $row, $records[$i]->charge_slip_no);
-                $sheet->setCellValue('D' . $row, $records[$i]->or_no);
-                $sheet->setCellValue('E' . $row, $records[$i]->received_by);
-                $sheet->setCellValue('F' . $row, $records[$i]->prepared_by);
-                $sheet->setCellValue('G' . $row, $records[$i]->requesting_person);
-                $sheet->setCellValue('H' . $row, $records[$i]->relationship);
-                $sheet->setCellValue('I' . $row, $records[$i]->date_requested);
-                $sheet->setCellValue('J' . $row, $records[$i]->date_completed);
-                $sheet->setCellValue('K' . $row, $records[$i]->certificate_no);
+                $sheet->setCellValue('A' . $row, $records[$i]->date_requested);
+                $sheet->setCellValue('B' . $row, $records[$i]->certificate_no);
+                $sheet->setCellValue('C' . $row, $records[$i]->patient);
+                $sheet->setCellValue('D' . $row, $records[$i]->type);
+                $sheet->setCellValue('E' . $row, $records[$i]->charge_slip_no);
+                $sheet->setCellValue('F' . $row, $records[$i]->or_no);
+                $sheet->setCellValue('G' . $row, $records[$i]->received_by);
+                $sheet->setCellValue('H' . $row, $records[$i]->prepared_by);
+                $sheet->setCellValue('I' . $row, $records[$i]->requesting_person);
+                $sheet->setCellValue('J' . $row, $records[$i]->relationship);
+                $sheet->setCellValue('K' . $row, $records[$i]->date_completed);
                 $sheet->setCellValue('L' . $row, $records[$i]->date_issued);
                 $sheet->setCellValue('M' . $row, $records[$i]->released_by);
                 $sheet->setCellValue('N' . $row, $records[$i]->status);

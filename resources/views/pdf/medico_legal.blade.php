@@ -299,16 +299,39 @@
         </tr>
         <tr>
             <td></td>
-            <td>DOI: {{ $sustained->doi }}</td>
+            <td>
+                DOI:
+                @isset($sustained->doi)
+                    @php
+                        try {
+                            echo \Carbon\Carbon::parse($sustained->doi)->format('m/d/Y');
+                        } catch (\Exception $e) {
+                            echo $sustained->doi;
+                        }
+                    @endphp
+                @endisset
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                TOI:
+                @isset($sustained->toi)
+                    @php
+                        try {
+                            echo \Carbon\Carbon::parse($sustained->toi)->format('h:i A');
+                        } catch (\Exception $e) {
+                            echo $sustained->toi;
+                        }
+                    @endphp
+                @endisset
+            </td>
         </tr>
         <tr>
             <td></td>
             <td>POI: {{ $sustained->poi }}</td>
         </tr>
-        <tr>
-            <td></td>
-            <td>TOI: {{ $sustained->toi }}</td>
-        </tr>
+
     </table>
     <div class="certificate-text">
         <table style="width: 100%">
@@ -372,11 +395,7 @@
             <tr>
                 <td>AMOUNT</td>
                 <td>:</td>
-                @if(is_numeric($certificate->amount))
-                    <td>₱{{ number_format($certificate->amount,2) }}</td>
-                @else
-                    <td>{{ $certificate->amount }}</td>
-                @endif
+                <td>₱150.00</td>
                 <td>
                     <small></small>
                 </td>

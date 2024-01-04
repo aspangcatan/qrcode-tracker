@@ -138,9 +138,12 @@ class CertificateService
             ->select([
                 'patient',
                 DB::raw('CASE
-            WHEN type = "ordinary" THEN "Medical Certificate"
-            WHEN type = "maipp" THEN "MAIPP Medical Certificate"
-            WHEN type = "medico_legal" THEN "MEDICO LEGAL CERTIFICATE"
+            WHEN type = "ordinary" THEN "ORDINARY MEDCERT - ER/OPD"
+            WHEN type = "maipp" THEN "PREDESIGNED - ER/OPD"
+            WHEN type = "medico_legal" THEN "MEDICO LEGAL"
+            WHEN type = "ordinary_inpatient" THEN "ORDINARY MEDCERT - INPATIENT"
+            WHEN type = "maipp_inpatient" THEN "PREDESIGNED - INPATIENT"
+            WHEN type = "coc" THEN "CERTIFICATE OF CONFINEMENT"
             ELSE type
         END AS type'), // Display type with custom values
                 'charge_slip_no',
@@ -148,7 +151,7 @@ class CertificateService
                 'received_by',
                 'prepared_by',
                 'requesting_person',
-                'relationship',
+                DB::raw('COALESCE(relationship, "") AS relationship'),
                 DB::raw('DATE_FORMAT(date_requested, "%m/%d/%Y %h:%i %p") AS date_requested'),
                 DB::raw('DATE_FORMAT(date_completed, "%m/%d/%Y %h:%i %p") AS date_completed'),
                 'certificate_no',

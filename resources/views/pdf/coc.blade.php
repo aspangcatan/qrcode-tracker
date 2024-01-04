@@ -302,20 +302,6 @@
             </tr>
         </table>
     </div>
-    <div class="doctor-container mt-5">
-        <table style="width: 100%" class="text-center">
-            <tr class="fw-bold">
-                <td style="width: 50%"></td>
-                <td style="width: 50%" class="border-bottom">
-                    MYLA D. BORROMEO
-                </td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>Administrative Officer V</td>
-            </tr>
-        </table>
-    </div>
     <div class="mt-3">
         <div class="fw-bold">(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
