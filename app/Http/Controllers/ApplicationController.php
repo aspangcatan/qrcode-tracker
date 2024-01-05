@@ -114,8 +114,7 @@ class ApplicationController extends Controller
                     $registry_no = str_pad(($latest_id->id + 1), 6, "0", STR_PAD_LEFT);
                 }
 
-                //ACCORDING TO CLIENT REGISTRY NO. AND CERTIFICATE NO. IS THE SAME
-
+                #ACCORDING TO CLIENT REGISTRY NO. AND CERTIFICATE NO. IS THE SAME
                 $params = [
                     'user_id' => Auth::id(),
                     'certificate_no' => $registry_no,

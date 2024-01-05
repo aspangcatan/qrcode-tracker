@@ -280,8 +280,8 @@
             </td>
         </tr>
     </table>
-    <div style="color:white">A</div>
-    <div style="color:white">A</div>
+    <div style="color:transparent">A</div>
+    <div style="color:transparent">A</div>
     <table style="width: 100%">
         @for($i=0; $i<count($diagnosis); $i++)
             <tr>
@@ -290,8 +290,8 @@
             </tr>
         @endfor
     </table>
-    <div style="color:white">A</div>
-    <div style="color:white">A</div>
+    <div style="color:transparent">A</div>
+    <div style="color:transparent">A</div>
     <table style="width: 100%">
         <tr>
             <td style="width: 15%">sustained by:</td>
@@ -412,7 +412,7 @@
             </tr>
         </table>
     </div>
-    <div style="float:right;margin-top:30px;font-size: 13px">
+    <div style="float:right;margin-top:120px;font-size: 13px">
         <div>MPS - REC - FM - 05</div>
         <div>07-Dec-18</div>
     </div>
