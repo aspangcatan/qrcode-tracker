@@ -25,6 +25,7 @@
 
         .fw-bold {
             font-weight: bold;
+            text-transform: uppercase;
         }
 
         .container {
