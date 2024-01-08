@@ -93,6 +93,7 @@
 
         .certificate-diagnosis {
             margin-top: 20px;
+            text-transform: uppercase;
         }
 
         .mt-1 {

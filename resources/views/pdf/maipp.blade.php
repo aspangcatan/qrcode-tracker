@@ -94,6 +94,7 @@
 
         .certificate-diagnosis {
             margin-top: 20px;
+            text-transform: uppercase;
         }
 
         .mt-1 {
@@ -290,7 +291,7 @@
     </table>
     <div style="color:transparent">A</div>
     <div style="color:transparent">A</div>
-    <div style="margin-left: 90px">
+    <div style="margin-left: 90px;text-transform: uppercase">
         @for($i=0; $i<count($diagnosis); $i++)
             <div class="centered-element">{!! $diagnosis[$i]->diagnosis !!}</div>
         @endfor
