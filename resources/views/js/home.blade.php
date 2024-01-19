@@ -757,30 +757,31 @@
                     break;
             }
             const released_by = (it.released_by) ? it.released_by : "";
-            // let _type = "";
-            // switch (it.type) {
-            //     case "ordinary":
-            //         _type = "ORDINARY MED CERT - ER/OPD";
-            //         break;
-            //     case "ordinary_inpatient":
-            //         _type = "ORDINARY MED CERT - INPATIENT";
-            //         break;
-            //     case "maipp":
-            //         _type = "PRESIGNED - ER/OPD";
-            //         break;
-            //     case "maipp_inpatient":
-            //         _type = "PRESIGNED - INPATIENT";
-            //         break;
-            //     case "medico_legal":
-            //         _type = "MEDICO LEGAL";
-            //         break;
-            //     case "coc":
-            //         _type = "CERTIFICATE OF CONFINEMENT";
-            //         break;
-            // }
+            let _type = "";
+            switch (it.type) {
+                case "ordinary":
+                    _type = "ORDINARY MED CERT - ER/OPD";
+                    break;
+                case "ordinary_inpatient":
+                    _type = "ORDINARY MED CERT - INPATIENT";
+                    break;
+                case "maipp":
+                    _type = "PRESIGNED - ER/OPD";
+                    break;
+                case "maipp_inpatient":
+                    _type = "PRESIGNED - INPATIENT";
+                    break;
+                case "medico_legal":
+                    _type = "MEDICO LEGAL";
+                    break;
+                case "coc":
+                    _type = "CERTIFICATE OF CONFINEMENT";
+                    break;
+            }
             let tr = `
                     <tr id="certificate_id_` + it.id + `">
-                        <td>` + it.type + `</td>
+                        <td class="d-none">` + it.type + `</td>
+                        <td>` + _type + `</td>
                         <td>` + it.patient + `</td>
                         <td>` + it.health_record_no + `</td>
                         <td>` + it.certificate_no + `</td>
