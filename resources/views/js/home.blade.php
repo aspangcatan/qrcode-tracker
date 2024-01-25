@@ -627,6 +627,10 @@
     function printPreview(id) {
         certificate_id = id;
         $("#heading_modal").modal("show");
+        //SET DEFAULTS
+        $("#d_margin_top").val(50);
+        $("#d_margin_bottom").val(50);
+        $("#s_margin_top").val(130);
     }
 
     function editCertificate(id) {
