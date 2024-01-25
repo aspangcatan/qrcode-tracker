@@ -159,10 +159,7 @@
     </style>
 </head>
 <body>
-<div style="color: white">A</div>
-<div style="color: white">A</div>
-<div style="color: white">A</div>
-<div class="container">
+<div class="container" style="margin-top: 70px">
     <table style="width: 100%">
         <tr>
             <td rowspan="3">
