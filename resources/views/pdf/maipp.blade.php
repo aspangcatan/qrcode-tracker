@@ -289,15 +289,13 @@
             </td>
         </tr>
     </table>
-    <div style="color:transparent">A</div>
-    <div style="color:transparent">A</div>
-    <div style="margin-left: 90px;text-transform: uppercase">
+
+    <div style="margin-left: 90px;margin-top:{{$d_margin_top}}px;margin-bottom:{{$d_margin_bottom}}px;text-transform: uppercase">
         @for($i=0; $i<count($diagnosis); $i++)
             <div class="centered-element">{!! $diagnosis[$i]->diagnosis !!}</div>
         @endfor
     </div>
-    <div style="color:transparent">A</div>
-    <div style="color:transparent">A</div>
+
     <table style="width: 100%">
         <tr>
             <td style="width: 60%">

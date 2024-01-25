@@ -282,22 +282,23 @@
             </td>
         </tr>
     </table>
-    <div style="color:transparent">A</div>
-    <div style="color:transparent">A</div>
-    <table style="width: 100%">
+
+    <table style="width: 100%;margin-top:{{$d_margin_top}}px;margin-bottom:{{$d_margin_bottom}}px;text-transform: uppercase">
         @for($i=0; $i<count($diagnosis); $i++)
             <tr>
-                <td style="width: 15%;color:white">sustained by:</td>
+                <td style="width: 15%"></td>
                 <td>{!! $diagnosis[$i]->diagnosis !!}</td>
             </tr>
         @endfor
     </table>
-    <div style="color:transparent">A</div>
-    <div style="color:transparent">A</div>
     <table style="width: 100%">
         <tr>
             <td style="width: 15%">sustained by:</td>
-            <td>NOI: {{ $sustained->noi }}</td>
+            <td>NOI:
+                @if($sustained)
+                    {{ $sustained->noi }}
+                @endif
+            </td>
         </tr>
         <tr>
             <td></td>
@@ -331,7 +332,11 @@
         </tr>
         <tr>
             <td></td>
-            <td>POI: {{ $sustained->poi }}</td>
+            <td>POI:
+                @if($sustained)
+                    {{ $sustained->poi }}
+                @endif
+            </td>
         </tr>
 
     </table>
@@ -414,21 +419,19 @@
             </tr>
         </table>
     </div>
-    <div style="float:right;margin-top:120px;font-size: 13px">
+    <div style="float:right;margin-top:{{$s_margin_top}}px;font-size: 13px">
         <div>MPS - REC - FM - 05</div>
         <div>07-Dec-18</div>
     </div>
 </div>
 <script>
-    // // Disable right-click
-    // document.addEventListener('contextmenu', event => event.preventDefault());
-    // // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
-    // document.onkeydown = function (e) {
-    //     if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
-    //         e.preventDefault();
-    //         return false;
-    //     }
-    // };
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    document.onkeydown = function (e) {
+        if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+            e.preventDefault();
+            return false;
+        }
+    };
 </script>
 </body>
 </html>

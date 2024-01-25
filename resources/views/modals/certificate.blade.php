@@ -67,9 +67,26 @@
             <div class="modal-body w-100">
                 <select class="form-control" id="select_heading">
                     <option>MEDICAL CERTIFICATE</option>
+                    <option>MEDICO LEGAL CERTIFICATE</option>
                     <option>DENTAL CERTIFICATE</option>
                     <option>CERTIFICATE OF CONFINEMENT</option>
                 </select>
+                <div class="form-floating mb-3 mt-2">
+                    <input type="number" class="form-control" id="d_margin_top">
+                    <label>Margin Top (Diagnosis)</label>
+                </div>
+                <div class="form-floating mb-3 mt-2">
+                    <input type="number" class="form-control" id="d_margin_bottom">
+                    <label>Margin Bottom (Diagnosis)</label>
+                </div>
+                <div class="form-floating mb-3 mt-2">
+                    <input type="number" class="form-control" id="s_margin_top">
+                    <label>Margin Top (Code)</label>
+                </div>
+                <div class="form-floating mb-3 mt-2 d-none">
+                    <input type="number" class="form-control" id="s_margin_bottom">
+                    <label>Margin Bottom (Code)</label>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>

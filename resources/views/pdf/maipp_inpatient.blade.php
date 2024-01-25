@@ -301,15 +301,12 @@
     <div>
         <p>with the following findings and or diagnosis:</p>
     </div>
-    <div style="color:transparent">A</div>
-    <div style="color:transparent">A</div>
-    <div style="margin-left: 90px">
+
+    <div style="margin-left: 90px;margin-top:{{$d_margin_top}}px;margin-bottom:{{$d_margin_bottom}}px;text-transform: uppercase">
         @for($i=0; $i<count($diagnosis); $i++)
             <div class="centered-element">{!! $diagnosis[$i]->diagnosis !!}</div>
         @endfor
     </div>
-    <div style="color:transparent">A</div>
-    <div style="color:transparent">A</div>
 
     <table style="width: 100%">
         <tr>
@@ -400,7 +397,7 @@
             </tr>
         </table>
     </div>
-    <div style="float:right;margin-top:120px;font-size: 13px">
+    <div style="float:right;margin-top:{{$s_margin_top}}px;font-size: 13px">
         <div>AHQM-REC-FM-03 Rev.0</div>
         <div>20 February 2023</div>
     </div>

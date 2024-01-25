@@ -146,7 +146,6 @@ class ApplicationController extends Controller
                     'created_at' => now()
                 ];
 
-                //CHECK IF ID EXISTS
                 $certificate = $this->certificateService->getCertificateById($request->id);
                 if ($certificate) {
                     //UPDATE INFORMATION
@@ -167,7 +166,6 @@ class ApplicationController extends Controller
                     $message = 'New record added';
                 }
 
-                //INSERT DIAGNOSIS
                 if ($request->diagnosis) {
                     $diagnosis = $request->diagnosis;
                     $diagnosis_params = [];
@@ -253,11 +251,9 @@ class ApplicationController extends Controller
             if (!$certificate) {
                 return response()->json(['message' => 'Certificate ID dont exists'], 404);
             }
-
             if ($certificate->date_completed) {
                 return response()->json(['message' => 'Certificate already tagged as DONE', 500]);
             }
-
             $this->certificateService->updateDateCompleted($certificate->id, Carbon::now()->format('Y-m-d\TH:i'), $prepared_by);
             return response()->json(['message' => 'Tagged successfully by ' . $prepared_by]);
         } catch (\Exception $exception) {
@@ -269,11 +265,9 @@ class ApplicationController extends Controller
     {
         try {
             $certificate = $this->certificateService->getCertificateById($request->id);
-
             if (!$certificate) {
                 return response()->json(['message' => 'QR not found'], 404);
             }
-
             $this->certificateService->updateStatus($request->id, 'CANCELLED');
             return response()->json(['message' => 'Record removed']);
         } catch (\Exception $exception) {
@@ -306,13 +300,11 @@ class ApplicationController extends Controller
                 if ($request->has('id')) {
                     return view('forms.maipp', compact('certificates', 'diagnosis'));
                 }
-
                 return view('forms.maipp', compact('certificate_no'));
             case "maipp_inpatient":
                 if ($request->has('id')) {
                     return view('forms.maipp_inpatient', compact('certificates', 'diagnosis'));
                 }
-
                 return view('forms.maipp_inpatient', compact('certificate_no'));
             case "medico_legal":
                 if ($request->has('id')) {
@@ -320,7 +312,6 @@ class ApplicationController extends Controller
                     return view('forms.medico_legal', compact('certificates', 'diagnosis', 'sustained'));
                 }
                 return view('forms.medico_legal', compact('certificate_no'));
-
             case "maipp_inpatient":
                 if ($request->has('id')) {
                     return view('forms.maipp', compact('certificates', 'diagnosis'));
@@ -330,7 +321,6 @@ class ApplicationController extends Controller
                 if ($request->has('id')) {
                     return view('forms.coc', compact('certificates', 'diagnosis'));
                 }
-
                 return view('forms.coc', compact('certificate_no'));
         }
     }
@@ -346,21 +336,77 @@ class ApplicationController extends Controller
             $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
             switch ($certificate->type) {
                 case "coc":
-                    return view('pdf.coc', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'title' => $request->title]);
+                    return view('pdf.coc',
+                        [
+                            'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'title' => $request->title,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom
+                        ]
+                    );
                 case "ordinary":
-                    return view('pdf.ordinary', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'title' => $request->title]);
+                    return view('pdf.ordinary',
+                        [
+                            'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'title' => $request->title,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom
+                        ]);
                 case "ordinary_inpatient":
-                    return view('pdf.ordinary_inpatient', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'title' => $request->title]);
+                    return view('pdf.ordinary_inpatient',
+                        [
+                            'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'title' => $request->title,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom
+                        ]);
                 case "maipp":
-                    return view('pdf.maipp', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'title' => $request->title]);
+                    return view('pdf.maipp',
+                        [
+                            'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'title' => $request->title,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom
+                        ]);
                 case "maipp_inpatient":
-                    return view('pdf.maipp_inpatient', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'title' => $request->title]);
+                    return view('pdf.maipp_inpatient',
+                        [
+                            'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'title' => $request->title,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom
+                        ]);
                 case "medico_legal":
                     $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
-                    return view('pdf.medico_legal', ['certificate' => $certificate, 'diagnosis' => $diagnosis, 'sustained' => $sustained, 'title' => $request->title]);
+                    return view('pdf.medico_legal',
+                        [
+                            'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'sustained' => $sustained,
+                            'title' => $request->title,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom
+                        ]);
             }
         } catch (\Exception $exception) {
-            return response()->json(['message' => $exception->getMessage()]);
+            return response()->json(['message' => $exception->getMessage()],500);
         }
     }
 

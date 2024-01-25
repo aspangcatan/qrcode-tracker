@@ -273,8 +273,15 @@
 
         $("#btn_print_certificate").click(function () {
             const title = $("#select_heading").val();
+            const d_margin_top = $("#d_margin_top").val();
+            const d_margin_bottom = $("#d_margin_bottom").val();
+            const s_margin_top = $("#s_margin_top").val();
+
             if (title == "") return;
-            window.open("https://dohcsmc.site/qrcode-tracker/print-preview?id=" + certificate_id + "&title=" + title, '_blank');
+            window.open("https://dohcsmc.site/qrcode-tracker/print-preview?id=" + certificate_id +
+                "&title=" + title + "&d_margin_top=" + d_margin_top +
+                "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top
+                , '_blank');
         });
 
         $("#btn_save").click(async function () {
@@ -737,7 +744,10 @@
             const date_requested = (it.date_requested) ? moment(it.date_requested).format("MM/DD/YYYY hh:mm A") : "";
             const date_issued = (it.date_issued) ? moment(it.date_issued).format("MM/DD/YYYY hh:mm A") : "";
             const status = (it.status) ? it.status : "";
+            const released_by = (it.released_by) ? it.released_by : "";
+
             let bg = "bg-secondary";
+            let _type = "";
 
             switch (status) {
                 case "PENDING":
@@ -756,8 +766,7 @@
                     bg = "bg-danger";
                     break;
             }
-            const released_by = (it.released_by) ? it.released_by : "";
-            let _type = "";
+
             switch (it.type) {
                 case "ordinary":
                     _type = "ORDINARY MED CERT - ER/OPD";
@@ -778,6 +787,7 @@
                     _type = "CERTIFICATE OF CONFINEMENT";
                     break;
             }
+
             let tr = `
                     <tr id="certificate_id_` + it.id + `">
                         <td class="d-none">` + it.type + `</td>
