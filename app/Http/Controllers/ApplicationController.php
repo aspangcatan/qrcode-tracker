@@ -140,6 +140,7 @@ class ApplicationController extends Controller
                     'date_requested' => $request->date_requested,
                     'days_barred' => $request->days_barred,
                     'type' => $request->type,
+                    'ward' => $request->ward,
                     'received_by' => $request->received_by,
                     'prepared_by' => $prepared_by,
                     'status' => 'PENDING',
@@ -322,6 +323,11 @@ class ApplicationController extends Controller
                     return view('forms.coc', compact('certificates', 'diagnosis'));
                 }
                 return view('forms.coc', compact('certificate_no'));
+            case "medical_abstract":
+                if ($request->has('id')) {
+                    return view('forms.medical_abstract', compact('certificates'));
+                }
+                return view('forms.medical_abstract', compact('certificate_no'));
         }
     }
 
@@ -398,6 +404,16 @@ class ApplicationController extends Controller
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
                             'sustained' => $sustained,
+                            'title' => $request->title,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom
+                        ]);
+                case "medical_abstract":
+                    return view('pdf.medical_abstract',
+                        [
+                            'certificate' => $certificate,
                             'title' => $request->title,
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,

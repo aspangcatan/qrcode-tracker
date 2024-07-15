@@ -111,6 +111,7 @@
                     <option value="4">ORDINARY MEDCERT - INPATIENT</option>
                     <option value="5">PRESIGNED - INPATIENT</option>
                     <option value="6">COC</option>
+                    <option value="7">MEDICAL ABSTRACT</option>
                 </select>
             </div>
             <div class="modal-footer">

@@ -88,6 +88,9 @@
                 case "6":
                     type = "coc";
                     break;
+                case "7":
+                    type = "medical_abstract";
+                    break;
             }
 
             $("#choose_certificate_modal").modal("hide");
@@ -293,24 +296,26 @@
             const sex = $("#sex").val();
             const civil_status = $("#civil_status").val();
             const address = $("#address").val().trim();
-            const date_examined = $("#date_examined").val();
-            const date_discharged = $("#date_discharged").val();
-            const days_barred = $("#days_barred").val();
-            const doctor = $("#doctor").val().trim();
-            const doctor_designation = $("#doctor_designation").val();
-            const doctor_license = $("#doctor_license").val().trim();
-            const requesting_person = $("#requesting_person").val();
-            const relationship = $("#relationship").val();
-            const purpose = $("#purpose").val();
-            const second_purpose = $("#second_purpose").val();
-            const or_no = $("#or_no").val().trim();
-            const amount = $("#amount").val().trim();
-            const charge_slip_no = $("#charge_slip_no").val();
-            const registry_no = $("#registry_no").val();
-            const date_requested = $("#date_requested").val().trim();
-            const date_finished = $("#date_finished").val().trim();
-            const no_copies = $("#no_copies").val();
-            const received_by = $("#received_by").val();
+            let date_examined = $("#date_examined").val();
+            let date_discharged = $("#date_discharged").val();
+            let days_barred = $("#days_barred").val();
+            let doctor = $("#doctor").val();
+            let doctor_designation = $("#doctor_designation").val();
+            let doctor_license = $("#doctor_license").val();
+            let requesting_person = $("#requesting_person").val();
+            let relationship = $("#relationship").val();
+            let purpose = $("#purpose").val();
+            let second_purpose = $("#second_purpose").val();
+            let or_no = $("#or_no").val().trim();
+            let amount = $("#amount").val().trim();
+            let charge_slip_no = $("#charge_slip_no").val();
+            let registry_no = $("#registry_no").val();
+            let date_requested = $("#date_requested").val().trim();
+            let date_finished = $("#date_finished").val().trim();
+            let no_copies = $("#no_copies").val();
+            let received_by = $("#received_by").val();
+
+            let ward = $("#ward").val();
             const diagnosis_array = [];
 
             for (let i = 0; i < $("#diagnosis_list tr").length; i++) {
@@ -332,47 +337,12 @@
                 "toi": (toi === undefined) ? null : toi
             }
 
-            const params = {
-                "id": certificate_id,
-                "certificate_no": certificate_no,
-                "health_record_no": health_record_no,
-                "date_issued": date_issued,
-                "patient": patient,
-                "age": age,
-                "sex": (sex === undefined) ? null : sex,
-                "civil_status": (civil_status === undefined) ? null : civil_status,
-                "address": address,
-                "date_examined": date_examined,
-                "date_discharged": (date_discharged === undefined) ? null : date_discharged,
-                "days_barred": (days_barred === undefined) ? null : days_barred,
-                "doctor": doctor,
-                "doctor_designation": (doctor_designation === undefined) ? null : doctor_designation,
-                "doctor_license": doctor_license,
-                "requesting_person": (requesting_person === undefined) ? null : requesting_person,
-                "relationship": relationship,
-                "charge_slip_no": charge_slip_no,
-                "registry_no": registry_no,
-                "date_requested": date_requested,
-                "date_finished": date_finished,
-                "purpose": (purpose === undefined) ? null : purpose,
-                "second_purpose": (second_purpose === undefined) ? null : second_purpose,
-                "or_no": or_no,
-                "amount": amount,
-                "charge_slip_no": charge_slip_no,
-                "registry_no": registry_no,
-                "date_requested": date_requested,
-                "date_finished": date_finished,
-                "type": type,
-                "diagnosis": diagnosis_array,
-                "sustained": (noi === undefined) ? null : sustained,
-                "received_by": received_by,
-                "no_copies": (no_copies && certificate_id === 0) ? no_copies : 1
-            }
-
             let is_valid = true;
             $(".is-invalid").removeClass("is-invalid");
 
-            if (!requesting_person && type != "medico_legal") {
+
+
+            if (!requesting_person && type != "medico_legal" && type != "medical_abstract") {
                 toastr.error('Requesting person is required');
                 $("#requesting_person").addClass("is-invalid");
                 is_valid = false;
@@ -381,6 +351,12 @@
             if (!charge_slip_no) {
                 toastr.error('Charge slip no. is required');
                 $("#charge_slip_no").addClass("is-invalid");
+                is_valid = false;
+            }
+
+            if (!amount) {
+                toastr.error('Amount is required');
+                $("#amount").addClass("is-invalid");
                 is_valid = false;
             }
 
@@ -422,6 +398,7 @@
 
             switch (type) {
                 case "ordinary":
+
                     if (!date_examined) {
                         toastr.error('Date examined is required');
                         $("#date_examined").addClass("is-invalid");
@@ -575,6 +552,44 @@
 
             if (!is_valid) {
                 return;
+            }
+
+            const params = {
+                "id": certificate_id,
+                "certificate_no": certificate_no,
+                "health_record_no": health_record_no,
+                "date_issued": date_issued,
+                "patient": patient,
+                "age": age,
+                "sex": (sex === undefined) ? null : sex,
+                "civil_status": (civil_status === undefined) ? null : civil_status,
+                "address": address,
+                "date_examined": date_examined,
+                "date_discharged": (date_discharged === undefined) ? null : date_discharged,
+                "days_barred": (days_barred === undefined) ? null : days_barred,
+                "doctor": doctor,
+                "doctor_designation": (doctor_designation === undefined) ? null : doctor_designation,
+                "doctor_license": doctor_license,
+                "requesting_person": (requesting_person === undefined) ? null : requesting_person,
+                "relationship": relationship,
+                "charge_slip_no": charge_slip_no,
+                "registry_no": registry_no,
+                "date_requested": date_requested,
+                "date_finished": date_finished,
+                "purpose": (purpose === undefined) ? null : purpose,
+                "second_purpose": (second_purpose === undefined) ? null : second_purpose,
+                "or_no": or_no,
+                "amount": amount,
+                "charge_slip_no": charge_slip_no,
+                "registry_no": registry_no,
+                "date_requested": date_requested,
+                "date_finished": date_finished,
+                "type": type,
+                "diagnosis": diagnosis_array,
+                "sustained": (noi === undefined) ? null : sustained,
+                "ward": (ward === undefined) ? null : ward,
+                "received_by": received_by,
+                "no_copies": (no_copies && certificate_id === 0) ? no_copies : 1
             }
 
             try {
@@ -789,6 +804,9 @@
                     break;
                 case "coc":
                     _type = "CERTIFICATE OF CONFINEMENT";
+                    break;
+                case "medical_abstract":
+                    _type = "MEDICAL ABSTRACT";
                     break;
             }
 
