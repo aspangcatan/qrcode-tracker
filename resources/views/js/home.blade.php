@@ -281,7 +281,7 @@
             const s_margin_top = $("#s_margin_top").val();
 
             if (title == "") return;
-            window.open("https://dohcsmc.site/qrcode-tracker/print-preview?id=" + certificate_id +
+            window.open("https://dohcsmc.com/qrcode-tracker/print-preview?id=" + certificate_id +
                 "&title=" + title + "&d_margin_top=" + d_margin_top +
                 "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top
                 , '_blank');
