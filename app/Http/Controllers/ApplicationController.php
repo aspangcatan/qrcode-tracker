@@ -313,11 +313,6 @@ class ApplicationController extends Controller
                     return view('forms.medico_legal', compact('certificates', 'diagnosis', 'sustained'));
                 }
                 return view('forms.medico_legal', compact('certificate_no'));
-            case "maipp_inpatient":
-                if ($request->has('id')) {
-                    return view('forms.maipp', compact('certificates', 'diagnosis'));
-                }
-                return view('forms.maipp_inpatient', compact('certificate_no'));
             case "coc":
                 if ($request->has('id')) {
                     return view('forms.coc', compact('certificates', 'diagnosis'));
@@ -328,6 +323,8 @@ class ApplicationController extends Controller
                     return view('forms.medical_abstract', compact('certificates'));
                 }
                 return view('forms.medical_abstract', compact('certificate_no'));
+            default:
+                return [];
         }
     }
 
@@ -422,7 +419,7 @@ class ApplicationController extends Controller
                         ]);
             }
         } catch (\Exception $exception) {
-            return response()->json(['message' => $exception->getMessage()],500);
+            return response()->json(['message' => $exception->getMessage()], 500);
         }
     }
 

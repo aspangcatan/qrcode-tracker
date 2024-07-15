@@ -76,6 +76,7 @@ class CertificateService
                 'days_barred' => $data['days_barred'],
                 'prepared_by' => $data['prepared_by'],
                 'received_by' => $data['received_by'],
+                'ward' => $data['ward'],
                 'updated_at' => now()
             ]);
     }

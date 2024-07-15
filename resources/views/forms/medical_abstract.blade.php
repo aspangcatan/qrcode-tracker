@@ -56,7 +56,7 @@
                 <td style="width:43%">
                     <div class="medium">
                         @if(isset($certificates) && $certificates)
-                            <input type="text" id="patient" value="{{ $certificates->patient_name }}"/>
+                            <input type="text" id="patient" value="{{ $certificates->patient }}"/>
                         @else
                             <input type="text" id="patient" />
                         @endif
@@ -121,9 +121,9 @@
                 <td colspan="3">
                     <div class="long w-100">
                         @if(isset($certificates) && $certificates)
-                            <input type="text" id="patient" value="{{ $certificates->patient_name }}"/>
+                            <input type="text" id="ward" value="{{ $certificates->ward }}"/>
                         @else
-                            <input type="text" id="patient" />
+                            <input type="text" id="ward" />
                         @endif
                     </div>
                 </td>

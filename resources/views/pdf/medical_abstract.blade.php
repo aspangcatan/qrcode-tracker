@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MAIPP MEDICAL CERTIFICATE</title>
+    <title>MEDICAL ABSTRACT</title>
     <style>
 
         @media print {
@@ -203,7 +203,7 @@
             </td>
             <td style="width: 40%">
                 <div>
-                    <div style="width: 95%" class="small fw-bold">{{ $certificate->health_record_no }}</div>
+                    <div style="width: 95%" class="small fw-bold">{{ $certificate->patient }}</div>
                 </div>
             </td>
             <td style="width: 5%;text-align: right">
@@ -211,7 +211,7 @@
             </td>
             <td>
                 <div>
-                    <div style="width: 100%" class="small fw-bold">{{ $certificate->health_record_no }}</div>
+                    <div style="width: 100%" class="small fw-bold">{{ $certificate->age }}</div>
                 </div>
             </td>
             <td style="width: 5%">
@@ -219,7 +219,7 @@
             </td>
             <td>
                 <div>
-                    <div style="width: 100%" class="small fw-bold">{{ $certificate->health_record_no }}</div>
+                    <div style="width: 100%" class="small fw-bold">{{ $certificate->sex }}</div>
                 </div>
             </td>
         </tr>
@@ -227,13 +227,13 @@
             <td>Address:</td>
             <td>
                 <div>
-                    <div style="width: 95%" class="small fw-bold">{{ $certificate->health_record_no }}</div>
+                    <div style="width: 95%" class="small fw-bold">{{ $certificate->address }}</div>
                 </div>
             </td>
             <td>Ward/Room:</td>
             <td colspan="3">
                 <div>
-                    <div style="width: 100%" class="small fw-bold">{{ $certificate->health_record_no }}</div>
+                    <div style="width: 100%" class="small fw-bold">{{ $certificate->ward }}</div>
                 </div>
             </td>
         </tr>
@@ -241,7 +241,7 @@
             <td>Date Admitted:</td>
             <td>
                 <div>
-                    <div style="width: 95%" class="small fw-bold">{{ $certificate->health_record_no }}</div>
+                    <div style="width: 95%" class="small fw-bold">{{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}</div>
                 </div>
             </td>
         </tr>
@@ -398,14 +398,14 @@
 </div>
 <script>
     // Disable right-click
-    // document.addEventListener('contextmenu', event => event.preventDefault());
-    // // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
-    // document.onkeydown = function (e) {
-    //     if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
-    //         e.preventDefault();
-    //         return false;
-    //     }
-    // };
+    document.addEventListener('contextmenu', event => event.preventDefault());
+    // Disable keyboard shortcuts (F12, Ctrl+Shift+I, etc.)
+    document.onkeydown = function (e) {
+        if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+            e.preventDefault();
+            return false;
+        }
+    };
 </script>
 </body>
 </html>

@@ -21,21 +21,15 @@ Route::get('qrcode-details', [\App\Http\Controllers\ApplicationController::class
 Route::get('/partial-form', [\App\Http\Controllers\ApplicationController::class, 'partialForm'])->name('partialForm');
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home',[\App\Http\Controllers\ApplicationController::class,'home'])->name('home');
-
-    Route::post('/password/update', [\App\Http\Controllers\ApplicationController::class, 'changePassword'])->name('changePassword');
-
     Route::get('/get_certificates', [\App\Http\Controllers\ApplicationController::class, 'getCertificates'])->name('getCertificates');
+    Route::post('/password/update', [\App\Http\Controllers\ApplicationController::class, 'changePassword'])->name('changePassword');
     Route::post('/store_certificate', [\App\Http\Controllers\ApplicationController::class, 'storeCertificate'])->name('storeCertificate');
     Route::put('/tag_certificate', [\App\Http\Controllers\ApplicationController::class, 'tagCertificate'])->name('tagCertificate');
     Route::put('/tag_as_complete', [\App\Http\Controllers\ApplicationController::class, 'tagAsComplete'])->name('tagAsComplete');
     Route::delete('/delete_certificate', [\App\Http\Controllers\ApplicationController::class, 'cancelCertificate'])->name('cancelCertificate');
-
     #PREVIEWS
     Route::get('/print-preview', [\App\Http\Controllers\ApplicationController::class, 'printPreview'])->name('printPreview');
-
     Route::get('/generate_report', [\App\Http\Controllers\ApplicationController::class, 'generateReport'])->name('generateReport');
     Route::get('/generate_table_report', [\App\Http\Controllers\ApplicationController::class, 'generateTableReport'])->name('generateTableReport');
-
-
 });
 
