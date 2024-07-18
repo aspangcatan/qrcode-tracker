@@ -1,6 +1,7 @@
-<script src="js/quirk.js?v=v={{ date('ymdhis') }}"></script>
+{{--<script src="js/quirk.js?v=v={{ date('ymdhis') }}"></script>--}}
 <script>
     //COMMON HEADERS TO BE USED TO ALL POST,PUT,DELETE request
+    let DOCTORS = [];
     let page = 0;
     let certificate_id = 0;
     let diagnosis_index = -1;
@@ -12,6 +13,9 @@
     let type = "";
 
     $(document).ready(() => {
+
+         getDoctors();
+
         $("#select_doctor").select2({
             dropdownParent: $("#doctor_modal .modal-body"),
             width: '100%'
@@ -343,7 +347,6 @@
             $(".is-invalid").removeClass("is-invalid");
 
 
-
             if (!requesting_person && type != "medico_legal" && type != "medical_abstract") {
                 toastr.error('Requesting person is required');
                 $("#requesting_person").addClass("is-invalid");
@@ -638,7 +641,6 @@
         });
 
         getCertificates();
-        appendDoctors();
     });
 
     function printPreview(id) {
@@ -874,5 +876,21 @@
                     <span class="visually-hidden">Loading...</span>
              </div>
         </div>`);
+    }
+
+    async function getDoctors() {
+        const response = await fetch('{{ route('getDoctors') }}', {
+            method: "GET"
+        });
+
+        if (!response.ok) {
+            toastr.error("Failed to load doctors, please reload page", "Ooops");
+            return;
+        }
+
+        const data = await response.json();
+        DOCTORS = data;
+        appendDoctors();
+        toastr.success("Doctors loaded successfully", "Information");
     }
 </script>

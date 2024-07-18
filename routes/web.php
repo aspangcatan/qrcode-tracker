@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\Http\Controllers\ApplicationController::class, 'index'])->name('login');
+
 Route::post('/authenticate', [\App\Http\Controllers\ApplicationController::class, 'authenticate'])->name('authenticate');
 Route::get('/logout', [\App\Http\Controllers\ApplicationController::class, 'logout'])->name('logout');
 Route::get('qrcode-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrcodeDetails'])->middleware('throttle:10,1');
@@ -31,5 +32,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/print-preview', [\App\Http\Controllers\ApplicationController::class, 'printPreview'])->name('printPreview');
     Route::get('/generate_report', [\App\Http\Controllers\ApplicationController::class, 'generateReport'])->name('generateReport');
     Route::get('/generate_table_report', [\App\Http\Controllers\ApplicationController::class, 'generateTableReport'])->name('generateTableReport');
+
+    Route::get('/receivers', [\App\Http\Controllers\ApplicationController::class, 'receiver'])->name('getReceivers');
+    Route::get('/doctors', [\App\Http\Controllers\ApplicationController::class, 'doctors'])->name('getDoctors');
 });
 

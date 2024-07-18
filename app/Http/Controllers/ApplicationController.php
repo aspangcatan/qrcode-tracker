@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\UserPrivelege;
 use App\Services\CertificateService;
 use App\Services\DiagnosisService;
+use App\Services\HomisServices;
 use App\Services\SustainedService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -19,14 +20,33 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ApplicationController extends Controller
 {
-    protected $certificateService, $diagnosisService, $sustainedService;
+    protected $certificateService, $diagnosisService, $sustainedService, $homisService;
 
-    public function __construct(CertificateService $certificateService,
-                                DiagnosisService $diagnosisService, SustainedService $sustainedService)
+    public function __construct(CertificateService $certificateService, DiagnosisService $diagnosisService,
+                                SustainedService $sustainedService, HomisServices $homisService)
     {
         $this->certificateService = $certificateService;
         $this->diagnosisService = $diagnosisService;
         $this->sustainedService = $sustainedService;
+        $this->homisService = $homisService;
+    }
+
+    public function receiver()
+    {
+        try {
+            return response()->json($this->homisService->receiver());
+        } catch (\Exception $exception) {
+            return response()->json($exception->getMessage(), 500);
+        }
+    }
+
+    public function doctors()
+    {
+        try {
+            return response()->json($this->homisService->doctors());
+        } catch (\Exception $exception) {
+            return response()->json($exception->getMessage(), 500);
+        }
     }
 
     public function index()
@@ -285,49 +305,49 @@ class ApplicationController extends Controller
         }
         $certificates = $this->certificateService->getCertificateById($request->id);
         $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
-
+        $receivers = $this->homisService->receiver();
         switch ($request->type) {
             case "ordinary":
                 if ($request->has('id')) {
-                    return view('forms.ordinary', compact('certificates', 'diagnosis'));
+                    return view('forms.ordinary', compact('certificates', 'diagnosis','receivers'));
                 }
-                return view('forms.ordinary', compact('certificate_no'));
+                return view('forms.ordinary', compact('certificate_no','receivers'));
             case "ordinary_inpatient":
                 if ($request->has('id')) {
-                    return view('forms.ordinary_inpatient', compact('certificates', 'diagnosis'));
+                    return view('forms.ordinary_inpatient', compact('certificates', 'diagnosis','receivers'));
                 }
-                return view('forms.ordinary_inpatient', compact('certificate_no'));
+                return view('forms.ordinary_inpatient', compact('certificate_no','receivers'));
             case "maipp":
                 if ($request->has('id')) {
-                    return view('forms.maipp', compact('certificates', 'diagnosis'));
+                    return view('forms.maipp', compact('certificates', 'diagnosis','receivers'));
                 }
-                return view('forms.maipp', compact('certificate_no'));
+                return view('forms.maipp', compact('certificate_no','receivers'));
             case "maipp_inpatient":
                 if ($request->has('id')) {
-                    return view('forms.maipp_inpatient', compact('certificates', 'diagnosis'));
+                    return view('forms.maipp_inpatient', compact('certificates', 'diagnosis','receivers'));
                 }
-                return view('forms.maipp_inpatient', compact('certificate_no'));
+                return view('forms.maipp_inpatient', compact('certificate_no','receivers'));
             case "medico_legal":
                 if ($request->has('id')) {
                     $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
-                    return view('forms.medico_legal', compact('certificates', 'diagnosis', 'sustained'));
+                    return view('forms.medico_legal', compact('certificates', 'diagnosis', 'sustained','receivers'));
                 }
-                return view('forms.medico_legal', compact('certificate_no'));
+                return view('forms.medico_legal', compact('certificate_no','receivers'));
             case "coc":
                 if ($request->has('id')) {
-                    return view('forms.coc', compact('certificates', 'diagnosis'));
+                    return view('forms.coc', compact('certificates', 'diagnosis','receivers'));
                 }
-                return view('forms.coc', compact('certificate_no'));
+                return view('forms.coc', compact('certificate_no','receivers'));
             case "medical_abstract":
                 if ($request->has('id')) {
-                    return view('forms.medical_abstract', compact('certificates'));
+                    return view('forms.medical_abstract', compact('certificates','receivers'));
                 }
-                return view('forms.medical_abstract', compact('certificate_no'));
+                return view('forms.medical_abstract', compact('certificate_no','receivers'));
             case "common":
                 if ($request->has('id')) {
-                    return view('forms.common', compact('certificates'));
+                    return view('forms.common', compact('certificates','receivers'));
                 }
-                return view('forms.common', compact('certificate_no'));
+                return view('forms.common', compact('certificate_no','receivers'));
             default:
                 return [];
         }

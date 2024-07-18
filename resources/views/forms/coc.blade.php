@@ -284,61 +284,17 @@
                     <div class="medium">
                         <select class="js-example-basic-single w-100" id="received_by" class="w-100 text-center">
                             <option></option>
-                            @if(isset($certificates) && $certificates)
-                                <option {{ $certificates->received_by === "Jenifer P. Filomeno" ? 'selected' : '' }}>
-                                    Jenifer P. Filomeno
-                                </option>
-                                <option {{ $certificates->received_by === "Jean C. Gapay" ? 'selected' : '' }}>Jean C.
-                                    Gapay
-                                </option>
-                                <option {{ $certificates->received_by === "Niño G. Nakila" ? 'selected' : '' }}>Niño G.
-                                    Nakila
-                                </option>
-                                <option {{ $certificates->received_by === "Shaira Joyce C. Abangan" ? 'selected' : '' }}>
-                                    Shaira Joyce C. Abangan
-                                </option>
-                                <option {{ $certificates->received_by === "Shane Marigold L. Oliveros" ? 'selected' : '' }}>
-                                    Shane Marigold L. Oliveros
-                                </option>
-                                <option {{ $certificates->received_by === "Myla D. Borromeo" ? 'selected' : '' }}>Myla
-                                    D. Borromeo
-                                </option>
-                                <option {{ $certificates->received_by === "James Phillip M. Padillo" ? 'selected' : '' }}>
-                                    James Phillip M. Padillo
-                                </option>
-                                <option {{ $certificates->received_by === "Jemark C. Garcia" ? 'selected' : '' }}>Jemark
-                                    C. Garcia
-                                </option>
-                                <option {{ $certificates->received_by === "Jane Villagorda" ? 'selected' : '' }}>Jane
-                                    Villagorda
-                                </option>
-                                <option {{ $certificates->received_by === "Arjay P. Murro" ? 'selected' : '' }}>Arjay P.
-                                    Murro
-                                </option>
-                                <option {{ $certificates->received_by === "Albert Glenn G. Asentista" ? 'selected' : '' }}>
-                                    Albert Glenn G. Asentista
-                                </option>
-                                <option {{ $certificates->received_by === "Jessa Mae L. Vasaya" ? 'selected' : '' }}>
-                                    Jessa Mae L. Vasaya
-                                </option>
-                                <option {{ $certificates->received_by === "Aiza Marie M. Francisco" ? 'selected' : '' }}>
-                                    Aiza Marie M. Francisco
-                                </option>
-                            @else
-                                <option>Jenifer P. Filomeno</option>
-                                <option>Jean C. Gapay</option>
-                                <option>Niño G. Nakila</option>
-                                <option>Shaira Joyce C. Abangan</option>
-                                <option>Shane Marigold L. Oliveros</option>
-                                <option>Myla D. Borromeo</option>
-                                <option>James Phillip M. Padillo</option>
-                                <option>Jemark C. Garcia</option>
-                                <option>Jane Villagorda</option>
-                                <option>Arjay P. Murro</option>
-                                <option>Albert Glenn G. Asentista</option>
-                                <option>Jessa Mae L. Vasaya</option>
-                                <option>Aiza Marie M. Francisco</option>
-                            @endif
+                            @foreach($receivers as $receiver)
+                                @if(isset($certificates) && $certificates)
+                                    <option {{ $certificates->received_by === $receiver->name ? 'selected' : '' }}>
+                                        {{ $receiver->name }}
+                                    </option>
+                                @else
+                                    <option>
+                                        {{ $receiver->name }}
+                                    </option>
+                                @endif
+                            @endforeach
                         </select>
                     </div>
                 </td>
