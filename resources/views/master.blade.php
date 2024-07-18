@@ -109,6 +109,12 @@
             margin-top: 20px;
         }
 
+        .input-underline {
+            text-align: center;
+            border-bottom: 1px solid black;
+            display: inline-block;
+        }
+
         .is-invalid {
             border: 1px solid #dc3545; /* Red border color */
             background-color: #f8d7da; /* Red background color */

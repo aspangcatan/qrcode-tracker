@@ -291,14 +291,11 @@
                                 <option {{ $certificates->received_by === "Jean C. Gapay" ? 'selected' : '' }}>Jean C.
                                     Gapay
                                 </option>
-                                <option {{ $certificates->received_by === "Frank Bryll R. Sabido" ? 'selected' : '' }}>
-                                    Frank Bryll R. Sabido
-                                </option>
                                 <option {{ $certificates->received_by === "Niño G. Nakila" ? 'selected' : '' }}>Niño G.
                                     Nakila
                                 </option>
-                                <option {{ $certificates->received_by === "Shaira Joyce L. Castañares" ? 'selected' : '' }}>
-                                    Shaira Joyce L. Castañares
+                                <option {{ $certificates->received_by === "Shaira Joyce C. Abangan" ? 'selected' : '' }}>
+                                    Shaira Joyce C. Abangan
                                 </option>
                                 <option {{ $certificates->received_by === "Shane Marigold L. Oliveros" ? 'selected' : '' }}>
                                     Shane Marigold L. Oliveros
@@ -330,9 +327,8 @@
                             @else
                                 <option>Jenifer P. Filomeno</option>
                                 <option>Jean C. Gapay</option>
-                                <option>Frank Bryll R. Sabido</option>
                                 <option>Niño G. Nakila</option>
-                                <option>Shaira Joyce L. Castañares</option>
+                                <option>Shaira Joyce C. Abangan</option>
                                 <option>Shane Marigold L. Oliveros</option>
                                 <option>Myla D. Borromeo</option>
                                 <option>James Phillip M. Padillo</option>

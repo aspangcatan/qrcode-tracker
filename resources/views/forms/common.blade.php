@@ -44,11 +44,80 @@
     </table>
 
     <div class="certificate-title">
-        MEDICAL ABSTRACT
+        COMMON CERTIFICATE
     </div>
 
     <div class="table-responsive mt-3">
         <table class="w-100">
+            <tr>
+                <td>Type:</td>
+                <td colspan="5"></td>
+            </tr>
+            <tr>
+                <td colspan="6">
+                    <div class="d-flex">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="document_type">
+                            <label class="form-check-label">
+                                Certified Machine Copy
+                            </label>
+                        </div>
+                        <div class="form-check ms-2">
+                            <input class="form-check-input" type="radio" name="document_type">
+                            <label class="form-check-label">
+                                OR Record
+                            </label>
+                        </div>
+                        <div class="form-check ms-2">
+                            <input class="form-check-input" type="radio" name="document_type">
+                            <label class="form-check-label">
+                                Laboratory Results
+                            </label>
+                        </div>
+                        <div class="form-check ms-2">
+                            <input class="form-check-input" type="radio" name="document_type">
+                            <label class="form-check-label">
+                                Xray Results
+                            </label>
+                        </div>
+                        <div class="form-check ms-2">
+                            <input class="form-check-input" type="radio" name="document_type">
+                            <label class="form-check-label">
+                                Discharge Summary
+                            </label>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div>
+                            <input class="form-check-input" type="radio" name="document_type">
+                            <label class="form-check-label">
+                                Histopath Result
+                            </label>
+                        </div>
+                        <div class="form-check ms-2">
+                            <input class="form-check-input" type="radio" name="document_type">
+                            <label class="form-check-label">
+                                Fetal Death Certificate
+                            </label>
+                        </div>
+                        <div class="form-check ms-2">
+                            <input class="form-check-input" type="radio" name="document_type">
+                            <label class="form-check-label">
+                                Death Certificate
+                            </label>
+                        </div>
+                        <div class="form-check ms-2">
+                            <input class="form-check-input" type="radio" name="document_type">
+                            <label class="form-check-label">
+                                Others
+                            </label>
+                            <div class="d-inline-block medium">
+                                <input type="text" />
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
             <tr>
                 <td style="width: 12%">
                     <span>Name:</span>

@@ -90,6 +90,8 @@
                     break;
                 case "7":
                     type = "medical_abstract";
+                case "8":
+                    type = "common";
                     break;
             }
 

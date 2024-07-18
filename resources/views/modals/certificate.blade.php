@@ -112,6 +112,7 @@
                     <option value="5">PRESIGNED - INPATIENT</option>
                     <option value="6">COC</option>
                     <option value="7">MEDICAL ABSTRACT</option>
+                    <option value="8">COMMON CERTIFICATE</option>
                 </select>
             </div>
             <div class="modal-footer">

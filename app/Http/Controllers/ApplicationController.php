@@ -323,6 +323,11 @@ class ApplicationController extends Controller
                     return view('forms.medical_abstract', compact('certificates'));
                 }
                 return view('forms.medical_abstract', compact('certificate_no'));
+            case "common":
+                if ($request->has('id')) {
+                    return view('forms.common', compact('certificates'));
+                }
+                return view('forms.common', compact('certificate_no'));
             default:
                 return [];
         }
