@@ -164,6 +164,7 @@ class ApplicationController extends Controller
                     'received_by' => $request->received_by,
                     'prepared_by' => $prepared_by,
                     'status' => 'PENDING',
+                    'specific_document' => $request->document_type,
                     'created_at' => now()
                 ];
 

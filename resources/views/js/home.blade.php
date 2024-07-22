@@ -14,7 +14,7 @@
 
     $(document).ready(() => {
 
-         getDoctors();
+        getDoctors();
 
         $("#select_doctor").select2({
             dropdownParent: $("#doctor_modal .modal-body"),
@@ -94,6 +94,7 @@
                     break;
                 case "7":
                     type = "medical_abstract";
+                    break;
                 case "8":
                     type = "common";
                     break;
@@ -177,12 +178,12 @@
                 return;
             }
             data.forEach(it => {
-                console.log(it);
                 const date_requested = (it.date_requested) ? moment(it.date_requested).format("MM/DD/YYYY hh:mm A") : "";
                 const date_completed = (it.date_completed) ? moment(it.date_completed).format("MM/DD/YYYY hh:mm A") : "";
                 const date_issued = (it.date_issued) ? moment(it.date_issued).format("MM/DD/YYYY hh:mm A") : "";
                 const status = (it.status) ? it.status : "";
                 const released_by = (it.released_by) ? it.released_by : "";
+                const requesting_person = (it.requesting_person) ? it.requesting_person : "";
                 const tr = `
                 <tr>
                     <td>` + date_requested + `</td>
@@ -193,7 +194,7 @@
                     <td>` + it.or_no + `</td>
                     <td>` + it.received_by + `</td>
                     <td>` + it.prepared_by + `</td>
-                    <td>` + it.requesting_person + `</td>
+                    <td>` + requesting_person + `</td>
                     <td>` + it.relationship + `</td>
                     <td>` + date_completed + `</td>
                     <td>` + date_issued + `</td>
@@ -297,11 +298,11 @@
             const certificate_no = $("#certificate_no").val().trim();
             const health_record_no = $("#health_record_no").val().trim();
             const date_issued = $("#date_issued").val().trim();
-            const patient = $("#patient").val().trim();
-            const age = $("#age").val().trim();
+            const patient = $("#patient").val();
+            const age = $("#age").val();
             const sex = $("#sex").val();
             const civil_status = $("#civil_status").val();
-            const address = $("#address").val().trim();
+            const address = $("#address").val();
             let date_examined = $("#date_examined").val();
             let date_discharged = $("#date_discharged").val();
             let days_barred = $("#days_barred").val();
@@ -312,14 +313,22 @@
             let relationship = $("#relationship").val();
             let purpose = $("#purpose").val();
             let second_purpose = $("#second_purpose").val();
-            let or_no = $("#or_no").val().trim();
-            let amount = $("#amount").val().trim();
+            let or_no = $("#or_no").val();
+            let amount = $("#amount").val();
             let charge_slip_no = $("#charge_slip_no").val();
             let registry_no = $("#registry_no").val();
-            let date_requested = $("#date_requested").val().trim();
-            let date_finished = $("#date_finished").val().trim();
+            let date_requested = $("#date_requested").val();
+            let date_finished = $("#date_finished").val();
             let no_copies = $("#no_copies").val();
             let received_by = $("#received_by").val();
+            let check_type = $("input[name='document_type']:checked");
+            let document_type = "";
+            if (check_type) {
+                document_type = $(check_type).closest('.form-check').find('label').text().trim();
+                if (document_type === "Others") {
+                    document_type = $("#document_type").val().trim();
+                }
+            }
 
             let ward = $("#ward").val();
             const diagnosis_array = [];
@@ -383,13 +392,13 @@
                 is_valid = false;
             }
 
-            if (!age) {
+            if (!age && type != "common") {
                 toastr.error('Age is required');
                 $("#age").addClass("is-invalid");
                 is_valid = false;
             }
 
-            if (!address) {
+            if (!address && type != "common") {
                 toastr.error('Address is required');
                 $("#address").addClass("is-invalid");
                 is_valid = false;
@@ -565,11 +574,11 @@
                 "health_record_no": health_record_no,
                 "date_issued": date_issued,
                 "patient": patient,
-                "age": age,
+                "age": (age === undefined) ? null : age,
                 "sex": (sex === undefined) ? null : sex,
                 "civil_status": (civil_status === undefined) ? null : civil_status,
-                "address": address,
-                "date_examined": date_examined,
+                "address": (address === undefined) ? null : address,
+                "date_examined": (date_examined === undefined) ? null : date_examined,
                 "date_discharged": (date_discharged === undefined) ? null : date_discharged,
                 "days_barred": (days_barred === undefined) ? null : days_barred,
                 "doctor": doctor,
@@ -594,6 +603,7 @@
                 "sustained": (noi === undefined) ? null : sustained,
                 "ward": (ward === undefined) ? null : ward,
                 "received_by": received_by,
+                "document_type": document_type,
                 "no_copies": (no_copies && certificate_id === 0) ? no_copies : 1
             }
 
@@ -622,6 +632,7 @@
                 toastr.error("Ooops", "Specify tag status");
                 return;
             }
+
             if (confirm("Are you sure you want to tag this record?")) {
                 const response = await fetch('{{ route('tagCertificate') }}', {
                     method: "PUT",
@@ -811,6 +822,9 @@
                     break;
                 case "medical_abstract":
                     _type = "MEDICAL ABSTRACT";
+                    break;
+                case "common":
+                    _type = (it.specific_document + "").toUpperCase();
                     break;
             }
 

@@ -77,6 +77,7 @@ class CertificateService
                 'prepared_by' => $data['prepared_by'],
                 'received_by' => $data['received_by'],
                 'ward' => $data['ward'],
+                'specific_document' => $data['specific_document'],
                 'updated_at' => now()
             ]);
     }
@@ -145,6 +146,8 @@ class CertificateService
             WHEN type = "ordinary_inpatient" THEN "ORDINARY MEDCERT - INPATIENT"
             WHEN type = "maipp_inpatient" THEN "PREDESIGNED - INPATIENT"
             WHEN type = "coc" THEN "CERTIFICATE OF CONFINEMENT"
+            WHEN type = "medical_abstract" THEN "MEDICAL ABSTRACT"
+            WHEN type = "common" THEN UPPER(specific_document)
             ELSE type
         END AS type'), // Display type with custom values
                 'charge_slip_no',

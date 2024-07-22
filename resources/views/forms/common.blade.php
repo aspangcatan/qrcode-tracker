@@ -47,7 +47,7 @@
         COMMON CERTIFICATE
     </div>
 
-    <div class="table-responsive mt-3">
+    <div class="mt-3">
         <table class="w-100">
             <tr>
                 <td>Type:</td>
@@ -55,163 +55,176 @@
             </tr>
             <tr>
                 <td colspan="6">
-                    <div class="d-flex">
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="document_type">
-                            <label class="form-check-label">
-                                Certified Machine Copy
-                            </label>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                @if(isset($certificates) && $certificates)
+                                    <input class="form-check-input" type="radio" name="document_type"
+                                           @if($certificates->specific_document == 'Certified Machine Copy') checked @endif>
+                                @else
+                                    <input class="form-check-input" type="radio" name="document_type">
+                                @endif
+                                <label class="form-check-label">
+                                    Certified Machine Copy
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-check ms-2">
-                            <input class="form-check-input" type="radio" name="document_type">
-                            <label class="form-check-label">
-                                OR Record
-                            </label>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                @if(isset($certificates) && $certificates)
+                                    <input class="form-check-input" type="radio" name="document_type"
+                                           @if($certificates->specific_document == 'OR Record') checked @endif>
+                                @else
+                                    <input class="form-check-input" type="radio" name="document_type">
+                                @endif
+                                <label class="form-check-label">
+                                    OR Record
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-check ms-2">
-                            <input class="form-check-input" type="radio" name="document_type">
-                            <label class="form-check-label">
-                                Laboratory Results
-                            </label>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                @if(isset($certificates) && $certificates)
+                                    <input class="form-check-input" type="radio" name="document_type"
+                                           @if($certificates->specific_document == 'Laboratory Results') checked @endif>
+                                @else
+                                    <input class="form-check-input" type="radio" name="document_type">
+                                @endif
+                                <label class="form-check-label">
+                                    Laboratory Results
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-check ms-2">
-                            <input class="form-check-input" type="radio" name="document_type">
-                            <label class="form-check-label">
-                                Xray Results
-                            </label>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                @if(isset($certificates) && $certificates)
+                                    <input class="form-check-input" type="radio" name="document_type"
+                                           @if($certificates->specific_document == 'Xray Results') checked @endif>
+                                @else
+                                    <input class="form-check-input" type="radio" name="document_type">
+                                @endif
+                                <label class="form-check-label">
+                                    Xray Results
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-check ms-2">
-                            <input class="form-check-input" type="radio" name="document_type">
-                            <label class="form-check-label">
-                                Discharge Summary
-                            </label>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                @if(isset($certificates) && $certificates)
+                                    <input class="form-check-input" type="radio" name="document_type"
+                                           @if($certificates->specific_document == 'Discharge Summary') checked @endif>
+                                @else
+                                    <input class="form-check-input" type="radio" name="document_type">
+                                @endif
+                                <label class="form-check-label">
+                                    Discharge Summary
+                                </label>
+                            </div>
                         </div>
-                    </div>
-                    <div class="d-flex">
-                        <div>
-                            <input class="form-check-input" type="radio" name="document_type">
-                            <label class="form-check-label">
-                                Histopath Result
-                            </label>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                @if(isset($certificates) && $certificates)
+                                    <input class="form-check-input" type="radio" name="document_type"
+                                           @if($certificates->specific_document == 'Histopath Result') checked @endif>
+                                @else
+                                    <input class="form-check-input" type="radio" name="document_type">
+                                @endif
+                                <label class="form-check-label">
+                                    Histopath Result
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-check ms-2">
-                            <input class="form-check-input" type="radio" name="document_type">
-                            <label class="form-check-label">
-                                Fetal Death Certificate
-                            </label>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                @if(isset($certificates) && $certificates)
+                                    <input class="form-check-input" type="radio" name="document_type"
+                                           @if($certificates->specific_document == 'Fetal Death Certificate') checked @endif>
+                                @else
+                                    <input class="form-check-input" type="radio" name="document_type">
+                                @endif
+                                <label class="form-check-label">
+                                    Fetal Death Certificate
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-check ms-2">
-                            <input class="form-check-input" type="radio" name="document_type">
-                            <label class="form-check-label">
-                                Death Certificate
-                            </label>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                @if(isset($certificates) && $certificates)
+                                    <input class="form-check-input" type="radio" name="document_type"
+                                           @if($certificates->specific_document == 'Death Certificate') checked @endif>
+                                @else
+                                    <input class="form-check-input" type="radio" name="document_type">
+                                @endif
+                                <label class="form-check-label">
+                                    Death Certificate
+                                </label>
+                            </div>
                         </div>
-                        <div class="form-check ms-2">
-                            <input class="form-check-input" type="radio" name="document_type">
-                            <label class="form-check-label">
-                                Others
-                            </label>
-                            <div class="d-inline-block medium">
-                                <input type="text" />
+                        <div class="col-md-12">
+                            <div class="form-check">
+                                @if(isset($certificates) && $certificates)
+                                    <input class="form-check-input" type="radio" name="document_type"
+                                           @if($certificates->specific_document != ' Certified Machine Copy' && $certificates->specific_document != 'OR Record' &&
+                                            $certificates->specific_document != 'Laboratory Results' && $certificates->specific_document != 'Xray Results' &&
+                                            $certificates->specific_document != 'Discharge Summary' && $certificates->specific_document != 'Histopath Result' &&
+                                            $certificates->specific_document != 'Fetal Death Certificate' && $certificates->specific_document != 'Death Certificate') checked @endif>
+                                @else
+                                    <input class="form-check-input" type="radio" name="document_type">
+                                @endif
+                                <div class="d-flex">
+                                    <label class="form-check-label">Others</label>
+                                    <div class="d-inline-block">
+                                        <div class="medium">
+
+                                            @if(isset($certificates) && $certificates && $certificates->specific_document != ' Certified Machine Copy' && $certificates->specific_document != 'OR Record' &&
+                                            $certificates->specific_document != 'Laboratory Results' && $certificates->specific_document != 'Xray Results' &&
+                                            $certificates->specific_document != 'Discharge Summary' && $certificates->specific_document != 'Histopath Result' &&
+                                            $certificates->specific_document != 'Fetal Death Certificate' && $certificates->specific_document != 'Death Certificate')
+                                                <input type="text" id="document_type"
+                                                       value="{{ $certificates->specific_document }}"/>
+                                            @else
+                                                <input type="text" id="document_type"/>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </td>
             </tr>
-            <tr>
-                <td style="width: 12%">
-                    <span>Name:</span>
-                </td>
-                <td style="width:43%">
-                    <div class="medium">
-                        @if(isset($certificates) && $certificates)
-                            <input type="text" id="patient" value="{{ $certificates->patient }}"/>
-                        @else
-                            <input type="text" id="patient" />
-                        @endif
-                    </div>
-                </td>
-                <td style="width: 5%">
-                    <span>Age:</span>
-                </td>
-                <td style="width: 10%">
-                    <div class="small">
-                        @if(isset($certificates) && $certificates)
-                            <input type="text" id="age" value="{{ $certificates->age }}"/>
-                        @else
-                            <input type="text" id="age" />
-                        @endif
-                    </div>
-                </td>
-                <td style="width: 5%">
-                    <span>Sex:</span>
-                </td>
-                <td style="width: 10%">
-                    @if(isset($certificates) && $certificates)
-                        <select id="sex" class="w-100 text-center">
-                            <option></option>
-                            @if(strtoupper($certificates->sex) == "MALE")
-                                <option selected>MALE</option>
-                            @else
-                                <option>MALE</option>
-                            @endif
-
-                            @if(strtoupper($certificates->sex) == "FEMALE")
-                                <option selected>FEMALE</option>
-                            @else
-                                <option>FEMALE</option>
-                            @endif
-                        </select>
-                    @else
-                        <select id="sex" class="w-100 text-center">
-                            <option></option>
-                            <option>MALE</option>
-                            <option>FEMALE</option>
-                        </select>
-                    @endif
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Address:</span>
-                </td>
-                <td>
-                    <div class="medium">
-                        @if(isset($certificates) && $certificates)
-                            <input type="text" id="address" value="{{ $certificates->address }}"/>
-                        @else
-                            <input type="text" id="address" />
-                        @endif
-                    </div>
-                </td>
-                <td>
-                    <span>Ward/Room:</span>
-                </td>
-                <td colspan="3">
-                    <div class="long w-100">
-                        @if(isset($certificates) && $certificates)
-                            <input type="text" id="ward" value="{{ $certificates->ward }}"/>
-                        @else
-                            <input type="text" id="ward" />
-                        @endif
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span>Date Admitted:</span>
-                </td>
-                <td>
-                    <div class="medium">
-                        @if(isset($certificates) && $certificates)
-                            <input type="datetime-local" id="date_examined" value="{{ $certificates->date_examined }}"/>
-                        @else
-                            <input type="datetime-local" id="date_examined" />
-                        @endif
-                    </div>
-                </td>
-            </tr>
         </table>
+        <hr/>
+        <div class="row">
+            <div class="col-md-4">
+                <div>Name of Patient:</div>
+                @if(isset($certificates) && $certificates)
+                    <input type="text" id="patient" class="text-start form-control"
+                           value="{{ $certificates->patient }}"/>
+                @else
+                    <input type="text" id="patient" class="text-start form-control"/>
+                @endif
+            </div>
+            <div class="col-md-4">
+                <div>Relationship:</div>
+                @if(isset($certificates) && $certificates)
+                    <input type="text" id="relationship" class="text-start form-control"
+                           value="{{ $certificates->relationship }}"/>
+                @else
+                    <input type="text" id="relationship" class="text-start form-control"/>
+                @endif
+            </div>
+            <div class="col-md-4">
+                <div>Requested by:</div>
+                @if(isset($certificates) && $certificates)
+                    <input type="text" id="requesting_person" class="text-start form-control"
+                           value="{{ $certificates->requesting_person }}"/>
+                @else
+                    <input type="text" id="requesting_person" class="text-start form-control"/>
+                @endif
+            </div>
+        </div>
     </div>
     <div class="doctor-container mt-3 d-none">
         <div>Doctor:
@@ -243,7 +256,7 @@
             </div>
         </div>
     </div>
-    <hr />
+    <hr/>
     <div class="mt-5">
         <div>(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
