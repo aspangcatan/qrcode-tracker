@@ -843,11 +843,14 @@
                         <td>
                             <span class="badge text-white text-center ` + bg + `">` + status + `</span>
                         </td>
-                        <td>
-                            <button class="btn btn-sm btn-info" onclick="printPreview(` + it.id + `)">
-                                <i class="bi bi-qr-code"></i>
-                            </button>
-                        </td>`;
+                        <td>`;
+            if(it.type != "common")
+            {
+             tr += `<button class="btn btn-sm btn-info" onclick="printPreview(` + it.id + `)">
+                        <i class="bi bi-qr-code"></i>
+                    </button>`;
+            }
+            tr += `</td>`;
             if (status === "CANCELLED" || status === "RELEASED")
                 tr += `<td></td><td></td>`;
             else {
