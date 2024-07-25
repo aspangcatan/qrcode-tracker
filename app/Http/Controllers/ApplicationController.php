@@ -373,7 +373,8 @@ class ApplicationController extends Controller
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
-                            's_margin_bottom' => $request->s_margin_bottom
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
                         ]
                     );
                 case "ordinary":
@@ -385,7 +386,8 @@ class ApplicationController extends Controller
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
-                            's_margin_bottom' => $request->s_margin_bottom
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
                         ]);
                 case "ordinary_inpatient":
                     return view('pdf.ordinary_inpatient',
@@ -396,7 +398,8 @@ class ApplicationController extends Controller
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
-                            's_margin_bottom' => $request->s_margin_bottom
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
                         ]);
                 case "maipp":
                     return view('pdf.maipp',
@@ -407,7 +410,8 @@ class ApplicationController extends Controller
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
-                            's_margin_bottom' => $request->s_margin_bottom
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
                         ]);
                 case "maipp_inpatient":
                     return view('pdf.maipp_inpatient',
@@ -418,7 +422,8 @@ class ApplicationController extends Controller
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
-                            's_margin_bottom' => $request->s_margin_bottom
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
                         ]);
                 case "medico_legal":
                     $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
@@ -431,7 +436,8 @@ class ApplicationController extends Controller
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
-                            's_margin_bottom' => $request->s_margin_bottom
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
                         ]);
                 case "medical_abstract":
                     return view('pdf.medical_abstract',
@@ -441,7 +447,8 @@ class ApplicationController extends Controller
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
-                            's_margin_bottom' => $request->s_margin_bottom
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
                         ]);
             }
         } catch (\Exception $exception) {

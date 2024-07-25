@@ -361,7 +361,7 @@
             </td>
         </tr>
     </table>
-    <div class="mt-5">
+    <div style="margin-top:{{$seal_margin_top}}px">
         <div class="fw-bold">(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
             <tr>

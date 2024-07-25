@@ -342,7 +342,7 @@
             </tr>
         </table>
     </div>
-    <div class="mt-3">
+    <div style="margin-top:{{$seal_margin_top}}px">
         <div>(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
             <tr>

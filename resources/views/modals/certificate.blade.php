@@ -87,6 +87,10 @@
                     <input type="number" class="form-control" id="s_margin_bottom">
                     <label>Margin Bottom (Code)</label>
                 </div>
+                <div class="form-floating mb-3 mt-2">
+                    <input type="number" class="form-control" id="seal_margin_top">
+                    <label>Margin Top (Seal)</label>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>

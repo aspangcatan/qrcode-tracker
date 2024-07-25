@@ -286,11 +286,12 @@
             const d_margin_top = $("#d_margin_top").val();
             const d_margin_bottom = $("#d_margin_bottom").val();
             const s_margin_top = $("#s_margin_top").val();
+            const seal_margin_top = $("#seal_margin_top").val();
 
             if (title == "") return;
             window.open("https://dohcsmc.com/qrcode-tracker/print-preview?id=" + certificate_id +
                 "&title=" + title + "&d_margin_top=" + d_margin_top +
-                "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top
+                "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top+ "&seal_margin_top=" + seal_margin_top
                 , '_blank');
         });
 
@@ -661,6 +662,7 @@
         $("#d_margin_top").val(50);
         $("#d_margin_bottom").val(50);
         $("#s_margin_top").val(130);
+        $("#seal_margin_top").val(100);
     }
 
     function editCertificate(id) {

@@ -155,6 +155,7 @@
         table tr.no-spacing {
             border-spacing: 0 !important; /* Set border-spacing to 0 for the specific class */
         }
+
     </style>
 </head>
 <body>
@@ -361,7 +362,7 @@
             </div>
         </div>
     </div>
-    <div style="margin-top:40px">
+    <div style="margin-top:{{$seal_margin_top}}px">
         <div class="fw-bold">NOT FOR MEDICO LEGAL PURPOSES</div>
         <div class="fw-bold" style="margin-top: 20px">(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
