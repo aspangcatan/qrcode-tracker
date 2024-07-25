@@ -382,7 +382,7 @@
             </tr>
         </table>
     </div>
-    <div style="float:right;margin-top:120px;font-size: 13px">
+    <div style="float:right;margin-top:{{$s_margin_top}}px;font-size: 13px">
         <div>AHQM-REC-FM-03 Rev.0</div>
         <div>20 February 2023</div>
     </div>

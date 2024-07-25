@@ -394,7 +394,6 @@
             </tr>
         </table>
     </div>
-
 </div>
 <script>
     // Disable right-click
