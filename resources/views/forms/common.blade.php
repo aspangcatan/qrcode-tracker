@@ -160,7 +160,33 @@
                                 </label>
                             </div>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                @if(isset($certificates) && $certificates)
+                                    <input class="form-check-input" type="checkbox" name="document_type"
+                                           @if($certificates->specific_document == 'SSS') checked @endif>
+                                @else
+                                    <input class="form-check-input" type="checkbox" name="document_type">
+                                @endif
+                                <label class="form-check-label">
+                                    SSS
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-check">
+                                @if(isset($certificates) && $certificates)
+                                    <input class="form-check-input" type="checkbox" name="document_type"
+                                           @if($certificates->specific_document == 'Insurance Claims') checked @endif>
+                                @else
+                                    <input class="form-check-input" type="checkbox" name="document_type">
+                                @endif
+                                <label class="form-check-label">
+                                    Insurance Claims
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
                             <div class="form-check">
                                 @if(isset($certificates) && $certificates)
                                     <input class="form-check-input" type="checkbox" name="document_type"
