@@ -351,7 +351,7 @@
 
     <div style="margin-top:{{$seal_margin_top}}px">
         <div class="fw-bold">NOT FOR MEDICO LEGAL PURPOSES</div>
-        <div class="fw-bold">(NOT VALID WITHOUT SEAL)</div>
+        <div class="fw-bold" style="margin-top: 20px">(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
             <tr>
                 <td style="width: 18%">OR NO</td>
