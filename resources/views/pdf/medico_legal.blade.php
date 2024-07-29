@@ -300,7 +300,7 @@
         <tr>
             <td></td>
             <td>
-                DOI:
+                Date of Incident:
                 @isset($sustained->doi)
                     @php
                         try {

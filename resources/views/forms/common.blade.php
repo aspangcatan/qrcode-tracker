@@ -59,10 +59,10 @@
                         <div class="col-md-3">
                             <div class="form-check">
                                 @if(isset($certificates) && $certificates)
-                                    <input class="form-check-input" type="radio" name="document_type"
+                                    <input class="form-check-input" type="checkbox" name="document_type"
                                            @if($certificates->specific_document == 'Certified Machine Copy') checked @endif>
                                 @else
-                                    <input class="form-check-input" type="radio" name="document_type">
+                                    <input class="form-check-input" type="checkbox" name="document_type">
                                 @endif
                                 <label class="form-check-label">
                                     Certified Machine Copy
@@ -72,10 +72,10 @@
                         <div class="col-md-3">
                             <div class="form-check">
                                 @if(isset($certificates) && $certificates)
-                                    <input class="form-check-input" type="radio" name="document_type"
+                                    <input class="form-check-input" type="checkbox" name="document_type"
                                            @if($certificates->specific_document == 'OR Record') checked @endif>
                                 @else
-                                    <input class="form-check-input" type="radio" name="document_type">
+                                    <input class="form-check-input" type="checkbox" name="document_type">
                                 @endif
                                 <label class="form-check-label">
                                     OR Record
@@ -85,10 +85,10 @@
                         <div class="col-md-3">
                             <div class="form-check">
                                 @if(isset($certificates) && $certificates)
-                                    <input class="form-check-input" type="radio" name="document_type"
+                                    <input class="form-check-input" type="checkbox" name="document_type"
                                            @if($certificates->specific_document == 'Laboratory Results') checked @endif>
                                 @else
-                                    <input class="form-check-input" type="radio" name="document_type">
+                                    <input class="form-check-input" type="checkbox" name="document_type">
                                 @endif
                                 <label class="form-check-label">
                                     Laboratory Results
@@ -98,10 +98,10 @@
                         <div class="col-md-3">
                             <div class="form-check">
                                 @if(isset($certificates) && $certificates)
-                                    <input class="form-check-input" type="radio" name="document_type"
+                                    <input class="form-check-input" type="checkbox" name="document_type"
                                            @if($certificates->specific_document == 'Xray Results') checked @endif>
                                 @else
-                                    <input class="form-check-input" type="radio" name="document_type">
+                                    <input class="form-check-input" type="checkbox" name="document_type">
                                 @endif
                                 <label class="form-check-label">
                                     Xray Results
@@ -111,10 +111,10 @@
                         <div class="col-md-3">
                             <div class="form-check">
                                 @if(isset($certificates) && $certificates)
-                                    <input class="form-check-input" type="radio" name="document_type"
+                                    <input class="form-check-input" type="checkbox" name="document_type"
                                            @if($certificates->specific_document == 'Discharge Summary') checked @endif>
                                 @else
-                                    <input class="form-check-input" type="radio" name="document_type">
+                                    <input class="form-check-input" type="checkbox" name="document_type">
                                 @endif
                                 <label class="form-check-label">
                                     Discharge Summary
@@ -124,10 +124,10 @@
                         <div class="col-md-3">
                             <div class="form-check">
                                 @if(isset($certificates) && $certificates)
-                                    <input class="form-check-input" type="radio" name="document_type"
+                                    <input class="form-check-input" type="checkbox" name="document_type"
                                            @if($certificates->specific_document == 'Histopath Result') checked @endif>
                                 @else
-                                    <input class="form-check-input" type="radio" name="document_type">
+                                    <input class="form-check-input" type="checkbox" name="document_type">
                                 @endif
                                 <label class="form-check-label">
                                     Histopath Result
@@ -137,10 +137,10 @@
                         <div class="col-md-3">
                             <div class="form-check">
                                 @if(isset($certificates) && $certificates)
-                                    <input class="form-check-input" type="radio" name="document_type"
+                                    <input class="form-check-input" type="checkbox" name="document_type"
                                            @if($certificates->specific_document == 'Fetal Death Certificate') checked @endif>
                                 @else
-                                    <input class="form-check-input" type="radio" name="document_type">
+                                    <input class="form-check-input" type="checkbox" name="document_type">
                                 @endif
                                 <label class="form-check-label">
                                     Fetal Death Certificate
@@ -150,10 +150,10 @@
                         <div class="col-md-3">
                             <div class="form-check">
                                 @if(isset($certificates) && $certificates)
-                                    <input class="form-check-input" type="radio" name="document_type"
+                                    <input class="form-check-input" type="checkbox" name="document_type"
                                            @if($certificates->specific_document == 'Death Certificate') checked @endif>
                                 @else
-                                    <input class="form-check-input" type="radio" name="document_type">
+                                    <input class="form-check-input" type="checkbox" name="document_type">
                                 @endif
                                 <label class="form-check-label">
                                     Death Certificate
@@ -163,13 +163,13 @@
                         <div class="col-md-12">
                             <div class="form-check">
                                 @if(isset($certificates) && $certificates)
-                                    <input class="form-check-input" type="radio" name="document_type"
+                                    <input class="form-check-input" type="checkbox" name="document_type"
                                            @if($certificates->specific_document != ' Certified Machine Copy' && $certificates->specific_document != 'OR Record' &&
                                             $certificates->specific_document != 'Laboratory Results' && $certificates->specific_document != 'Xray Results' &&
                                             $certificates->specific_document != 'Discharge Summary' && $certificates->specific_document != 'Histopath Result' &&
                                             $certificates->specific_document != 'Fetal Death Certificate' && $certificates->specific_document != 'Death Certificate') checked @endif>
                                 @else
-                                    <input class="form-check-input" type="radio" name="document_type">
+                                    <input class="form-check-input" type="checkbox" name="document_type">
                                 @endif
                                 <div class="d-flex">
                                     <label class="form-check-label">Others</label>

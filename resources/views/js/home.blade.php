@@ -1,4 +1,3 @@
-{{--<script src="js/quirk.js?v=v={{ date('ymdhis') }}"></script>--}}
 <script>
     //COMMON HEADERS TO BE USED TO ALL POST,PUT,DELETE request
     let DOCTORS = [];
@@ -291,7 +290,7 @@
             if (title == "") return;
             window.open("https://dohcsmc.com/qrcode-tracker/print-preview?id=" + certificate_id +
                 "&title=" + title + "&d_margin_top=" + d_margin_top +
-                "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top+ "&seal_margin_top=" + seal_margin_top
+                "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top + "&seal_margin_top=" + seal_margin_top
                 , '_blank');
         });
 
@@ -323,11 +322,15 @@
             let no_copies = $("#no_copies").val();
             let received_by = $("#received_by").val();
             let check_type = $("input[name='document_type']:checked");
-            let document_type = "";
+            const document_type_array = [];
             if (check_type) {
-                document_type = $(check_type).closest('.form-check').find('label').text().trim();
-                if (document_type === "Others") {
-                    document_type = $("#document_type").val().trim();
+                for (let i = 0; i < check_type.length; i++) {
+                    let document_type = $("input[name='document_type']:checked:eq(" + i + ")").closest('.form-check').find('label').text().trim();
+                    if (document_type === "Others") {
+                        document_type = $("#document_type").val().trim();
+                    }
+
+                    document_type_array.push(document_type);
                 }
             }
 
@@ -604,7 +607,7 @@
                 "sustained": (noi === undefined) ? null : sustained,
                 "ward": (ward === undefined) ? null : ward,
                 "received_by": received_by,
-                "document_type": document_type,
+                "document_type": document_type_array,
                 "no_copies": (no_copies && certificate_id === 0) ? no_copies : 1
             }
 
@@ -846,9 +849,8 @@
                             <span class="badge text-white text-center ` + bg + `">` + status + `</span>
                         </td>
                         <td>`;
-            if(it.type != "common")
-            {
-             tr += `<button class="btn btn-sm btn-info" onclick="printPreview(` + it.id + `)">
+            if (it.type != "common") {
+                tr += `<button class="btn btn-sm btn-info" onclick="printPreview(` + it.id + `)">
                         <i class="bi bi-qr-code"></i>
                     </button>`;
             }

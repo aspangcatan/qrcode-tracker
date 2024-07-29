@@ -350,6 +350,7 @@
     </div>
 
     <div style="margin-top:{{$seal_margin_top}}px">
+        <div class="fw-bold">NOT FOR MEDICO LEGAL PURPOSES</div>
         <div class="fw-bold">(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
             <tr>
@@ -384,7 +385,7 @@
     </div>
     <div style="float:right;margin-top:{{$s_margin_top}}px;font-size: 13px">
         <div>AHQM-REC-FM-03 Rev.0</div>
-        <div>20 February 2023</div>
+        <div>April 1, 2024</div>
     </div>
 </div>
 <script>

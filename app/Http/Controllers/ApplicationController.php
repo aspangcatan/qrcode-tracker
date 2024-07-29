@@ -122,95 +122,29 @@ class ApplicationController extends Controller
         }
     }
 
+
     public function storeCertificate(Request $request)
     {
         try {
-            $mi = (Auth::user()->mname) ? Auth::user()->mname[0] . '.' : '';
-            $prepared_by = strtoupper(Auth::user()->fname . ' ' . $mi . ' ' . Auth::user()->lname);
+            $excluded_certificate = ['ordinary', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient', 'coc', 'medical_abstract'];
+            $specific_documents = $request->document_type;
+            $type = $request->type;
+
             for ($i = 0; $i < $request->no_copies; $i++) {
-                $latest_id = $this->certificateService->getLatestId();
-                $registry_no = "000001";
-                if ($latest_id) {
-                    $registry_no = str_pad(($latest_id->id + 1), 6, "0", STR_PAD_LEFT);
-                }
-
-                #ACCORDING TO CLIENT REGISTRY NO. AND CERTIFICATE NO. IS THE SAME
-                $params = [
-                    'user_id' => Auth::id(),
-                    'certificate_no' => $registry_no,
-                    'health_record_no' => $request->health_record_no,
-                    'patient' => $request->patient,
-                    'age' => $request->age,
-                    'sex' => $request->sex,
-                    'civil_status' => $request->civil_status,
-                    'address' => $request->address,
-                    'date_examined' => $request->date_examined,
-                    'date_discharged' => $request->date_discharged,
-                    'doctor' => $request->doctor,
-                    'doctor_designation' => $request->doctor_designation,
-                    'doctor_license' => $request->doctor_license,
-                    'requesting_person' => $request->requesting_person,
-                    'relationship' => $request->relationship,
-                    'purpose' => $request->purpose,
-                    'second_purpose' => $request->second_purpose,
-                    'or_no' => $request->or_no,
-                    'amount' => $request->amount,
-                    'charge_slip_no' => $request->charge_slip_no,
-                    'registry_no' => $registry_no,
-                    'date_requested' => $request->date_requested,
-                    'days_barred' => $request->days_barred,
-                    'type' => $request->type,
-                    'ward' => $request->ward,
-                    'received_by' => $request->received_by,
-                    'prepared_by' => $prepared_by,
-                    'status' => 'PENDING',
-                    'specific_document' => $request->document_type,
-                    'created_at' => now()
-                ];
-
-                $certificate = $this->certificateService->getCertificateById($request->id);
-                if ($certificate) {
-                    //UPDATE INFORMATION
-                    if ($certificate->date_issued) {
-                        return response()->json(['message' => 'Certificate already issued'], 500);
+                if (!in_array($type, $excluded_certificate)) {
+                    foreach ($specific_documents as $document_type) {
+                        $certificate_id = $this->createCertificate($request, $document_type);
+                        $this->handleDiagnosis($request->diagnosis, $certificate_id);
+                        $this->handleSustained($request->sustained, $certificate_id);
                     }
-
-                    $certificate_id = $request->id;
-                    $this->certificateService->updateCertificate($certificate_id, $params);
-                    $message = 'Record updated';
                 } else {
-                    $certificate_id = $this->certificateService->store($params);
-                    $data = now() . $certificate_id;
-                    $hashedValue = hash('sha256', $data);
-                    $shortenedHash = substr($hashedValue, 0, 8); // Shorten if needed
-                    $url = env('APP_URL') . '/qrcode-details?_q=' . $shortenedHash;
-                    $this->certificateService->appendHashedValue($certificate_id, $url, $shortenedHash);
-                    $message = 'New record added';
-                }
-
-                if ($request->diagnosis) {
-                    $diagnosis = $request->diagnosis;
-                    $diagnosis_params = [];
-                    for ($j = 0; $j < count($diagnosis); $j++) {
-                        $diagnosis_params[] = [
-                            'certificate_id' => $certificate_id,
-                            'diagnosis' => $diagnosis[$j]['diagnosis']
-                        ];
-                    }
-
-                    $this->diagnosisService->delete($certificate_id);
-                    $this->diagnosisService->store($diagnosis_params);
-                }
-
-                if ($request->sustained) {
-                    $this->sustainedService->delete($certificate_id);
-                    $sustained = $request->sustained;
-                    $sustained['certificate_id'] = $certificate_id;
-                    $this->sustainedService->store($sustained);
+                    $certificate_id = $this->createCertificate($request, '');
+                    $this->handleDiagnosis($request->diagnosis, $certificate_id);
+                    $this->handleSustained($request->sustained, $certificate_id);
                 }
             }
 
-            return response()->json(['message' => $message]);
+            return response()->json(['message' => 'Operation successful']);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
@@ -310,45 +244,45 @@ class ApplicationController extends Controller
         switch ($request->type) {
             case "ordinary":
                 if ($request->has('id')) {
-                    return view('forms.ordinary', compact('certificates', 'diagnosis','receivers'));
+                    return view('forms.ordinary', compact('certificates', 'diagnosis', 'receivers'));
                 }
-                return view('forms.ordinary', compact('certificate_no','receivers'));
+                return view('forms.ordinary', compact('certificate_no', 'receivers'));
             case "ordinary_inpatient":
                 if ($request->has('id')) {
-                    return view('forms.ordinary_inpatient', compact('certificates', 'diagnosis','receivers'));
+                    return view('forms.ordinary_inpatient', compact('certificates', 'diagnosis', 'receivers'));
                 }
-                return view('forms.ordinary_inpatient', compact('certificate_no','receivers'));
+                return view('forms.ordinary_inpatient', compact('certificate_no', 'receivers'));
             case "maipp":
                 if ($request->has('id')) {
-                    return view('forms.maipp', compact('certificates', 'diagnosis','receivers'));
+                    return view('forms.maipp', compact('certificates', 'diagnosis', 'receivers'));
                 }
-                return view('forms.maipp', compact('certificate_no','receivers'));
+                return view('forms.maipp', compact('certificate_no', 'receivers'));
             case "maipp_inpatient":
                 if ($request->has('id')) {
-                    return view('forms.maipp_inpatient', compact('certificates', 'diagnosis','receivers'));
+                    return view('forms.maipp_inpatient', compact('certificates', 'diagnosis', 'receivers'));
                 }
-                return view('forms.maipp_inpatient', compact('certificate_no','receivers'));
+                return view('forms.maipp_inpatient', compact('certificate_no', 'receivers'));
             case "medico_legal":
                 if ($request->has('id')) {
                     $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
-                    return view('forms.medico_legal', compact('certificates', 'diagnosis', 'sustained','receivers'));
+                    return view('forms.medico_legal', compact('certificates', 'diagnosis', 'sustained', 'receivers'));
                 }
-                return view('forms.medico_legal', compact('certificate_no','receivers'));
+                return view('forms.medico_legal', compact('certificate_no', 'receivers'));
             case "coc":
                 if ($request->has('id')) {
-                    return view('forms.coc', compact('certificates', 'diagnosis','receivers'));
+                    return view('forms.coc', compact('certificates', 'diagnosis', 'receivers'));
                 }
-                return view('forms.coc', compact('certificate_no','receivers'));
+                return view('forms.coc', compact('certificate_no', 'receivers'));
             case "medical_abstract":
                 if ($request->has('id')) {
-                    return view('forms.medical_abstract', compact('certificates','receivers'));
+                    return view('forms.medical_abstract', compact('certificates', 'receivers'));
                 }
-                return view('forms.medical_abstract', compact('certificate_no','receivers'));
+                return view('forms.medical_abstract', compact('certificate_no', 'receivers'));
             case "common":
                 if ($request->has('id')) {
-                    return view('forms.common', compact('certificates','receivers'));
+                    return view('forms.common', compact('certificates', 'receivers'));
                 }
-                return view('forms.common', compact('certificate_no','receivers'));
+                return view('forms.common', compact('certificate_no', 'receivers'));
             default:
                 return [];
         }
@@ -511,6 +445,116 @@ class ApplicationController extends Controller
             );
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
+        }
+    }
+
+
+
+
+    /***HELPERS**/
+    /**
+     * Create a certificate record.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $specific_document
+     * @return int $certificate_id
+     */
+    private function createCertificate($request, $specific_document) {
+
+        $mi = (Auth::user()->mname) ? Auth::user()->mname[0] . '.' : '';
+        $prepared_by = strtoupper(Auth::user()->fname . ' ' . $mi . ' ' . Auth::user()->lname);
+        $latest_id = $this->certificateService->getLatestId();
+        $registry_no = "000001";
+        if ($latest_id) {
+            $registry_no = str_pad(($latest_id->id + 1), 6, "0", STR_PAD_LEFT);
+        }
+
+        $params = [
+            'user_id' => Auth::id(),
+            'certificate_no' => $registry_no,
+            'health_record_no' => $request->health_record_no,
+            'patient' => $request->patient,
+            'age' => $request->age,
+            'sex' => $request->sex,
+            'civil_status' => $request->civil_status,
+            'address' => $request->address,
+            'date_examined' => $request->date_examined,
+            'date_discharged' => $request->date_discharged,
+            'doctor' => $request->doctor,
+            'doctor_designation' => $request->doctor_designation,
+            'doctor_license' => $request->doctor_license,
+            'requesting_person' => $request->requesting_person,
+            'relationship' => $request->relationship,
+            'purpose' => $request->purpose,
+            'second_purpose' => $request->second_purpose,
+            'or_no' => $request->or_no,
+            'amount' => $request->amount,
+            'charge_slip_no' => $request->charge_slip_no,
+            'registry_no' => $registry_no,
+            'date_requested' => $request->date_requested,
+            'days_barred' => $request->days_barred,
+            'type' => $request->type,
+            'ward' => $request->ward,
+            'received_by' => $request->received_by,
+            'prepared_by' => $prepared_by,
+            'status' => 'PENDING',
+            'specific_document' => $specific_document,
+            'created_at' => now()
+        ];
+
+        $certificate = $this->certificateService->getCertificateById($request->id);
+        if ($certificate) {
+            if ($certificate->date_issued) {
+                throw new \Exception('Certificate already issued');
+            }
+
+            $this->certificateService->updateCertificate($certificate->id, $params);
+            $certificate_id = $certificate->id;
+        } else {
+            $certificate_id = $this->certificateService->store($params);
+            $data = now() . $certificate_id;
+            $hashedValue = hash('sha256', $data);
+            $shortenedHash = substr($hashedValue, 0, 8);
+            $url = env('APP_URL') . '/qrcode-details?_q=' . $shortenedHash;
+            $this->certificateService->appendHashedValue($certificate_id, $url, $shortenedHash);
+        }
+
+        return $certificate_id;
+    }
+
+    /**
+     * Handle diagnosis data.
+     *
+     * @param array $diagnosis
+     * @param int $certificate_id
+     * @return void
+     */
+    private function handleDiagnosis($diagnosis, $certificate_id) {
+        if ($diagnosis) {
+            $diagnosis_params = [];
+            foreach ($diagnosis as $item) {
+                $diagnosis_params[] = [
+                    'certificate_id' => $certificate_id,
+                    'diagnosis' => $item['diagnosis']
+                ];
+            }
+            $this->diagnosisService->delete($certificate_id);
+            $this->diagnosisService->store($diagnosis_params);
+        }
+    }
+
+    /**
+     * Handle sustained data.
+     *
+     * @param array $sustained
+     * @param int $certificate_id
+     * @return void
+     */
+    private function handleSustained($sustained, $certificate_id) {
+        if ($sustained) {
+            $this->sustainedService->delete($certificate_id);
+            $sustained['certificate_id'] = $certificate_id;
+            $this->sustainedService->store($sustained);
         }
     }
 }
