@@ -300,11 +300,11 @@
         <tr>
             <td></td>
             <td>
-                Date of Incident:
+                DOI:
                 @isset($sustained->doi)
                     @php
                         try {
-                            echo \Carbon\Carbon::parse($sustained->doi)->format('m/d/Y');
+                            echo \Carbon\Carbon::parse($sustained->doi)->format('F j, Y');
                         } catch (\Exception $e) {
                             echo $sustained->doi;
                         }

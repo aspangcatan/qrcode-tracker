@@ -189,7 +189,7 @@
                 <tr>
                     <td></td>
                     <td>
-                        <div class="d-block">Date of Incident:</div>
+                        <div class="d-block">DOI:</div>
                     </td>
                     <td>
                         <div class="medium">
