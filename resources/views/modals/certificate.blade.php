@@ -70,6 +70,7 @@
                     <option>MEDICO LEGAL CERTIFICATE</option>
                     <option>DENTAL CERTIFICATE</option>
                     <option>CERTIFICATE OF CONFINEMENT</option>
+                    <option>MEDICAL ABSTRACT</option>
                 </select>
                 <div class="form-floating mb-3 mt-2">
                     <input type="number" class="form-control" id="d_margin_top">
