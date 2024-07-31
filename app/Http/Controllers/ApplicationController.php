@@ -515,7 +515,7 @@ class ApplicationController extends Controller
             $data = now() . $certificate_id;
             $hashedValue = hash('sha256', $data);
             $shortenedHash = substr($hashedValue, 0, 8);
-            $url = env('APP_URL') . '/qrcode-details?_q=' . $shortenedHash;
+            $url = 'https://dohcsmc.com/qrcode-tracker/qrcode-details?_q=' . $shortenedHash;
             $this->certificateService->appendHashedValue($certificate_id, $url, $shortenedHash);
         }
 
