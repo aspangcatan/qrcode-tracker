@@ -65,13 +65,6 @@
                 <div class="card-title p-1" style="font-size: 24px">Choose heading</div>
             </div>
             <div class="modal-body w-100">
-                <select class="form-control" id="select_heading">
-                    <option>MEDICAL CERTIFICATE</option>
-                    <option>MEDICO LEGAL CERTIFICATE</option>
-                    <option>DENTAL CERTIFICATE</option>
-                    <option>CERTIFICATE OF CONFINEMENT</option>
-                    <option>MEDICAL ABSTRACT</option>
-                </select>
                 <div class="form-floating mb-3 mt-2">
                     <input type="number" class="form-control" id="d_margin_top">
                     <label>Margin Top (Diagnosis)</label>
@@ -117,7 +110,8 @@
                     <option value="5">PRESIGNED - INPATIENT</option>
                     <option value="6">COC</option>
                     <option value="7">MEDICAL ABSTRACT</option>
-                    <option value="8">OTHER RECORDS</option>
+                    <option value="8">DENTAL</option>
+                    <option value="9">OTHER RECORDS</option>
                 </select>
             </div>
             <div class="modal-footer">

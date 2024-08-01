@@ -194,7 +194,7 @@
     </table>
 
     <div class="certificate-title">
-        {{ $title }}
+        MEDICAL CERTIFICATE
     </div>
     <div style="margin-top:30px">
         To whom it may concern:

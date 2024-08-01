@@ -126,7 +126,7 @@ class ApplicationController extends Controller
     public function storeCertificate(Request $request)
     {
         try {
-            $excluded_certificate = ['ordinary', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient', 'coc', 'medical_abstract'];
+            $excluded_certificate = ['ordinary', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient', 'coc', 'medical_abstract', 'dental'];
             $specific_documents = $request->document_type;
             $type = $request->type;
 
@@ -243,6 +243,7 @@ class ApplicationController extends Controller
         $receivers = $this->homisService->receiver();
         switch ($request->type) {
             case "ordinary":
+            case "dental":
                 if ($request->has('id')) {
                     return view('forms.ordinary', compact('certificates', 'diagnosis', 'receivers'));
                 }
@@ -303,7 +304,6 @@ class ApplicationController extends Controller
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
-                            'title' => $request->title,
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
@@ -316,7 +316,17 @@ class ApplicationController extends Controller
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
-                            'title' => $request->title,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
+                        ]);
+                case "dental":
+                    return view('pdf.dental',
+                        [
+                            'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
@@ -328,7 +338,6 @@ class ApplicationController extends Controller
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
-                            'title' => $request->title,
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
@@ -340,7 +349,6 @@ class ApplicationController extends Controller
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
-                            'title' => $request->title,
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
@@ -352,7 +360,6 @@ class ApplicationController extends Controller
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
-                            'title' => $request->title,
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
@@ -366,7 +373,6 @@ class ApplicationController extends Controller
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
                             'sustained' => $sustained,
-                            'title' => $request->title,
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
@@ -377,7 +383,6 @@ class ApplicationController extends Controller
                     return view('pdf.medical_abstract',
                         [
                             'certificate' => $certificate,
-                            'title' => $request->title,
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
@@ -459,8 +464,8 @@ class ApplicationController extends Controller
      * @param string $specific_document
      * @return int $certificate_id
      */
-    private function createCertificate($request, $specific_document) {
-
+    private function createCertificate($request, $specific_document)
+    {
         $mi = (Auth::user()->mname) ? Auth::user()->mname[0] . '.' : '';
         $prepared_by = strtoupper(Auth::user()->fname . ' ' . $mi . ' ' . Auth::user()->lname);
         $latest_id = $this->certificateService->getLatestId();
@@ -507,7 +512,6 @@ class ApplicationController extends Controller
             if ($certificate->date_issued) {
                 throw new \Exception('Certificate already issued');
             }
-
             $this->certificateService->updateCertificate($certificate->id, $params);
             $certificate_id = $certificate->id;
         } else {
@@ -529,7 +533,8 @@ class ApplicationController extends Controller
      * @param int $certificate_id
      * @return void
      */
-    private function handleDiagnosis($diagnosis, $certificate_id) {
+    private function handleDiagnosis($diagnosis, $certificate_id)
+    {
         if ($diagnosis) {
             $diagnosis_params = [];
             foreach ($diagnosis as $item) {
@@ -550,7 +555,8 @@ class ApplicationController extends Controller
      * @param int $certificate_id
      * @return void
      */
-    private function handleSustained($sustained, $certificate_id) {
+    private function handleSustained($sustained, $certificate_id)
+    {
         if ($sustained) {
             $this->sustainedService->delete($certificate_id);
             $sustained['certificate_id'] = $certificate_id;

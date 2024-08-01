@@ -95,6 +95,9 @@
                     type = "medical_abstract";
                     break;
                 case "8":
+                    type = "dental";
+                    break;
+                case "9":
                     type = "common";
                     break;
             }
@@ -281,15 +284,13 @@
         });
 
         $("#btn_print_certificate").click(function () {
-            const title = $("#select_heading").val();
             const d_margin_top = $("#d_margin_top").val();
             const d_margin_bottom = $("#d_margin_bottom").val();
             const s_margin_top = $("#s_margin_top").val();
             const seal_margin_top = $("#seal_margin_top").val();
 
-            if (title == "") return;
             window.open("https://dohcsmc.com/qrcode-tracker/print-preview?id=" + certificate_id +
-                "&title=" + title + "&d_margin_top=" + d_margin_top +
+                "&d_margin_top=" + d_margin_top +
                 "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top + "&seal_margin_top=" + seal_margin_top
                 , '_blank');
         });
@@ -830,6 +831,9 @@
                     break;
                 case "coc":
                     _type = "CERTIFICATE OF CONFINEMENT";
+                    break;
+                case "dental":
+                    _type = "DENTAL CERTIFICATE";
                     break;
                 case "medical_abstract":
                     _type = "MEDICAL ABSTRACT";
