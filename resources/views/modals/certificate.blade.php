@@ -123,10 +123,10 @@
 </div>
 
 <div class="modal fade" id="tagging_modal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="card-title p-1" style="font-size: 24px">Tag as:</div>
+                <div class="card-title p-1" style="font-size: 24px">Tag as: <span id="tag_patient" class="text-dark fw-bold fs-5"></span></div>
             </div>
             <div class="modal-body w-100">
                 <select class="js-example-basic-single w-100" name="doctor" id="select_tag">

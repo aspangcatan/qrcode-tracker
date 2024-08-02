@@ -416,7 +416,7 @@
             }
 
             //CODE ARE SPAGHETTI NOW, GONNA CHANGE TO VERSION 2 SOON
-            if(type != "medical_abstract" && type != "coc" && diagnosis_array.length < 1){
+            if (type != "medical_abstract" && type != "coc" && diagnosis_array.length < 1) {
                 toastr.error('Diagnosis is required');
                 is_valid = false;
             }
@@ -699,6 +699,8 @@
 
     async function tagCertificate(id) {
         certificate_id = id;
+        const patient_name = $("#certificate_id_" + id + " td:eq(2)").text();
+        $("#tag_patient").text(patient_name);
         $("#tagging_modal").modal("show");
     }
 
