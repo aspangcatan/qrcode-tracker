@@ -193,7 +193,7 @@
     </table>
 
     <div class="certificate-title">
-        CERTIFICATE OF CONFINEMENT
+        MEDICAL CERTIFICATE
     </div>
     <div class="certificate-text">
         <table style="width: 100%" class="word-spacing">

@@ -416,7 +416,7 @@
             }
 
             //CODE ARE SPAGHETTI NOW, GONNA CHANGE TO VERSION 2 SOON
-            if(type != "medical_abstract" && diagnosis_array.length < 1){
+            if(type != "medical_abstract" && type != "coc" && diagnosis_array.length < 1){
                 toastr.error('Diagnosis is required');
                 is_valid = false;
             }
