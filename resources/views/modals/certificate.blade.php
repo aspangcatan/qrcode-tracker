@@ -136,7 +136,7 @@
                 </select>
             </div>
             <div class="modal-footer">
-                <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
+                <button class="btn btn-secondary mr-1" data-bs-zdismiss="modal">CANCEL</button>
                 <button class="btn btn-success ml-1" id="btn_save_tag">SAVE</button>
             </div>
         </div>
