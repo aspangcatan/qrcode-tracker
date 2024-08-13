@@ -44,7 +44,7 @@
     </table>
 
     <div class="certificate-title">
-        MEDICAL CERTIFICATE
+        CERTIFICATE OF CONFINEMENT
     </div>
     <div class="certificate-text">
         <div>
