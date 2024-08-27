@@ -2,6 +2,20 @@
 @section('content')
     <div class="col-12">
         <div class="d-flex justify-content-end mb-2">
+            <div class="me-1">
+                <select class="form-control" id="filter_type">
+                    <option value="">Search type</option>
+                    <option value="maipp">PRESIGNED - ER/OPD</option>
+                    <option value="ordinary">ORDINARY MEDCERT - ER/OPD</option>
+                    <option value="maipp_inpatient">PRESIGNED - INPATIENT</option>
+                    <option value="ordinary_inpatient">ORDINARY MEDCERT - INPATIENT</option>
+                    <option value="medico_legal">MEDICO LEGAL</option>
+                    <option value="coc">COC</option>
+                    <option value="medical_abstract">MEDICAL ABSTRACT</option>
+                    <option value="dental">DENTAL</option>
+                    <option value="common">OTHER RECORDS</option>
+                </select>
+            </div>
             <div>
                 <input class="form-control" placeholder="Search patient" id="filter_patient"/>
             </div>

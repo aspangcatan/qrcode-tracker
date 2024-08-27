@@ -15,6 +15,9 @@ class CertificateService
                 if (!session('access_rights') === 'admin') {
                     $query->where('user_id', '=', $user_id);
                 }
+                if ($filters['filter_type'] != '') {
+                    $query->where('type', 'LIKE', '%' . $filters['filter_type'] . '%');
+                }
 
                 if ($filters['filter_patient'] != '') {
                     $query->where('patient', 'LIKE', '%' . $filters['filter_patient'] . '%');

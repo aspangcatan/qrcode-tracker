@@ -114,7 +114,7 @@ class ApplicationController extends Controller
     public function getCertificates(Request $request)
     {
         try {
-            $filters = $request->only(['filter_patient', 'filter_date_issued']);
+            $filters = $request->only(['filter_type','filter_patient', 'filter_date_issued']);
             $response = $this->certificateService->index(Auth::id(), $filters, $request->page * 10);
             return response()->json($response);
         } catch (\Exception $exception) {
@@ -241,13 +241,19 @@ class ApplicationController extends Controller
         $certificates = $this->certificateService->getCertificateById($request->id);
         $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
         $receivers = $this->homisService->receiver();
+        $title = "MEDICAL CERTIFICATE";
         switch ($request->type) {
             case "ordinary":
-            case "dental":
                 if ($request->has('id')) {
-                    return view('forms.ordinary', compact('certificates', 'diagnosis', 'receivers'));
+                    return view('forms.ordinary', compact('certificates', 'diagnosis', 'receivers','title'));
                 }
-                return view('forms.ordinary', compact('certificate_no', 'receivers'));
+                return view('forms.ordinary', compact('certificate_no', 'receivers','title'));
+            case "dental":
+                $title = "DENTAL CERTIFICATE";
+                if ($request->has('id')) {
+                    return view('forms.ordinary', compact('certificates', 'diagnosis', 'receivers','title'));
+                }
+                return view('forms.ordinary', compact('certificate_no', 'receivers','title'));
             case "ordinary_inpatient":
                 if ($request->has('id')) {
                     return view('forms.ordinary_inpatient', compact('certificates', 'diagnosis', 'receivers'));

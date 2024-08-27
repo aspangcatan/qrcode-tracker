@@ -423,7 +423,6 @@
 
             switch (type) {
                 case "ordinary":
-
                     if (!date_examined) {
                         toastr.error('Date examined is required');
                         $("#date_examined").addClass("is-invalid");
@@ -762,10 +761,13 @@
     }
 
     async function getCertificates() {
+
+        const filter_type = $("#filter_type").val();
         const filter_patient = $("#filter_patient").val().trim();
         const filter_date_issued = $("#filter_date_issued").val();
         const response = await fetch('{{ route('getCertificates') }}?page=' + page +
             '&filter_patient=' + filter_patient +
+            '&filter_type=' + filter_type +
             '&filter_date_issued=' + filter_date_issued);
 
         const data = await response.json();

@@ -103,11 +103,11 @@
             </div>
             <div class="modal-body w-100">
                 <select class="form-control" id="select_certificate">
-                    <option value="1">ORDINARY MEDCERT - ER/OPD</option>
                     <option value="2">PRESIGNED - ER/OPD</option>
-                    <option value="3">MEDICO LEGAL</option>
-                    <option value="4">ORDINARY MEDCERT - INPATIENT</option>
+                    <option value="1">ORDINARY MEDCERT - ER/OPD</option>
                     <option value="5">PRESIGNED - INPATIENT</option>
+                    <option value="4">ORDINARY MEDCERT - INPATIENT</option>
+                    <option value="3">MEDICO LEGAL</option>
                     <option value="6">COC</option>
                     <option value="7">MEDICAL ABSTRACT</option>
                     <option value="8">DENTAL</option>

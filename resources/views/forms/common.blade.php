@@ -354,7 +354,7 @@
                             <input type="datetime-local" id="date_requested"
                                    value="{{ $certificates->date_requested }}"/>
                         @else
-                            <input type="datetime-local" id="date_requested"/>
+                            <input type="datetime-local" id="date_requested" value="{{ now()->format('Y-m-d\TH:i') }}"/>
                         @endif
                     </div>
                 </td>
