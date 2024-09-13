@@ -523,19 +523,19 @@
                         is_valid = false;
                     }
 
-                    if (!doctor) {
+                    if (!doctor && type != "dental") {
                         toastr.error('Doctor is required');
                         $("#doctor").addClass("is-invalid");
                         is_valid = false;
                     }
 
-                    if (!doctor_designation) {
+                    if (!doctor_designation && type != "dental") {
                         toastr.error('Doctor designation is required');
                         $("#doctor_designation").addClass("is-invalid");
                         is_valid = false;
                     }
 
-                    if (!doctor_license) {
+                    if (!doctor_license && type != "dental") {
                         toastr.error('Doctor license no. is required');
                         $("#doctor_license").addClass("is-invalid");
                         is_valid = false;
