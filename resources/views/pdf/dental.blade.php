@@ -22,7 +22,7 @@
             font-family: Arial, sans-serif;
         }
 
-        .fw-bold{
+        .fw-bold {
             font-weight: bold;
             text-transform: uppercase;
         }
@@ -141,15 +141,15 @@
             text-align: center;
         }
 
-        table{
+        table {
             border-collapse: separate;
             border-spacing: 0 3px;
         }
 
-        table p{
+        table p {
             word-spacing: 5px;
             padding: 0px;
-            margin:0px;
+            margin: 0px;
         }
 
         table tr.no-spacing {
@@ -260,7 +260,8 @@
         </table>
     </div>
 
-    <div class="certificate-diagnosis" style="margin-left: 130px;margin-top:{{$d_margin_top}}px;margin-bottom:{{$d_margin_bottom}}px;text-transform: uppercase">
+    <div class="certificate-diagnosis"
+         style="margin-left: 130px;margin-top:{{$d_margin_top}}px;margin-bottom:{{$d_margin_bottom}}px;text-transform: uppercase">
         @for($i=0; $i<count($diagnosis); $i++)
             <div>{!! $diagnosis[$i]->diagnosis !!}</div>
         @endfor
@@ -318,7 +319,9 @@
             <tr>
                 <td></td>
                 <td>
-                    License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span>
+                    @if($certificate->doctor_license)
+                        License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span>
+                    @endif
                 </td>
                 <td></td>
             </tr>
