@@ -176,7 +176,7 @@
         <tr>
             <td>
                 <div style="text-align: right">
-                    Health Record No:
+                    Hospital No:
                     <div class="small fw-bold">{{ $certificate->health_record_no }}</div>
                 </div>
             </td>

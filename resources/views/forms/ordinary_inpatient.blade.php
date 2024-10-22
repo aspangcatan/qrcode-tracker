@@ -18,7 +18,7 @@
                         </div>
                     </div>
                     <div>
-                        Health Record No:
+                        Hospital No:
                         <div class="small">
                             @if(isset($certificates) && $certificates)
                                 <input type="text" id="health_record_no" value="{{ $certificates->health_record_no }}"/>
