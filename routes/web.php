@@ -17,7 +17,12 @@ Route::get('/', [\App\Http\Controllers\ApplicationController::class, 'index'])->
 
 Route::post('/authenticate', [\App\Http\Controllers\ApplicationController::class, 'authenticate'])->name('authenticate');
 Route::get('/logout', [\App\Http\Controllers\ApplicationController::class, 'logout'])->name('logout');
-Route::get('qrcode-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrcodeDetails'])->middleware('throttle:10,1');
+Route::get('/qrcode-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrcodeDetails'])->middleware('throttle:10,1');
+
+
+Route::get('/test_push', [\App\Http\Controllers\ApplicationController::class, 'notifierPushNotification']);
+
+
 #FORMS
 Route::get('/partial-form', [\App\Http\Controllers\ApplicationController::class, 'partialForm'])->name('partialForm');
 Route::group(['middleware' => 'auth'], function () {

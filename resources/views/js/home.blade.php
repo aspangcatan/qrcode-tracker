@@ -869,11 +869,8 @@
                     </button>`;
             }
             tr += `</td>`;
-            if (status === "CANCELLED" || status === "RELEASED")
-                tr += `<td></td><td></td>`;
-            else {
-                tr +=
-                    `<td>
+            tr +=
+                `<td>
                             <button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used editing the certificate information" onclick="editCertificate(` + it.id + `)">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
@@ -883,7 +880,7 @@
                                 <i class="bi bi-tag-fill"></i>
                             </button>
                         </td>`;
-            }
+
             $("#certificate_lists").append(tr);
         }
     }

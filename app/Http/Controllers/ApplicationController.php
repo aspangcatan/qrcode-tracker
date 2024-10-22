@@ -114,7 +114,7 @@ class ApplicationController extends Controller
     public function getCertificates(Request $request)
     {
         try {
-            $filters = $request->only(['filter_type','filter_patient', 'filter_date_issued']);
+            $filters = $request->only(['filter_type', 'filter_patient', 'filter_date_issued']);
             $response = $this->certificateService->index(Auth::id(), $filters, $request->page * 10);
             return response()->json($response);
         } catch (\Exception $exception) {
@@ -245,15 +245,15 @@ class ApplicationController extends Controller
         switch ($request->type) {
             case "ordinary":
                 if ($request->has('id')) {
-                    return view('forms.ordinary', compact('certificates', 'diagnosis', 'receivers','title'));
+                    return view('forms.ordinary', compact('certificates', 'diagnosis', 'receivers', 'title'));
                 }
-                return view('forms.ordinary', compact('certificate_no', 'receivers','title'));
+                return view('forms.ordinary', compact('certificate_no', 'receivers', 'title'));
             case "dental":
                 $title = "DENTAL CERTIFICATE";
                 if ($request->has('id')) {
-                    return view('forms.ordinary', compact('certificates', 'diagnosis', 'receivers','title'));
+                    return view('forms.ordinary', compact('certificates', 'diagnosis', 'receivers', 'title'));
                 }
-                return view('forms.ordinary', compact('certificate_no', 'receivers','title'));
+                return view('forms.ordinary', compact('certificate_no', 'receivers', 'title'));
             case "ordinary_inpatient":
                 if ($request->has('id')) {
                     return view('forms.ordinary_inpatient', compact('certificates', 'diagnosis', 'receivers'));
@@ -567,6 +567,56 @@ class ApplicationController extends Controller
             $this->sustainedService->delete($certificate_id);
             $sustained['certificate_id'] = $certificate_id;
             $this->sustainedService->store($sustained);
+        }
+    }
+
+    /**
+     * CREATE SAMPLE FUNCTION TO TEST NOTIFIER PUSH NOTIFICATION API
+     **/
+
+    public function notifierPushNotification()
+    {
+        try {
+            $post_params = [
+                "topic" => "referrals_TRIAGGE",
+                "hospital_referrer" => "CSMC",
+                "patient" => "Sample P. Patient",
+                "age" => "23",
+                "sex" => "Male"
+            ];
+
+            $curl = curl_init();
+
+            curl_setopt_array($curl, array(
+                CURLOPT_URL => 'https://dohcsmc.com/notifier/api/send_push_notification',
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => json_encode($post_params),
+                CURLOPT_HTTPHEADER => array(
+                    'Content-Type: application/json'
+                ),
+                CURLOPT_SSL_VERIFYHOST => 0,  // Disable SSL host verification
+                CURLOPT_SSL_VERIFYPEER => 0   // Disable SSL certificate verification
+            ));
+
+            $response = curl_exec($curl);
+
+            if ($response === false) {
+                // cURL error occurred
+                $error = curl_error($curl);
+                curl_close($curl);
+                return 'Curl error: ' . $error;
+            }
+
+            curl_close($curl);
+            return $response;
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
         }
     }
 }
