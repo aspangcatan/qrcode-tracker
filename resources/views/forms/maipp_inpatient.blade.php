@@ -31,7 +31,8 @@
                         Date:
                         <div class="small">
                             @if(isset($certificates) && $certificates)
-                                <input type="date" id="date_issued" value="{{ date('Y-m-d', strtotime($certificates->created_at)) }}"/>
+                                <input type="date" id="date_issued"
+                                       value="{{ date('Y-m-d', strtotime($certificates->created_at)) }}"/>
                             @else
                                 <input type="date" id="date_issued" value="{{ now()->format('Y-m-d') }}" disabled/>
                             @endif
@@ -113,9 +114,10 @@
             <span>to</span>
             <div class="small">
                 @if(isset($certificates) && $certificates)
-                    <input type="date" id="date_discharged"   value="{{ \Illuminate\Support\Carbon::parse($certificates->date_discharged)->format('Y-m-d') }}"/>
+                    <input type="date" id="date_discharged"
+                           value="{{ \Illuminate\Support\Carbon::parse($certificates->date_discharged)->format('Y-m-d') }}"/>
                 @else
-                    <input type="date" id="date_discharged" />
+                    <input type="date" id="date_discharged"/>
                 @endif
             </div>
         </div>
@@ -214,6 +216,11 @@
             <div>2nd Purpose</div>
             <select id="second_purpose">
                 @if(isset($certificates) && $certificates)
+                    @if($certificates->second_purpose === '')
+                        <option selected></option>
+                    @else
+                        <option></option>
+                    @endif
                     @if($certificates->second_purpose == '(AKSYON AGAD)')
                         <option selected>(AKSYON AGAD)</option>
                     @else
@@ -238,6 +245,7 @@
                         <option>(MAIPP)</option>
                     @endif
                 @else
+                    <option></option>
                     <option>(AKSYON AGAD)</option>
                     <option>(CSWD)</option>
                     <option>(DSWD)</option>
@@ -316,7 +324,8 @@
                                 <input type="datetime-local" id="date_requested"
                                        value="{{ $certificates->date_requested }}"/>
                             @else
-                                <input type="datetime-local" id="date_requested" value="{{ now()->format('Y-m-d\TH:i') }}"/>
+                                <input type="datetime-local" id="date_requested"
+                                       value="{{ now()->format('Y-m-d\TH:i') }}"/>
                             @endif
                         </div>
                     </td>
