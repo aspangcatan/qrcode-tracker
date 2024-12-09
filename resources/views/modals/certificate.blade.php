@@ -103,6 +103,7 @@
             </div>
             <div class="modal-body w-100">
                 <select class="form-control" id="select_certificate">
+                    <option value="10">AKSYON AGAD</option>
                     <option value="2">PRESIGNED - ER/OPD</option>
                     <option value="1">ORDINARY MEDCERT - ER/OPD</option>
                     <option value="5">PRESIGNED - INPATIENT</option>

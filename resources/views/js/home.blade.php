@@ -100,6 +100,9 @@
                 case "9":
                     type = "common";
                     break;
+                case "10":
+                    type = "aksyon_agad";
+                    break;
             }
 
             $("#choose_certificate_modal").modal("hide");
@@ -367,13 +370,13 @@
                 is_valid = false;
             }
 
-            if (!charge_slip_no) {
+            if (!charge_slip_no && type != "aksyon_agad") {
                 toastr.error('Charge slip no. is required');
                 $("#charge_slip_no").addClass("is-invalid");
                 is_valid = false;
             }
 
-            if (!amount) {
+            if (!amount && type != "aksyon_agad") {
                 toastr.error('Amount is required');
                 $("#amount").addClass("is-invalid");
                 is_valid = false;
@@ -409,7 +412,7 @@
                 is_valid = false;
             }
 
-            if (!received_by) {
+            if (!received_by && type != "aksyon_agad") {
                 toastr.error('Received by is required');
                 $("#received_by").addClass("is-invalid");
                 is_valid = false;
@@ -841,6 +844,9 @@
                     break;
                 case "medical_abstract":
                     _type = "MEDICAL ABSTRACT";
+                    break;
+                case "aksyon_agad":
+                    _type = "AKSYON AGAD";
                     break;
                 case "common":
                     _type = (it.specific_document + "").toUpperCase();
