@@ -5,6 +5,7 @@
             <div class="me-1">
                 <select class="form-control" id="filter_type">
                     <option value="">Search type</option>
+                    <option value="aksyon_agad">AKSYON AGAD</option>
                     <option value="maipp">PRESIGNED - ER/OPD</option>
                     <option value="ordinary">ORDINARY MEDCERT - ER/OPD</option>
                     <option value="maipp_inpatient">PRESIGNED - INPATIENT</option>
