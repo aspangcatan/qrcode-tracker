@@ -348,11 +348,6 @@
             </div>
         </div>
     </div>
-
-    <div style="float:right;margin-top:{{$s_margin_top}}px;font-size: 13px">
-        <div>AHQM-REC-FM-03 Rev.0</div>
-        <div>April 1, 2024</div>
-    </div>
 </div>
 <script>
     // Disable right-click
