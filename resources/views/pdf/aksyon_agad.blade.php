@@ -310,43 +310,45 @@
             </td>
         </tr>
     </table>
-    <div>
-        <div style="margin-left: 50px;">
-            <div>
-                <div style="display: inline">
-                    @if($certificate->purpose == 'Financial and Medical Assistance Program available in the hospital')
-                        <input type="checkbox" checked/>
-                    @else
-                        <input type="checkbox"/>
-                    @endif
-                </div>
-                <span>Financial and Medical Assistance Program available in the hospital</span>
-                @if($certificate->second_purpose)
-                    <div style="display: inline;margin-left: 80px"><u>{{ $certificate->second_purpose }}</u></div>
-                @endif
-            </div>
-            <div>
-                <div style="display: inline">
-                    @if($certificate->purpose == 'School Related Purposes, except for insurance claims or any legal claim')
-                        <input type="checkbox" checked/>
-                    @else
-                        <input type="checkbox"/>
-                    @endif
-                </div>
-                <span>School Related Purposes, except for insurance claims or any legal claim</span>
-            </div>
-            <div>
-                <div style="display: inline">
-                    @if($certificate->purpose == 'Work Related-Purposes, except for insurance claims or any legal claim')
-                        <input type="checkbox" checked/>
-                    @else
-                        <input type="checkbox"/>
-                    @endif
-                </div>
-                <span>Work Related-Purposes, except for insurance claims or any legal claim</span>
-            </div>
-        </div>
-    </div>
+
+{{--    <div>--}}
+{{--        For (Please tick the applicable box below.):--}}
+{{--        <div style="margin-left: 50px;">--}}
+{{--            <div>--}}
+{{--                <div style="display: inline">--}}
+{{--                    @if($certificate->purpose == 'Financial and Medical Assistance Program available in the hospital')--}}
+{{--                        <input type="checkbox" checked/>--}}
+{{--                    @else--}}
+{{--                        <input type="checkbox"/>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
+{{--                <span>Financial and Medical Assistance Program available in the hospital</span>--}}
+{{--                @if($certificate->second_purpose)--}}
+{{--                    <div style="display: inline;margin-left: 80px"><u>{{ $certificate->second_purpose }}</u></div>--}}
+{{--                @endif--}}
+{{--            </div>--}}
+{{--            <div>--}}
+{{--                <div style="display: inline">--}}
+{{--                    @if($certificate->purpose == 'School Related Purposes, except for insurance claims or any legal claim')--}}
+{{--                        <input type="checkbox" checked/>--}}
+{{--                    @else--}}
+{{--                        <input type="checkbox"/>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
+{{--                <span>School Related Purposes, except for insurance claims or any legal claim</span>--}}
+{{--            </div>--}}
+{{--            <div>--}}
+{{--                <div style="display: inline">--}}
+{{--                    @if($certificate->purpose == 'Work Related-Purposes, except for insurance claims or any legal claim')--}}
+{{--                        <input type="checkbox" checked/>--}}
+{{--                    @else--}}
+{{--                        <input type="checkbox"/>--}}
+{{--                    @endif--}}
+{{--                </div>--}}
+{{--                <span>Work Related-Purposes, except for insurance claims or any legal claim</span>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 </div>
 <script>
     // Disable right-click
