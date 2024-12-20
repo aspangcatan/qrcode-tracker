@@ -311,7 +311,6 @@
         </tr>
     </table>
     <div>
-        For (Please tick the applicable box below.):
         <div style="margin-left: 50px;">
             <div>
                 <div style="display: inline">
