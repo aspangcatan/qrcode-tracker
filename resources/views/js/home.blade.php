@@ -103,6 +103,9 @@
                 case "10":
                     type = "aksyon_agad";
                     break;
+                case "11":
+                    type = "dental_presigned";
+                    break;
             }
 
             $("#choose_certificate_modal").modal("hide");
@@ -841,6 +844,9 @@
                     break;
                 case "dental":
                     _type = "DENTAL CERTIFICATE";
+                    break;
+                case "dental_presigned":
+                    _type = "DENTAL CERTIFICATE - PRESIGNED";
                     break;
                 case "medical_abstract":
                     _type = "MEDICAL ABSTRACT";

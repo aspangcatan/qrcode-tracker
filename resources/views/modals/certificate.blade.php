@@ -111,6 +111,7 @@
                     <option value="3">MEDICO LEGAL</option>
                     <option value="6">COC</option>
                     <option value="7">MEDICAL ABSTRACT</option>
+                    <option value="11">PRESIGNED - DENTAL</option>
                     <option value="8">DENTAL</option>
                     <option value="9">OTHER RECORDS</option>
                 </select>

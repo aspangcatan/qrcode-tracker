@@ -31,7 +31,8 @@
                         Date:
                         <div class="small">
                             @if(isset($certificates) && $certificates)
-                                <input type="date" id="date_issued" value="{{ date('Y-m-d', strtotime($certificates->created_at)) }}"/>
+                                <input type="date" id="date_issued"
+                                       value="{{ date('Y-m-d', strtotime($certificates->created_at)) }}"/>
                             @else
                                 <input type="date" id="date_issued" value="{{ now()->format('Y-m-d') }}" disabled/>
                             @endif
@@ -43,7 +44,11 @@
     </table>
 
     <div class="certificate-title">
-        MEDICAL CERTIFICATE
+        @if($type == 'maipp')
+            MEDICAL CERTIFICATE
+        @else
+            DENTAL CERTIFICATE
+        @endif
     </div>
     <div class="text-start">TO WHOM IT MAY CONCERN:</div>
     <div class="certificate-text">
@@ -309,7 +314,8 @@
                                 <input type="datetime-local" id="date_requested"
                                        value="{{ $certificates->date_requested }}"/>
                             @else
-                                <input type="datetime-local" id="date_requested" value="{{ now()->format('Y-m-d\TH:i') }}"/>
+                                <input type="datetime-local" id="date_requested"
+                                       value="{{ now()->format('Y-m-d\TH:i') }}"/>
                             @endif
                         </div>
                     </td>

@@ -242,6 +242,7 @@ class ApplicationController extends Controller
         $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
         $receivers = $this->homisService->receiver();
         $title = "MEDICAL CERTIFICATE";
+        $type = $request->type;
         switch ($request->type) {
             case "ordinary":
                 if ($request->has('id')) {
@@ -265,10 +266,11 @@ class ApplicationController extends Controller
                 }
                 return view('forms.aksyon_agad', compact('certificate_no', 'receivers'));
             case "maipp":
+            case "dental_presigned":
                 if ($request->has('id')) {
-                    return view('forms.maipp', compact('certificates', 'diagnosis', 'receivers'));
+                    return view('forms.maipp', compact('certificates', 'diagnosis', 'receivers','type'));
                 }
-                return view('forms.maipp', compact('certificate_no', 'receivers'));
+                return view('forms.maipp', compact('certificate_no', 'receivers','type'));
             case "maipp_inpatient":
                 if ($request->has('id')) {
                     return view('forms.maipp_inpatient', compact('certificates', 'diagnosis', 'receivers'));
@@ -368,6 +370,17 @@ class ApplicationController extends Controller
                         ]);
                 case "maipp":
                     return view('pdf.maipp',
+                        [
+                            'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
+                        ]);
+                case "dental_presigned":
+                    return view('pdf.dental_presigned',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
