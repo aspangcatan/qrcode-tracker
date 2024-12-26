@@ -418,7 +418,7 @@
                 is_valid = false;
             }
 
-            if (!received_by && type != "aksyon_agad") {
+            if (!received_by && type != "aksyon_agad" && type != "aksyon_agad_inpatient") {
                 toastr.error('Received by is required');
                 $("#received_by").addClass("is-invalid");
                 is_valid = false;
