@@ -421,6 +421,7 @@
                 is_valid = false;
             }
 
+
             //CODE ARE SPAGHETTI NOW, GONNA CHANGE TO VERSION 2 SOON
             if (type != "medical_abstract" && type != "coc" && type != "common" && diagnosis_array.length < 1) {
                 toastr.error('Diagnosis is required');
