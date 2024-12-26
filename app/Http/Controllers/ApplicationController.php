@@ -126,7 +126,7 @@ class ApplicationController extends Controller
     public function storeCertificate(Request $request)
     {
         try {
-            $excluded_certificate = ['ordinary', 'aksyon_agad', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient', 'coc', 'medical_abstract', 'dental','dental_presigned'];
+            $excluded_certificate = ['ordinary', 'aksyon_agad','aksyon_agad_inpatient', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient', 'coc', 'medical_abstract', 'dental', 'dental_presigned'];
             $specific_documents = $request->document_type;
             $type = $request->type;
 
@@ -265,12 +265,17 @@ class ApplicationController extends Controller
                     return view('forms.aksyon_agad', compact('certificates', 'diagnosis', 'receivers'));
                 }
                 return view('forms.aksyon_agad', compact('certificate_no', 'receivers'));
+            case "aksyon_agad_inpatient":
+                if ($request->has('id')) {
+                    return view('forms.aksyon_agad_inpatient', compact('certificates', 'diagnosis', 'receivers', 'type'));
+                }
+                return view('forms.aksyon_agad_inpatient', compact('certificate_no', 'receivers', 'type'));
             case "maipp":
             case "dental_presigned":
                 if ($request->has('id')) {
-                    return view('forms.maipp', compact('certificates', 'diagnosis', 'receivers','type'));
+                    return view('forms.maipp', compact('certificates', 'diagnosis', 'receivers', 'type'));
                 }
-                return view('forms.maipp', compact('certificate_no', 'receivers','type'));
+                return view('forms.maipp', compact('certificate_no', 'receivers', 'type'));
             case "maipp_inpatient":
                 if ($request->has('id')) {
                     return view('forms.maipp_inpatient', compact('certificates', 'diagnosis', 'receivers'));
@@ -370,6 +375,17 @@ class ApplicationController extends Controller
                         ]);
                 case "maipp":
                     return view('pdf.maipp',
+                        [
+                            'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
+                        ]);
+                case "aksyon_agad_inpatient":
+                    return view('pdf.aksyon_agad_inpatient',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,

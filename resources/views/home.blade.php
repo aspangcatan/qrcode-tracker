@@ -6,6 +6,7 @@
                 <select class="form-control" id="filter_type">
                     <option value="">Search type</option>
                     <option value="aksyon_agad">AKSYON AGAD</option>
+                    <option value="aksyon_agad_inpatient">AKSYON AGAD - INPATIENT</option>
                     <option value="maipp">PRESIGNED - ER/OPD</option>
                     <option value="ordinary">ORDINARY MEDCERT - ER/OPD</option>
                     <option value="maipp_inpatient">PRESIGNED - INPATIENT</option>
@@ -13,6 +14,7 @@
                     <option value="medico_legal">MEDICO LEGAL</option>
                     <option value="coc">COC</option>
                     <option value="medical_abstract">MEDICAL ABSTRACT</option>
+                    <option value="dental_presigned">PRESIGNED - DENTAL</option>
                     <option value="dental">DENTAL</option>
                     <option value="common">OTHER RECORDS</option>
                 </select>

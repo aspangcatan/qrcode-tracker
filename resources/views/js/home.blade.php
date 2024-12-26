@@ -106,6 +106,9 @@
                 case "11":
                     type = "dental_presigned";
                     break;
+                case "12":
+                    type = "aksyon_agad_inpatient";
+                    break;
             }
 
             $("#choose_certificate_modal").modal("hide");
@@ -373,19 +376,19 @@
                 is_valid = false;
             }
 
-            if (!charge_slip_no && type != "aksyon_agad") {
+            if (!charge_slip_no && type != "aksyon_agad"  && type != "aksyon_agad_inpatient") {
                 toastr.error('Charge slip no. is required');
                 $("#charge_slip_no").addClass("is-invalid");
                 is_valid = false;
             }
 
-            if (!amount && type != "aksyon_agad") {
+            if (!amount && type != "aksyon_agad" && type != "aksyon_agad_inpatient") {
                 toastr.error('Amount is required');
                 $("#amount").addClass("is-invalid");
                 is_valid = false;
             }
 
-            if (!date_requested) {
+            if (!date_requested  && type != "aksyon_agad"  && type != "aksyon_agad_inpatient") {
                 toastr.error('Date requested is required');
                 $("#date_requested").addClass("is-invalid");
                 is_valid = false;
@@ -420,7 +423,6 @@
                 $("#received_by").addClass("is-invalid");
                 is_valid = false;
             }
-
 
             //CODE ARE SPAGHETTI NOW, GONNA CHANGE TO VERSION 2 SOON
             if (type != "medical_abstract" && type != "coc" && type != "common" && diagnosis_array.length < 1) {
@@ -854,6 +856,9 @@
                     break;
                 case "aksyon_agad":
                     _type = "AKSYON AGAD";
+                    break;
+                case "aksyon_agad_inpatient":
+                    _type = "AKSYON AGAD - INPATIENT";
                     break;
                 case "common":
                     _type = (it.specific_document + "").toUpperCase();
