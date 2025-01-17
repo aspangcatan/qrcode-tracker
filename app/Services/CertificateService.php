@@ -150,6 +150,8 @@ class CertificateService
             WHEN type = "maipp_inpatient" THEN "PREDESIGNED - INPATIENT"
             WHEN type = "coc" THEN "CERTIFICATE OF CONFINEMENT"
             WHEN type = "medical_abstract" THEN "MEDICAL ABSTRACT"
+            WHEN type = "aksyon_agad" THEN "AKSYON AGAD"
+            WHEN type = "aksyon_agad_inpatient" THEN "AKSYON AGAD - INPATIENT"
             WHEN type = "dental" THEN "DENTAL"
             WHEN type = "common" THEN UPPER(specific_document)
             ELSE type

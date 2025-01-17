@@ -195,15 +195,20 @@
                 const status = (it.status) ? it.status : "";
                 const released_by = (it.released_by) ? it.released_by : "";
                 const requesting_person = (it.requesting_person) ? it.requesting_person : "";
+                const charge_slip_no = (it.charge_slip_no) ? it.charge_slip_no : "";
+                const or_no = (it.or_no) ? it.or_no : "";
+                const received_by = (it.received_by) ? it.received_by : "";
+
+
                 const tr = `
                 <tr>
                     <td>` + date_requested + `</td>
                     <td>` + it.certificate_no + `</td>
                     <td>` + it.patient + `</td>
                     <td>` + it.type + `</td>
-                    <td>` + it.charge_slip_no + `</td>
-                    <td>` + it.or_no + `</td>
-                    <td>` + it.received_by + `</td>
+                    <td>` + charge_slip_no + `</td>
+                    <td>` + or_no + `</td>
+                    <td>` + received_by + `</td>
                     <td>` + it.prepared_by + `</td>
                     <td>` + requesting_person + `</td>
                     <td>` + it.relationship + `</td>
