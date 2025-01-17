@@ -160,9 +160,10 @@ class ApplicationController extends Controller
                 return response()->json(['message' => 'Certificate ID dont exists'], 404);
             }
 
-//            if ($certificate->status === "CANCELLED" || $certificate->status === "RELEASED") {
-//                return response()->json(['message' => 'Cannot tag ' . $certificate->status . ' records'], 500);
-//            }
+            //ONLY MISS JANE VILLAGORDA CAN CANCEL AND RELEASE
+            if (Auth::id() !== 614 && ($certificate->status === "CANCELLED" || $certificate->status === "RELEASED")) {
+                return response()->json(['message' => 'Cannot tag ' . $certificate->status . ' records'], 500);
+            }
 
             switch ($request->status) {
                 case "FOR RELEASE":
