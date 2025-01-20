@@ -303,8 +303,10 @@
             <tr>
                 <td style="width: 18%">OR NO</td>
                 <td style="width: 3%">:</td>
-                <td style="width: 49%">{{ $certificate->or_no }}</td>
-                <td style="width: 30%"></td>
+                <td style="width: 45%">{{ $certificate->or_no }}</td>
+                <td style="width: 34%">
+                    <div style="border-bottom: solid 1px black;text-align: center;font-weight: bold">MYLA D. BORROMEO</div>
+                </td>
             </tr>
             <tr>
                 <td>AMOUNT</td>
@@ -315,7 +317,7 @@
                     <td>{{ $certificate->amount }}</td>
                 @endif
                 <td>
-                    <small></small>
+                    <div style="text-align: center"><small>Supervising Administrative Officer</small></div>
                 </td>
             </tr>
             <tr>
@@ -325,7 +327,9 @@
                     {{ $certificate->prepared_by }}
                 </td>
                 <td>
-                    <small></small>
+                    <div style="text-align: center">
+                        <small>Health Information Management Department</small>
+                    </div>
                 </td>
             </tr>
         </table>
