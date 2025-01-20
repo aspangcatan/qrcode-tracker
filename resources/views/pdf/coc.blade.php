@@ -297,6 +297,31 @@
             </tr>
         </table>
     </div>
+    <div class="doctor-container mt-5">
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 50%"></td>
+                <td style="width: 40%">
+                    <div style="border-bottom:1px solid black;text-align: center;font-weight: bold">MYLA D. BORROMEO</div>
+                </td>
+                <td style="width: 10%"></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div style="text-align: center">Supervising Administrative Officer</div>
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <div style="text-align: center">Health Information Management Department</div>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </div>
     <div style="margin-top:{{$seal_margin_top}}px">
         <div class="fw-bold">(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
@@ -305,7 +330,7 @@
                 <td style="width: 3%">:</td>
                 <td style="width: 45%">{{ $certificate->or_no }}</td>
                 <td style="width: 34%">
-                    <div style="border-bottom: solid 1px black;text-align: center;font-weight: bold">MYLA D. BORROMEO</div>
+
                 </td>
             </tr>
             <tr>
@@ -317,7 +342,7 @@
                     <td>{{ $certificate->amount }}</td>
                 @endif
                 <td>
-                    <div style="text-align: center"><small>Supervising Administrative Officer</small></div>
+
                 </td>
             </tr>
             <tr>
@@ -327,9 +352,7 @@
                     {{ $certificate->prepared_by }}
                 </td>
                 <td>
-                    <div style="text-align: center">
-                        <small>Health Information Management Department</small>
-                    </div>
+
                 </td>
             </tr>
         </table>
