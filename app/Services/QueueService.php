@@ -3,7 +3,6 @@
 namespace App\Services;
 
 
-use http\Env\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -21,7 +20,7 @@ class QueueService
         $ticket_no = $lastTicket ? $lastTicket->ticket_no + 1 : 1;
 
         // Ensure the ticket_no does not exceed the maximum of 20
-        if ($ticket_no > 20) {
+        if ($ticket_no > 50) {
             $ticket_no = 1; // Reset ticket_no to 1 when it exceeds 20
         }
 
@@ -57,5 +56,11 @@ class QueueService
         return DB::table('qr_tracker.queuing_tickets')
             ->select('ticket_no', 'window_no')
             ->get();
+    }
+
+    public function truncateTicket()
+    {
+        DB::table('queuing_tickets')->truncate();
+        return 'Table truncated successfully';
     }
 }

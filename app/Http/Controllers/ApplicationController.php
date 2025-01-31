@@ -664,4 +664,13 @@ class ApplicationController extends Controller
             return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
+
+    public function truncateTicket()
+    {
+        try {
+            return $this->queueService->truncateTicket();
+        } catch (\Exception $exception) {
+            return $exception->getMessage();
+        }
+    }
 }

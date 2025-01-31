@@ -106,8 +106,8 @@
                             {{ $ticket_no->ticket_no }}  <!-- Assuming 'ticket_no' is a property of the object -->
                         @endif
                         </div>
-                        <button class="btn btn-primary" onclick="next()">NEXT</button>
-                        <button class="btn btn-secondary" onclick="notify()">NOTIFY</button>
+                        <button class="btn btn-primary" id="btn_next_ticket" onclick="next()">NEXT</button>
+                        <button class="btn btn-danger" id="btn_notify" onclick="notify()">NOTIFY</button>
                     </div>
                 </div>
             </div>

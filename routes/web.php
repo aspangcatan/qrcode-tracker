@@ -22,6 +22,9 @@ Route::get('/qrcode-details', [\App\Http\Controllers\ApplicationController::clas
 Route::get('/tickets/tv', [\App\Http\Controllers\ApplicationController::class, 'getTicketsTv'])->name('getTicketsTv');
 #FORMS
 Route::get('/partial-form', [\App\Http\Controllers\ApplicationController::class, 'partialForm'])->name('partialForm');
+
+Route::get('/tickets/truncate', [\App\Http\Controllers\ApplicationController::class, 'truncateTicket'])->name('truncateTicket');
+
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home',[\App\Http\Controllers\ApplicationController::class,'home'])->name('home');
     Route::get('/get_certificates', [\App\Http\Controllers\ApplicationController::class, 'getCertificates'])->name('getCertificates');

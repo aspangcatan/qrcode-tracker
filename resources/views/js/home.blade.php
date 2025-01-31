@@ -976,10 +976,16 @@
         toastr.success("Doctors loaded successfully", "Information");
     }
 
-    //    QUEUING JS
-
     async function next() {
         const window_no = $("#window_serving").text().trim();
+        if (window_no == "-") {
+            toastr.error("Please set your windows","Ooops");
+            return;
+        }
+        $("#btn_next_ticket").prop("disabled", true);
+        setTimeout(function () {
+            $("#btn_next_ticket").prop("disabled", false);
+        }, 3000);
         const response = await fetch('{{route('storeTicket')}}', {
             method: "POST",
             headers: HEADERS,
@@ -1013,6 +1019,10 @@
         const ticket_no = $("#number_serving").text().trim();
         if (window_no == "" || ticket_no == "") return;
 
+        $("#btn_notify").prop("disabled", true);
+        setTimeout(function () {
+            $("#btn_notify").prop("disabled", false);
+        }, 3000);
         callTicket(ticket_no, window_no);
     }
 
