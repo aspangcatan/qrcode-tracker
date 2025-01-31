@@ -11,6 +11,17 @@
 
     let type = "";
 
+    const ws = new WebSocket('ws://192.168.4.3:9000');
+
+    ws.onopen = () => {
+        console.log('Connected to the WebSocket server');
+    };
+
+    ws.onclose = () => {
+        //TODO: HANDLE AUTO RECONNECT EVERY 10 seconds.
+        console.log('Disconnected from the WebSocket server');
+    };
+
     $(document).ready(() => {
 
         getDoctors();
@@ -40,6 +51,22 @@
             } else if ($(this).val() === '') {
                 getCertificates();
             }
+        });
+
+        $("#btn_settings").click(function () {
+            //SHOW MODAL SETTINGS
+            $("#window_modal").modal("show");
+        });
+
+        $("#btn_set_window").click(function () {
+            const window_no = $("#form_window").val();
+            if (window_no == "") {
+                toastr.error('Please select window no', "Ooops");
+                return;
+            }
+
+            //    STORE SESSION WINDOW
+            storeWindowSession(window_no);
         });
 
         $('input[name="datefilter"]').daterangepicker({
@@ -381,7 +408,7 @@
                 is_valid = false;
             }
 
-            if (!charge_slip_no && type != "aksyon_agad"  && type != "aksyon_agad_inpatient") {
+            if (!charge_slip_no && type != "aksyon_agad" && type != "aksyon_agad_inpatient") {
                 toastr.error('Charge slip no. is required');
                 $("#charge_slip_no").addClass("is-invalid");
                 is_valid = false;
@@ -393,7 +420,7 @@
                 is_valid = false;
             }
 
-            if (!date_requested  && type != "aksyon_agad"  && type != "aksyon_agad_inpatient") {
+            if (!date_requested && type != "aksyon_agad" && type != "aksyon_agad_inpatient") {
                 toastr.error('Date requested is required');
                 $("#date_requested").addClass("is-invalid");
                 is_valid = false;
@@ -947,5 +974,53 @@
         DOCTORS = data;
         appendDoctors();
         toastr.success("Doctors loaded successfully", "Information");
+    }
+
+    //    QUEUING JS
+
+    async function next() {
+        const window_no = $("#window_serving").text().trim();
+        const response = await fetch('{{route('storeTicket')}}', {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify({window_no: window_no})
+        });
+
+        const data = await response.json();
+        $("#number_serving").text(data.ticket_no);
+        callTicket(data.ticket_no, window_no);
+    }
+
+    async function storeWindowSession(window_no) {
+        const response = await fetch('{{route('storeSession')}}', {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify({window_no: window_no})
+        });
+
+        const data = await response.json();
+        $("#window_serving").text(window_no);
+        toastr.success("Window " + window_no + " saved", "Information");
+        if (data) {
+            $("#number_serving").text(data.ticket_no);
+
+        }
+        $("#window_modal").modal("hide");
+    }
+
+    function notify() {
+        const window_no = $("#window_serving").text().trim();
+        const ticket_no = $("#number_serving").text().trim();
+        if (window_no == "" || ticket_no == "") return;
+
+        callTicket(ticket_no, window_no);
+    }
+
+    function callTicket(ticket, window) {
+        ws.send(JSON.stringify({
+            action: "NOTIFY",
+            ticket: ticket,
+            window: window
+        }));
     }
 </script>

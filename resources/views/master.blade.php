@@ -221,6 +221,30 @@
     /*
     */
 
+        .queue-control {
+            background-color: white;
+            padding: 1rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .queue-control h2 {
+            margin-bottom: 1rem;
+            font-size: 2rem;
+        }
+
+        .queue-control .number {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .queue-control button {
+            width: 100%;
+            margin-bottom: 0.5rem;
+            font-size: 1.5rem;
+        }
+
 
     </style>
 </head>

@@ -14,15 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [\App\Http\Controllers\ApplicationController::class, 'index'])->name('login');
+Route::get('/tv', [\App\Http\Controllers\ApplicationController::class, 'tv'])->name('tv');
 
-Route::post('/authenticate', [\App\Http\Controllers\ApplicationController::class, 'authenticate'])->name('authenticate');
+Route::post('/authenticate', [\App\Http\Controllers\ApplicationController::class, 'authenticate'])->name('authenticate')->middleware('throttle:10,1');
 Route::get('/logout', [\App\Http\Controllers\ApplicationController::class, 'logout'])->name('logout');
 Route::get('/qrcode-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrcodeDetails'])->middleware('throttle:10,1');
-
-
-Route::get('/test_push', [\App\Http\Controllers\ApplicationController::class, 'notifierPushNotification']);
-
-
+Route::get('/tickets/tv', [\App\Http\Controllers\ApplicationController::class, 'getTicketsTv'])->name('getTicketsTv');
 #FORMS
 Route::get('/partial-form', [\App\Http\Controllers\ApplicationController::class, 'partialForm'])->name('partialForm');
 Route::group(['middleware' => 'auth'], function () {
@@ -33,6 +30,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::put('/tag_certificate', [\App\Http\Controllers\ApplicationController::class, 'tagCertificate'])->name('tagCertificate');
     Route::put('/tag_as_complete', [\App\Http\Controllers\ApplicationController::class, 'tagAsComplete'])->name('tagAsComplete');
     Route::delete('/delete_certificate', [\App\Http\Controllers\ApplicationController::class, 'cancelCertificate'])->name('cancelCertificate');
+    #QUEUING
+    Route::post('/queuing/store', [\App\Http\Controllers\ApplicationController::class, 'storeTicket'])->name('storeTicket');
+    Route::post('/session/store', [\App\Http\Controllers\ApplicationController::class, 'storeSession'])->name('storeSession');
     #PREVIEWS
     Route::get('/print-preview', [\App\Http\Controllers\ApplicationController::class, 'printPreview'])->name('printPreview');
     Route::get('/generate_report', [\App\Http\Controllers\ApplicationController::class, 'generateReport'])->name('generateReport');

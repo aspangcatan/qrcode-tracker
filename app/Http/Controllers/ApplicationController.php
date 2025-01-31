@@ -8,6 +8,7 @@ use App\Models\UserPrivelege;
 use App\Services\CertificateService;
 use App\Services\DiagnosisService;
 use App\Services\HomisServices;
+use App\Services\QueueService;
 use App\Services\SustainedService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -20,15 +21,16 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ApplicationController extends Controller
 {
-    protected $certificateService, $diagnosisService, $sustainedService, $homisService;
+    protected $certificateService, $diagnosisService, $sustainedService, $homisService, $queueService;
 
     public function __construct(CertificateService $certificateService, DiagnosisService $diagnosisService,
-                                SustainedService $sustainedService, HomisServices $homisService)
+                                SustainedService $sustainedService, HomisServices $homisService, QueueService $queueService)
     {
         $this->certificateService = $certificateService;
         $this->diagnosisService = $diagnosisService;
         $this->sustainedService = $sustainedService;
         $this->homisService = $homisService;
+        $this->queueService = $queueService;
     }
 
     public function receiver()
@@ -58,7 +60,22 @@ class ApplicationController extends Controller
     public function home()
     {
         if (!Auth::check()) return redirect()->route('login');
-        return view('home');
+
+        // Check if the session has a value for 'window_no'
+        $window_no = session('window_no', null); // Get the session value, or null if not set
+
+        // If there's a session value for 'window_no', get the corresponding ticket number
+        $ticket_no = null;
+        if ($window_no) {
+            $ticket_no = $this->queueService->getWindowTicketNo($window_no);
+        }
+
+        return view('home', compact('ticket_no'));
+    }
+
+    public function tv()
+    {
+        return view('tv');
     }
 
     public function authenticate(Request $request)
@@ -126,7 +143,7 @@ class ApplicationController extends Controller
     public function storeCertificate(Request $request)
     {
         try {
-            $excluded_certificate = ['ordinary', 'aksyon_agad','aksyon_agad_inpatient', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient', 'coc', 'medical_abstract', 'dental', 'dental_presigned'];
+            $excluded_certificate = ['ordinary', 'aksyon_agad', 'aksyon_agad_inpatient', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient', 'coc', 'medical_abstract', 'dental', 'dental_presigned'];
             $specific_documents = $request->document_type;
             $type = $request->type;
 
@@ -616,53 +633,35 @@ class ApplicationController extends Controller
         }
     }
 
-    /**
-     * CREATE SAMPLE FUNCTION TO TEST NOTIFIER PUSH NOTIFICATION API
-     **/
-
-    public function notifierPushNotification()
+    //QUEUING MODULES
+    public function storeTicket(Request $request)
     {
         try {
-            $post_params = [
-                "topic" => "referrals_TRIAGGE",
-                "hospital_referrer" => "CSMC",
-                "patient" => "Sample P. Patient",
-                "age" => "23",
-                "sex" => "Male"
-            ];
-
-            $curl = curl_init();
-
-            curl_setopt_array($curl, array(
-                CURLOPT_URL => 'https://dohcsmc.com/notifier/api/send_push_notification',
-                CURLOPT_RETURNTRANSFER => true,
-                CURLOPT_ENCODING => '',
-                CURLOPT_MAXREDIRS => 10,
-                CURLOPT_TIMEOUT => 0,
-                CURLOPT_FOLLOWLOCATION => true,
-                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                CURLOPT_CUSTOMREQUEST => 'POST',
-                CURLOPT_POSTFIELDS => json_encode($post_params),
-                CURLOPT_HTTPHEADER => array(
-                    'Content-Type: application/json'
-                ),
-                CURLOPT_SSL_VERIFYHOST => 0,  // Disable SSL host verification
-                CURLOPT_SSL_VERIFYPEER => 0   // Disable SSL certificate verification
-            ));
-
-            $response = curl_exec($curl);
-
-            if ($response === false) {
-                // cURL error occurred
-                $error = curl_error($curl);
-                curl_close($curl);
-                return 'Curl error: ' . $error;
-            }
-
-            curl_close($curl);
-            return $response;
+            $ticket_no = $this->queueService->insertUpdate($request->window_no);
+            return response()->json(['ticket_no' => $ticket_no]);
         } catch (\Exception $exception) {
-            return $exception->getMessage();
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    public function storeSession(Request $request)
+    {
+        try {
+            session(['window_no' => $request->window_no]);
+            //GET ALSO THE TICKET NO. SERVED BY THIS WINDOW
+            $ticket_no = $this->queueService->getWindowTicketNo($request->window_no);
+            return response()->json(['window_no' => $request->window_no, 'ticket_no' => $ticket_no->ticket_no]);
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
+        }
+    }
+
+    public function getTicketsTv()
+    {
+        try {
+            return response()->json($this->queueService->getTicketsTv());
+        } catch (\Exception $exception) {
+            return response()->json(['error' => $exception->getMessage()], 500);
         }
     }
 }
