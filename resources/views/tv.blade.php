@@ -231,7 +231,6 @@
         let currentVideoIndex = 0;
 
         videoPlayer.onended = function () {
-            console.log("END");
             currentVideoIndex = (currentVideoIndex + 1) % videos.length; // Toggle between 0 and 1
             videoSource.src = videos[currentVideoIndex];
             videoPlayer.load();
