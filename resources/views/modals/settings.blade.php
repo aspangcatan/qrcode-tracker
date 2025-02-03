@@ -58,7 +58,11 @@
                     </select>
                     <label for="floatingInput">Window</label>
                 </div>
-                <button class="btn btn-primary mt-2 float-end" id="btn_set_window">SAVE</button>
+                <div class="d-flex justify-content-end mt-2">
+                    <button class="btn btn-danger mr-1" id="btn_open_tv">OPEN TV</button>
+                    <button class="btn btn-primary ml-1" id="btn_set_window">SAVE</button>
+                </div>
+
             </div>
         </div>
     </div>

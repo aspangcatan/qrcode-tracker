@@ -1,4 +1,3 @@
-<!-- resources/views/queue.blade.php -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -15,11 +14,15 @@
         html, body {
             height: 100%;
             font-family: Arial, sans-serif;
-        }
-
-        body {
+            background-color: #e0e0e0;
             display: flex;
             flex-direction: column;
+        }
+
+        .logo {
+            width: 50px; /* Adjust as needed */
+            height: auto;
+            margin-right: 10px; /* Space between logo and text */
         }
 
         header, footer {
@@ -45,22 +48,28 @@
         }
 
         .content {
-            background-color: #f0f0f0;
             flex: 1;
             display: flex;
             justify-content: space-between;
-            height: 100%;
+            padding: 20px;
+            gap: 20px;
         }
 
-        .video-section, .grid-section {
-            width: 50%;
-            height: 100%;
+        .video-width {
+            width: 60%;
         }
 
-        video {
+        .ticket-width {
+            width: 40%;
+        }
+
+        .video-section video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            margin: 0;
+            padding: 0;
+            border-radius: 10px;
+            object-fit: fill;
         }
 
         .grid-section {
@@ -68,23 +77,24 @@
             grid-template-columns: repeat(2, 1fr);
             grid-template-rows: repeat(2, 1fr);
             height: 100%;
-            gap: 0;
+            gap: 10px;
         }
 
         .box {
-            border: 1px solid black;
+            border-radius: 10px;
             background-color: #fff;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start; /* Keep items at the top */
+            justify-content: center;
             align-items: center;
             font-size: 1.2rem;
             font-weight: bold;
             padding: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
         }
 
         .box .label {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 10px;
         }
 
@@ -101,18 +111,27 @@
             align-items: center;
 
         }
+
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Ensures the whole video is visible */
+            background-color: black; /* Adds black bars if necessary */
+        }
+
     </style>
 </head>
 <body>
 <header>
+    <img src="{{ url('images/logo.png') }}" alt="Logo" class="logo">
     <h1>MEDICAL RECORDS QUEUING SYSTEM</h1>
 </header>
 
 <div class="content">
-    <div class="video-section">
-        <video src="{{ url('videos/9gag.mp4') }}" autoplay muted loop></video>
+    <div class="video-section video-width">
+        <video src="{{ url('videos/ARTA_1.mp4') }}" autoplay muted loop></video>
     </div>
-    <div class="grid-section">
+    <div class="grid-section ticket-width">
         <div class="box">
             <div class="label">WINDOW 1</div>
             <div class="ticket"></div>
@@ -149,7 +168,7 @@
             if (event.data instanceof Blob) {
                 // If it's a Blob, convert it to text
                 const reader = new FileReader();
-                reader.onload = function() {
+                reader.onload = function () {
                     // Once the Blob is converted to text, parse the JSON data
                     const data = JSON.parse(reader.result);
                     console.log('Received message:', data);
@@ -194,6 +213,24 @@
     ws.onerror = (error) => {
         console.error('WebSocket error:', error);
     };
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const videoPlayer = document.getElementById("videoPlayer");
+        const videoSource = document.getElementById("videoSource");
+
+        const videos = [
+            "{{ url('videos/ARTA_1.mp4') }}",
+            "{{ url('videos/ARTA_2.mp4') }}"
+        ];
+        let currentVideoIndex = 0;
+
+        videoPlayer.onended = function () {
+            currentVideoIndex = (currentVideoIndex + 1) % videos.length; // Toggle between 0 and 1
+            videoSource.src = videos[currentVideoIndex];
+            videoPlayer.load();
+            videoPlayer.play();
+        };
+    });
 
     $(document).ready(() => {
         setInterval(updateClock, 1000);

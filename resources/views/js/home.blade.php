@@ -26,6 +26,10 @@
 
         getDoctors();
 
+        $("#btn_open_tv").click(function () {
+            window.open("http://192.168.5.4/qrcode-tracker/tv", "_blank");
+        });
+
         $("#select_doctor").select2({
             dropdownParent: $("#doctor_modal .modal-body"),
             width: '100%'
@@ -1007,6 +1011,7 @@
         const data = await response.json();
         $("#window_serving").text(window_no);
         toastr.success("Window " + window_no + " saved", "Information");
+        $("#number_serving").text("");
         if (data) {
             $("#number_serving").text(data.ticket_no);
 
