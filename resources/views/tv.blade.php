@@ -129,7 +129,10 @@
 
 <div class="content">
     <div class="video-section video-width">
-        <video src="{{ url('videos/ARTA_1.mp4') }}" autoplay muted loop></video>
+        <video id="videoPlayer" autoplay muted>
+            <source id="videoSource" src="{{ url('videos/ARTA_1.mp4') }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
     </div>
     <div class="grid-section ticket-width">
         <div class="box">
@@ -214,7 +217,10 @@
         console.error('WebSocket error:', error);
     };
 
-    document.addEventListener("DOMContentLoaded", function () {
+    $(document).ready(() => {
+        setInterval(updateClock, 1000);
+        loadServing();
+
         const videoPlayer = document.getElementById("videoPlayer");
         const videoSource = document.getElementById("videoSource");
 
@@ -225,16 +231,12 @@
         let currentVideoIndex = 0;
 
         videoPlayer.onended = function () {
+            console.log("END");
             currentVideoIndex = (currentVideoIndex + 1) % videos.length; // Toggle between 0 and 1
             videoSource.src = videos[currentVideoIndex];
             videoPlayer.load();
             videoPlayer.play();
         };
-    });
-
-    $(document).ready(() => {
-        setInterval(updateClock, 1000);
-        loadServing();
     });
 
     //UTILS
