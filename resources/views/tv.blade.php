@@ -94,7 +94,7 @@
         }
 
         .box .label {
-            font-size: 2rem;
+            font-size: 3.3rem;
             margin-bottom: 10px;
         }
 
@@ -103,7 +103,7 @@
             color: rgb(24, 41, 102);
             padding: 20px;
             text-align: center;
-            font-size: 12.5rem;
+            font-size: 14rem;
             font-weight: bold;
             flex-grow: 1; /* Allow the ticket to grow and take space, keeping the label at the top */
             display: flex;
@@ -135,17 +135,21 @@
         </video>
     </div>
     <div class="grid-section ticket-width">
-        <div class="box">
-            <div class="label">WINDOW 1</div>
-            <div class="ticket"></div>
+        <div class="box" style="background: #4CAF50">
+            <div class="label" style="color: white">OPD</div>
+            <div class="ticket" style="color: white"></div>
         </div>
-        <div class="box">
-            <div class="label">WINDOW 2</div>
-            <div class="ticket"></div>
+        <div class="box" style="background: #2196F3">
+            <div class="label" style="color: white">ER/Inpatient</div>
+            <div class="ticket" style="color: white"></div>
         </div>
-        <div class="box">
-            <div class="label">WINDOW 3</div>
-            <div class="ticket"></div>
+        <div class="box" style="background: #2196F3">
+            <div class="label" style="color: white">ER/Inpatient</div>
+            <div class="ticket" style="color: white"></div>
+        </div>
+        <div class="box" style="background: #E91E63">
+            <div class="label" style="color: white">Live Birth Cert</div>
+            <div class="ticket" style="color: white"></div>
         </div>
     </div>
 </div>

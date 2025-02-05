@@ -522,17 +522,6 @@ class ApplicationController extends Controller
         }
     }
 
-
-
-
-    /***HELPERS**/
-    /**
-     * Create a certificate record.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param string $specific_document
-     * @return int $certificate_id
-     */
     private function createCertificate($request, $specific_document)
     {
         $mi = (Auth::user()->mname) ? Auth::user()->mname[0] . '.' : '';

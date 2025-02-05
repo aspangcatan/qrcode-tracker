@@ -52,9 +52,10 @@
                 <div class="form-floating mb-3">
                     <select class="form-control" id="form_window">
                         <option value="">Select window</option>
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
+                        <option value="1">OPD</option>
+                        <option value="2">ER/INPATIENT - 1</option>
+                        <option value="3">ER/INPATIENT - 2</option>
+                        <option value="3">LIVE BIRTH CERT</option>
                     </select>
                     <label for="floatingInput">Window</label>
                 </div>
