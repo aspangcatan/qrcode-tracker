@@ -55,7 +55,7 @@
                         <option value="1">OPD</option>
                         <option value="2">ER/INPATIENT - 1</option>
                         <option value="3">ER/INPATIENT - 2</option>
-                        <option value="3">LIVE BIRTH CERT</option>
+                        <option value="4">LIVE BIRTH CERT</option>
                     </select>
                     <label for="floatingInput">Window</label>
                 </div>
