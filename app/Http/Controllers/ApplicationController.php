@@ -637,6 +637,7 @@ class ApplicationController extends Controller
     {
         try {
             session(['window_no' => $request->window_no]);
+            session(['window_label' => $request->window_label]);
             //GET ALSO THE TICKET NO. SERVED BY THIS WINDOW
             $ticket_no = $this->queueService->getWindowTicketNo($request->window_no);
             return response()->json(['window_no' => $request->window_no, 'ticket_no' => $ticket_no->ticket_no]);

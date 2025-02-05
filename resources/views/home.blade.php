@@ -91,8 +91,10 @@
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
-                        <div class="text-primary fw-bold" style="font-size: 20px">WINDOW: <strong
-                                id="window_serving">{{ session("window_no","-") }}</strong></div>
+                        <div class="text-primary fw-bold" style="font-size: 20px">WINDOW:
+                            <strong class="d-none" id="window_serving">{{ session("window_no","-") }}</strong>
+                            <strong id="window_label">{{ session("window_label","-") }}</strong>
+                        </div>
                         <button class="btn" style="background: transparent" id="btn_settings">
                             <i class="bi bi-three-dots-vertical"></i>
                         </button>

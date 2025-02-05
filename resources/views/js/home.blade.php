@@ -64,13 +64,14 @@
 
         $("#btn_set_window").click(function () {
             const window_no = $("#form_window").val();
+            const window_label = $("#form_window option:selected").text();
             if (window_no == "") {
                 toastr.error('Please select window no', "Ooops");
                 return;
             }
 
             //    STORE SESSION WINDOW
-            storeWindowSession(window_no);
+            storeWindowSession(window_no, window_label);
         });
 
         $('input[name="datefilter"]').daterangepicker({
@@ -983,7 +984,7 @@
     async function next() {
         const window_no = $("#window_serving").text().trim();
         if (window_no == "-") {
-            toastr.error("Please set your windows","Ooops");
+            toastr.error("Please set your windows", "Ooops");
             return;
         }
         $("#btn_next_ticket").prop("disabled", true);
@@ -1001,16 +1002,17 @@
         callTicket(data.ticket_no, window_no);
     }
 
-    async function storeWindowSession(window_no) {
+    async function storeWindowSession(window_no, window_label) {
         const response = await fetch('{{route('storeSession')}}', {
             method: "POST",
             headers: HEADERS,
-            body: JSON.stringify({window_no: window_no})
+            body: JSON.stringify({window_no: window_no, window_label: window_label})
         });
 
         const data = await response.json();
         $("#window_serving").text(window_no);
-        toastr.success("Window " + window_no + " saved", "Information");
+        $("#window_label").text(window_label);
+        toastr.success("Window " + window_label + " saved", "Information");
         $("#number_serving").text("");
         if (data) {
             $("#number_serving").text(data.ticket_no);

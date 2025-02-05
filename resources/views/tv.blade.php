@@ -183,8 +183,12 @@
                     // Handle the action
                     switch (data.action) {
                         case "NOTIFY":
-                            $(".ticket:eq(" + (data.window - 1) + ")").text(data.ticket);
-                            responsiveVoice.speak("Now serving, ticket number " + data.ticket + ". Please proceed to window " + data.window);
+                            let windowIndex = data.window - 1;
+                            let category = $(".label:eq(" + windowIndex + ")").text().replace("ER", "E R");
+                            let ticketText = "Now serving " + category + " Ticket No. " + data.ticket;
+
+                            $(".ticket:eq(" + windowIndex + ")").text(data.ticket);
+                            responsiveVoice.speak(ticketText);
                             break;
                         default:
                             console.log('Unknown action:', data.action);
@@ -199,8 +203,12 @@
 
                 switch (data.action) {
                     case "NOTIFY":
-                        $(".ticket:eq(" + (data.window - 1) + ")").text(data.ticket);
-                        responsiveVoice.speak("Now serving, ticket number " + data.ticket + ". Please proceed to window " + data.window);
+                        let windowIndex = data.window - 1;
+                        let category = $(".label:eq(" + windowIndex + ")").text().replace("ER", "E R");
+                        let ticketText = "Now serving " + category + " Ticket No. " + data.ticket;
+
+                        $(".ticket:eq(" + windowIndex + ")").text(data.ticket);
+                        responsiveVoice.speak(ticketText);
                         break;
                     default:
                         console.log('Unknown action:', data.action);
