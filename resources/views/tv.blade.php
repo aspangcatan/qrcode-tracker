@@ -14,7 +14,6 @@
         html, body {
             height: 100%;
             font-family: Arial, sans-serif;
-            background-color: #e0e0e0;
             display: flex;
             flex-direction: column;
         }
@@ -26,28 +25,33 @@
         }
 
         header, footer {
-            background-color: rgb(240, 0, 0);
+            background-color: rgb(176, 21, 21);
             color: white;
             text-align: center;
-            padding: 1rem;
         }
 
         header {
+            padding: 3rem;
             display: flex;
+            font-size: 24px;
             align-items: center;
             height: 5%;
         }
 
         footer {
+            padding: 2rem;
             display: flex;
             align-items: center;
             text-align: start;
             font-weight: bold;
-            font-size: 1.5rem;
+            font-size: 2rem;
             height: 5%;
         }
 
         .content {
+            background-image: url("{{ asset('images/tdh1.png') }}");
+            background-size: cover;
+            background-repeat: no-repeat;
             flex: 1;
             display: flex;
             justify-content: space-between;
@@ -119,6 +123,7 @@
             background-color: black; /* Adds black bars if necessary */
         }
 
+        .
     </style>
 </head>
 <body>
@@ -154,7 +159,10 @@
     </div>
 </div>
 <footer>
-    <p id="clock"></p>
+    <p id="clock" style="width: 30%"></p>
+    <div style="width: 70%">
+        <marquee  behavior=scroll direction="left" scrollamount="20">Welcome to <strong>Cebu South Medical Center</strong></marquee>
+    </div>
 </footer>
 
 <script src="https://code.responsivevoice.org/responsivevoice.js?key=kiFSuLiB"></script>
