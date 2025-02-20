@@ -11,8 +11,11 @@ class QueueService
 
     public function insertUpdate($window_no)
     {
+        $type = ($window_no == 2 || $window_no == 3) ? 2 : $window_no;
+
         // Get the last ticket_no globally across all windows
         $lastTicket = DB::table('qr_tracker.queuing_tickets')
+            ->where('type', $type)
             ->orderBy('ticket_no', 'desc')
             ->first();
 
@@ -24,9 +27,11 @@ class QueueService
             $ticket_no = 1; // Reset ticket_no to 1 when it exceeds 20
         }
 
-        // Insert or update the record
         DB::table('qr_tracker.queuing_tickets')->updateOrInsert(
-            ['window_no' => $window_no], // Condition to check existing record
+            [
+                'window_no' => $window_no,
+                'type' => $type
+            ], // Condition to check existing record
             [
                 'ticket_no' => $ticket_no, // Use the incremented ticket_no
                 'updated_at' => Carbon::now(), // Update timestamp
