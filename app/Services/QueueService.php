@@ -66,6 +66,6 @@ class QueueService
     public function truncateTicket()
     {
         DB::table('queuing_tickets')->truncate();
-        return 'Table truncated successfully';
+        return 'Ticket reset successfully';
     }
 }

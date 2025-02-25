@@ -658,9 +658,9 @@ class ApplicationController extends Controller
     public function truncateTicket()
     {
         try {
-            return $this->queueService->truncateTicket();
+            return response()->json(['message' => $this->queueService->truncateTicket()]);
         } catch (\Exception $exception) {
-            return $exception->getMessage();
+            return response()->json(['error' => $exception->getMessage()]);
         }
     }
 }

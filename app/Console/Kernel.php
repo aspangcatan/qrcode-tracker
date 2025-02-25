@@ -13,6 +13,11 @@ class Kernel extends ConsoleKernel
      * @param  \Illuminate\Console\Scheduling\Schedule  $schedule
      * @return void
      */
+
+    protected $commands = [
+        \App\Console\Commands\TruncateTicketCommand::class,
+    ];
+
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();

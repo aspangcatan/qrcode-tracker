@@ -30,6 +30,19 @@
             window.open("http://192.168.5.4/qrcode-tracker/tv", "_blank");
         });
 
+        $("#btn_reset_ticket").click(function () {
+            if (confirm("Are you sure you want to reset the tickets?")) {
+                fetch('{{ route('truncateTicket') }}', {
+                    method: "GET"
+                })
+                    .then(response => response.json()) // Convert response to text
+                    .then(data => {
+                        toastr.success(data.message, "Information");
+                    })
+                    .catch(error => console.error(error));
+            }
+        });
+
         $("#select_doctor").select2({
             dropdownParent: $("#doctor_modal .modal-body"),
             width: '100%'
