@@ -297,8 +297,8 @@
             </tr>
         </table>
     </div>
-    <div class="doctor-container mt-5">
-        <table style="width: 100%">
+    <div class="doctor-container mt-5" style="float: right; text-align: center; margin-right: 0; padding-right: 0;">
+        <table style="width: auto;">
             <tr>
                 <td style="width: 50%"></td>
                 <td style="width: 40%">
@@ -322,6 +322,7 @@
             </tr>
         </table>
     </div>
+    <div style="clear:both"></div>
     <div style="margin-top:{{$seal_margin_top}}px">
         <div class="fw-bold">(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">

@@ -299,31 +299,26 @@
             </tr>
         </table>
     </div>
-    <div class="doctor-container mt-5">
-        <table style="width: 100%">
+    <div class="doctor-container mt-5" style="float: right; text-align: center; margin-right: 0; padding-right: 0;">
+        <table style="width: auto;">
             <tr>
-                <td style="width: 40%"></td>
-                <td style="width: 50%">
+                <td style="text-align: center;">
                     <u class="fw-bold">{{ $certificate->doctor }}</u>
                 </td>
-                <td style="width: 10%"></td>
             </tr>
             <tr>
-                <td></td>
-                <td>
+                <td style="text-align: center;">
                     {{ $certificate->doctor_designation }}
                 </td>
-                <td></td>
             </tr>
             <tr>
-                <td></td>
-                <td>
-                    License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span>
+                <td style="text-align: center;">
+                    License No.: <u>{{ $certificate->doctor_license }}</u>
                 </td>
-                <td></td>
             </tr>
         </table>
     </div>
+    <div style="clear: both;"></div>
     <div style="margin-top:{{$seal_margin_top}}px">
         <div class="fw-bold">(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
