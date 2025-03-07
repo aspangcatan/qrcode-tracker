@@ -298,7 +298,7 @@
         </tr>
     </table>
     <div>
-        <p>with the following chief complaint/s:</p>
+        <p>with the following working impression/s:</p>
     </div>
 
     <div style="margin-left: 90px;margin-top:{{$d_margin_top}}px;margin-bottom:{{$d_margin_bottom}}px;text-transform: uppercase">
