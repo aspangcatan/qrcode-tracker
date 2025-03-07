@@ -310,27 +310,16 @@
         </table>
     </div>
     <div class="doctor-container mt-5">
-        <table>
+        <table style="width: 100%;">
             <tr>
-                <td style="width: 50%"></td>
-                <td style="width: 40%">
-                    <div style="border-bottom:1px solid black;text-align: center;font-weight: bold">MYLA D. BORROMEO</div>
+                <td style="width: 50%;"></td> <!-- Empty Left Side (aligns with QR Code area) -->
+
+                <!-- Right Side (aligns directly under Certificate No area) -->
+                <td style="width: 50%; text-align: center;">
+                    <div style="border-bottom: 1px solid black; font-weight: bold;">MYLA D. BORROMEO</div>
+                    <div>Supervising Administrative Officer</div>
+                    <div>Health Information Management Department</div>
                 </td>
-                <td style="width: 10%"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <div style="text-align: center">Supervising Administrative Officer</div>
-                </td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>
-                    <div style="text-align: center">Health Information Management Department</div>
-                </td>
-                <td></td>
             </tr>
         </table>
     </div>

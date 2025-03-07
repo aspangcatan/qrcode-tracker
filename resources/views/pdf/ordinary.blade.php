@@ -299,21 +299,19 @@
             </tr>
         </table>
     </div>
-    <div class="doctor-container mt-5" style="float: right; text-align: center; margin-right: 0; padding-right: 0;">
-        <table style="width: auto;">
+    <div class="doctor-container mt-5">
+        <table style="width: 95%">
             <tr>
-                <td style="text-align: center;">
-                    <u class="fw-bold">{{ $certificate->doctor }}</u>
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">
-                    {{ $certificate->doctor_designation }}
-                </td>
-            </tr>
-            <tr>
-                <td style="text-align: center;">
-                    License No.: <u>{{ $certificate->doctor_license }}</u>
+                <td style="width: 50%;"></td> <!-- Empty Left Side (aligns with QR Code area) -->
+                <!-- Right Side (aligns directly under Certificate No area) -->
+                <td style="width: 50%; text-align: center;">
+                    <div style="border-bottom: 1px solid black; font-weight: bold;">{{ $certificate->doctor }}</div>
+                    <div> {{ $certificate->doctor_designation }}</div>
+                    <div>
+                        @if($certificate->doctor_license)
+                            License No.: <span class="ml-1"><u>{{ $certificate->doctor_license }}</u></span>
+                        @endif
+                    </div>
                 </td>
             </tr>
         </table>
