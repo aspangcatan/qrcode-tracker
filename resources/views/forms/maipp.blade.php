@@ -44,11 +44,7 @@
     </table>
 
     <div class="certificate-title">
-        @if($type == 'maipp')
-            MEDICAL CERTIFICATE
-        @else
-            DENTAL CERTIFICATE
-        @endif
+        CERTIFICATION
     </div>
     <div class="text-start">TO WHOM IT MAY CONCERN:</div>
     <div class="certificate-text">
@@ -137,7 +133,7 @@
             </div>
         </div>
         <div>
-            with the following findings and/or diagnosis:
+            with the following chief complaint/s:
         </div>
         <div class="mt-3 mb-3">
             <div>DIAGNOSIS:</div>

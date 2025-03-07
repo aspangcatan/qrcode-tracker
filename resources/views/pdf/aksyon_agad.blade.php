@@ -282,7 +282,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <p style="padding-top: 10px">with the following working impression/s:</p>
+                <p style="padding-top: 10px">with the following chief complaint/s:</p>
             </td>
         </tr>
     </table>
