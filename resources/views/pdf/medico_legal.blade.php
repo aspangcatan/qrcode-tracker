@@ -122,12 +122,24 @@
 
         .doctor-container {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
+            justify-content: flex-end; /* Aligns it to the right */
+            margin-top: 70px;
+            width: 100%; /* Ensures it spans the full width so it has room */
         }
 
-        .doctor-container div {
+        .doctor-container table {
+            width: auto; /* Table only takes the space it needs */
             text-align: center;
+            white-space: nowrap; /* Ensures the content does not wrap to new lines */
+        }
+
+        .doctor-container td {
+            padding: 0 5px; /* Add a bit of spacing between the columns */
+        }
+
+        .doctor-container u {
+            font-weight: bold;
+            display: inline-block;
         }
 
         .mt-3 {
@@ -362,8 +374,8 @@
             </tr>
         </table>
     </div>
-    <div class="doctor-container mt-5" style="float: right; text-align: center; margin-right: 0; padding-right: 0;">
-        <table style="width: auto;">
+    <div class="doctor-container mt-5">
+        <table>
             <tr>
                 <td style="width: 50%"></td>
                 <td style="width: 40%">

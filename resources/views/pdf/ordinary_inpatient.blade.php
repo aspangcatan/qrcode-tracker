@@ -122,13 +122,26 @@
 
         .doctor-container {
             display: flex;
-            flex-direction: column;
-            align-items: flex-end;
+            justify-content: flex-end; /* Aligns it to the right */
+            margin-top: 70px;
+            width: 100%; /* Ensures it spans the full width so it has room */
         }
 
-        .doctor-container div {
+        .doctor-container table {
+            width: auto; /* Table only takes the space it needs */
             text-align: center;
+            white-space: nowrap; /* Ensures the content does not wrap to new lines */
         }
+
+        .doctor-container td {
+            padding: 0 5px; /* Add a bit of spacing between the columns */
+        }
+
+        .doctor-container u {
+            font-weight: bold;
+            display: inline-block;
+        }
+
 
         .mt-3 {
             margin-top: 30px;
@@ -317,8 +330,9 @@
         </table>
     </div>
 
-    <div class="doctor-container mt-5" style="float: right; text-align: center; margin-right: 0; padding-right: 0;">
-        <table style="width: auto;">
+    <!-- Doctor Signature Section - Ensures Right Alignment & Clear Floats -->
+    <div class="doctor-container mt-5">
+        <table>
             <tr>
                 <td style="width: 50%"></td>
                 <td style="width: 40%">
@@ -342,8 +356,12 @@
             </tr>
         </table>
     </div>
-    <div style="clear: both"></div>
-    <div style="margin-top:{{$seal_margin_top}}px">
+
+    <!-- Ensures nothing overlaps below doctor-container -->
+    <div style="clear: both;"></div>
+
+    <!-- Seal Section (not valid without seal) with clear applied -->
+    <div style="clear: both; margin-top:{{$seal_margin_top}}px">
         <div>(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
             <tr>
@@ -376,10 +394,13 @@
             </tr>
         </table>
     </div>
-    <div style="float:right;margin-top:{{$s_margin_top}}px;font-size: 13px">
+
+    <!-- Form Code and Date - this can also clear floats to ensure it appears correctly -->
+    <div style="float:right;margin-top:{{$s_margin_top}}px;font-size: 13px; clear: both;">
         <div>MPS - REC - FM - 06</div>
         <div>07-Dec-18</div>
     </div>
+
 </div>
 <script>
     // Disable right-click
