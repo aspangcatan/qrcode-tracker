@@ -194,7 +194,7 @@
     </table>
 
     <div class="certificate-title">
-        DENTAL CERTIFICATE
+        CERTIFICATION
     </div>
     <div style="margin-top:30px">
         To whom it may concern:

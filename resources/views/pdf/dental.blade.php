@@ -206,7 +206,7 @@
     </table>
 
     <div class="certificate-title">
-        DENTAL CERTIFICATE
+        CERTIFICATION
     </div>
     <div class="certificate-text">
         <table style="width: 100%" class="word-spacing">
