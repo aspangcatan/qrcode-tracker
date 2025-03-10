@@ -206,7 +206,7 @@
     </table>
 
     <div class="certificate-title">
-        CERTIFICATION
+        CERTIFICATE OF MEDICAL / HEALTH RECORD
     </div>
     <table style="width: 100%;margin-top:15px">
         <tr>
