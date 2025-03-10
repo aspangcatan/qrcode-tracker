@@ -294,6 +294,11 @@ class ApplicationController extends Controller
                     return view('forms.maipp', compact('certificates', 'diagnosis', 'receivers', 'type'));
                 }
                 return view('forms.maipp', compact('certificate_no', 'receivers', 'type'));
+            case "maipp_opd":
+                if ($request->has('id')) {
+                    return view('forms.maipp_opd', compact('certificates', 'diagnosis', 'receivers', 'type'));
+                }
+                return view('forms.maipp_opd', compact('certificate_no', 'receivers', 'type'));
             case "maipp_inpatient":
                 if ($request->has('id')) {
                     return view('forms.maipp_inpatient', compact('certificates', 'diagnosis', 'receivers'));
@@ -393,6 +398,17 @@ class ApplicationController extends Controller
                         ]);
                 case "maipp":
                     return view('pdf.maipp',
+                        [
+                            'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
+                        ]);
+                case "maipp_opd":
+                    return view('pdf.maipp_opd',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -626,7 +642,7 @@ class ApplicationController extends Controller
     public function storeTicket(Request $request)
     {
         try {
-            $ticket_no = $this->queueService->insertUpdate($request->window_no);
+            $ticket_no = $this->queueService->insertUpdate($request->window_no, $request->lane);
             return response()->json(['ticket_no' => $ticket_no]);
         } catch (\Exception $exception) {
             return response()->json(['error' => $exception->getMessage()], 500);

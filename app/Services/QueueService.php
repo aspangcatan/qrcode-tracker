@@ -9,37 +9,44 @@ use Illuminate\Support\Facades\DB;
 class QueueService
 {
 
-    public function insertUpdate($window_no)
+    public function insertUpdate($window_no, $lane)
     {
         $type = ($window_no == 2 || $window_no == 3) ? 2 : $window_no;
 
-        // Get the last ticket_no globally across all windows
+        // Define the max ticket limits
+        $maxTicket = ($lane == 1) ? 10 : 50; // Special lane (1) max is 10, regular max is 50
+
+        // Get the last ticket_no for the given type and lane
         $lastTicket = DB::table('qr_tracker.queuing_tickets')
             ->where('type', $type)
+            ->where('lane', $lane)
             ->orderBy('ticket_no', 'desc')
             ->first();
 
         // Determine the ticket_no to insert (either 1 or increment the last ticket_no)
         $ticket_no = $lastTicket ? $lastTicket->ticket_no + 1 : 1;
 
-        // Ensure the ticket_no does not exceed the maximum of 20
-        if ($ticket_no > 50) {
-            $ticket_no = 1; // Reset ticket_no to 1 when it exceeds 20
+        // Ensure the ticket_no does not exceed the maximum
+        if ($ticket_no > $maxTicket) {
+            $ticket_no = 1; // Reset ticket_no when exceeding the max limit
         }
 
         DB::table('qr_tracker.queuing_tickets')->updateOrInsert(
             [
                 'window_no' => $window_no,
-                'type' => $type
-            ], // Condition to check existing record
+                'type' => $type,
+                'lane' => $lane // Ensure lane is part of the unique condition
+            ],
             [
-                'ticket_no' => $ticket_no, // Use the incremented ticket_no
-                'updated_at' => Carbon::now(), // Update timestamp
-                'created_at' => DB::raw('COALESCE(created_at, NOW())') // Keep original created_at if exists
+                'ticket_no' => $ticket_no,
+                'updated_at' => Carbon::now(),
+                'created_at' => DB::raw('COALESCE(created_at, NOW())')
             ]
         );
+
         return $ticket_no;
     }
+
 
     public function getWindowTicketNo($window_no)
     {

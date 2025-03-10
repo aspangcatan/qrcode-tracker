@@ -109,6 +109,7 @@
                         @endif
                         </div>
                         <button class="btn btn-primary" id="btn_next_ticket" onclick="next()">NEXT</button>
+                        <button class="btn btn-warning" id="btn_next_ticket_senior" onclick="nextSenior()">NEXT SENIOR</button>
                         <button class="btn btn-danger" id="btn_notify" onclick="notify()">NOTIFY</button>
                     </div>
                 </div>

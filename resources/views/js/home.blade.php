@@ -154,6 +154,9 @@
                 case "12":
                     type = "aksyon_agad_inpatient";
                     break;
+                case "13":
+                    type = "maipp_opd";
+                    break;
             }
 
             $("#choose_certificate_modal").modal("hide");
@@ -521,6 +524,7 @@
 
                     break;
                 case "maipp":
+                case "maipp_opd":
                     if (!sex) {
                         toastr.error('Sex is required');
                         $("#sex").addClass("is-invalid");
@@ -1007,12 +1011,34 @@
         const response = await fetch('{{route('storeTicket')}}', {
             method: "POST",
             headers: HEADERS,
-            body: JSON.stringify({window_no: window_no})
+            body: JSON.stringify({window_no: window_no, lane: 0})
         });
 
         const data = await response.json();
         $("#number_serving").text(data.ticket_no);
-        callTicket(data.ticket_no, window_no);
+        callTicket(data.ticket_no, window_no, 0);
+    }
+
+    async function nextSenior() {
+        const window_no = $("#window_serving").text().trim();
+        if (window_no == "-") {
+            toastr.error("Please set your windows", "Ooops");
+            return;
+        }
+        $("#btn_next_ticket_senior").prop("disabled", true);
+        setTimeout(function () {
+            $("#btn_next_ticket_senior").prop("disabled", false);
+        }, 3000);
+
+        const response = await fetch('{{route('storeTicket')}}', {
+            method: "POST",
+            headers: HEADERS,
+            body: JSON.stringify({window_no: window_no, lane: 1})
+        });
+
+        const data = await response.json();
+        $("#number_serving").text(data.ticket_no);
+        callTicket(data.ticket_no, window_no, 1);
     }
 
     async function storeWindowSession(window_no, window_label) {
@@ -1046,11 +1072,12 @@
         callTicket(ticket_no, window_no);
     }
 
-    function callTicket(ticket, window) {
+    function callTicket(ticket, window, lane) {
         ws.send(JSON.stringify({
             action: "NOTIFY",
             ticket: ticket,
-            window: window
+            window: window,
+            lane: lane
         }));
     }
 </script>

@@ -161,7 +161,8 @@
 <footer>
     <p id="clock" style="width: 30%"></p>
     <div style="width: 70%">
-        <marquee  behavior=scroll direction="left" scrollamount="20">Welcome to <strong>Cebu South Medical Center</strong></marquee>
+        <marquee behavior=scroll direction="left" scrollamount="20">Welcome to <strong>Cebu South Medical
+                Center</strong></marquee>
     </div>
 </footer>
 
@@ -195,7 +196,11 @@
                             let category = $(".label:eq(" + windowIndex + ")").text().replace("ER", "E R");
                             let ticketText = "Now serving " + category + " Ticket No. " + data.ticket;
 
-                            $(".ticket:eq(" + windowIndex + ")").text(data.ticket);
+                            if (data.lane == 0) {
+                                $(".ticket:eq(" + windowIndex + ")").text(data.ticket);
+                            } else {
+                                $(".ticket:eq(" + windowIndex + ")").text(data.ticket + "S");
+                            }
                             responsiveVoice.speak(ticketText);
                             break;
                         default:
@@ -215,7 +220,11 @@
                         let category = $(".label:eq(" + windowIndex + ")").text().replace("ER", "E R");
                         let ticketText = "Now serving " + category + " Ticket No. " + data.ticket;
 
-                        $(".ticket:eq(" + windowIndex + ")").text(data.ticket);
+                        if (data.lane == 0) {
+                            $(".ticket:eq(" + windowIndex + ")").text(data.ticket);
+                        } else {
+                            $(".ticket:eq(" + windowIndex + ")").text(data.ticket + "S");
+                        }
                         responsiveVoice.speak(ticketText);
                         break;
                     default:
