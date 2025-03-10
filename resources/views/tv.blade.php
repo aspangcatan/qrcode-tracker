@@ -302,10 +302,10 @@
         try {
             const data = await response.json();
             data.forEach(it => {
-                if(data.lane == 0)
-                $(".ticket:eq(" + (it.window_no - 1) + ")").text(it.ticket_no);
+                if (it.lane == 0)
+                    $(".ticket:eq(" + (it.window_no - 1) + ")").text(it.ticket_no);
                 else
-                $(".ticket:eq(" + (it.window_no - 1) + ")").text(it.ticket_no+"S");
+                    $(".ticket:eq(" + (it.window_no - 1) + ")").text(it.ticket_no + "S");
             });
         } catch (e) {
             console.error('Error parsing JSON:', e);
