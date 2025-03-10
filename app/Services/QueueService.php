@@ -66,7 +66,7 @@ class QueueService
     {
         // Select only the ticket_no and window_no columns
         return DB::table('qr_tracker.queuing_tickets')
-            ->select('ticket_no', 'window_no')
+            ->select('ticket_no', 'window_no','lane')
             ->get();
     }
 

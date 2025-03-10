@@ -282,7 +282,7 @@
         </tr>
         <tr>
             <td colspan="2">
-                <p style="padding-top: 10px">with the following findings and or diagnosis:</p>
+                <p style="padding-top: 10px">with the following working impression/s:</p>
             </td>
         </tr>
     </table>
