@@ -890,6 +890,9 @@
                 case "maipp":
                     _type = "PRESIGNED - ER/OPD";
                     break;
+                case "maipp_opd":
+                    _type = "PRESIGNED - OPD";
+                    break;
                 case "maipp_inpatient":
                     _type = "PRESIGNED - INPATIENT";
                     break;
