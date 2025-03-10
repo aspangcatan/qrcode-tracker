@@ -9,6 +9,7 @@
                         <option value="aksyon_agad">AKSYON AGAD</option>
                         <option value="aksyon_agad_inpatient">AKSYON AGAD - INPATIENT</option>
                         <option value="maipp">PRESIGNED - ER/OPD</option>
+                        <option value="maipp_opd">PRESIGNED - OPD</option>
                         <option value="ordinary">ORDINARY MEDCERT - ER/OPD</option>
                         <option value="maipp_inpatient">PRESIGNED - INPATIENT</option>
                         <option value="ordinary_inpatient">ORDINARY MEDCERT - INPATIENT</option>

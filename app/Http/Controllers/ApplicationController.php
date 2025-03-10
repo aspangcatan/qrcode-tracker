@@ -143,7 +143,7 @@ class ApplicationController extends Controller
     public function storeCertificate(Request $request)
     {
         try {
-            $excluded_certificate = ['ordinary', 'aksyon_agad', 'aksyon_agad_inpatient', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient', 'coc', 'medical_abstract', 'dental', 'dental_presigned'];
+            $excluded_certificate = ['ordinary', 'aksyon_agad', 'aksyon_agad_inpatient', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient','maipp_opd', 'coc', 'medical_abstract', 'dental', 'dental_presigned'];
             $specific_documents = $request->document_type;
             $type = $request->type;
 
