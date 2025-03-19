@@ -362,6 +362,20 @@
             </div>
         </div>
     </div>
+    <div class="doctor-container mt-5">
+        <table style="width: 100%;">
+            <tr>
+                <td style="width: 50%;"></td> <!-- Empty Left Side (aligns with QR Code area) -->
+
+                <!-- Right Side (aligns directly under Certificate No area) -->
+                <td style="width: 50%; text-align: center;">
+                    <div style="border-bottom: 1px solid black; font-weight: bold;">MYLA D. BORROMEO</div>
+                    <div>Supervising Administrative Officer</div>
+                    <div>Health Information Management Department</div>
+                </td>
+            </tr>
+        </table>
+    </div>
     <div style="margin-top:{{$seal_margin_top}}px">
         <div class="fw-bold">NOT FOR MEDICO LEGAL PURPOSES</div>
         <div class="fw-bold" style="margin-top: 20px">(NOT VALID WITHOUT SEAL)</div>
