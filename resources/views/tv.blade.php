@@ -220,7 +220,7 @@
                         let category = $(".label:eq(" + windowIndex + ")").text().replace("ER", "E R");
                         let ticketText = "Now serving " + category + " Ticket No. " + data.ticket;
 
-                        if (data.lane == 0) {
+                        if (data.lane === 0) {
                             $(".ticket:eq(" + windowIndex + ")").text(data.ticket);
                         } else {
                             $(".ticket:eq(" + windowIndex + ")").text(data.ticket + "S");
@@ -302,7 +302,7 @@
         try {
             const data = await response.json();
             data.forEach(it => {
-                if (it.lane == 0)
+                if (it.lane === 0)
                     $(".ticket:eq(" + (it.window_no - 1) + ")").text(it.ticket_no);
                 else
                     $(".ticket:eq(" + (it.window_no - 1) + ")").text(it.ticket_no + "S");

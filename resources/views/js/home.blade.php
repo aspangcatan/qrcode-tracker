@@ -1028,6 +1028,7 @@
             toastr.error("Please set your windows", "Ooops");
             return;
         }
+
         $("#btn_next_ticket_senior").prop("disabled", true);
         setTimeout(function () {
             $("#btn_next_ticket_senior").prop("disabled", false);
