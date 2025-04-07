@@ -1019,7 +1019,7 @@
 
         const data = await response.json();
         $("#number_serving").text(data.ticket_no);
-        callTicket(data.ticket_no, window_no, 0);
+        callTicket(data.ticket_no, window_no,"0");
     }
 
     async function nextSenior() {
@@ -1042,7 +1042,7 @@
 
         const data = await response.json();
         $("#number_serving").text(data.ticket_no);
-        callTicket(data.ticket_no, window_no, 1);
+        callTicket(data.ticket_no, window_no, "1");
     }
 
     async function storeWindowSession(window_no, window_label) {
