@@ -273,7 +273,8 @@ class ApplicationController extends Controller
                 if ($request->has('id')) {
                     return view('forms.ordinary', compact('certificates', 'diagnosis', 'receivers', 'title'));
                 }
-                return view('forms.ordinary', compact('certificate_no', 'receivers', 'title'));
+                $amount = 0.00;
+                return view('forms.ordinary', compact('certificate_no', 'receivers', 'title', 'amount'));
             case "ordinary_inpatient":
                 if ($request->has('id')) {
                     return view('forms.ordinary_inpatient', compact('certificates', 'diagnosis', 'receivers'));
