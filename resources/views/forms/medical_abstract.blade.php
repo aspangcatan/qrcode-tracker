@@ -200,7 +200,7 @@
                         @if(isset($certificates) && $certificates)
                             <input type="text" id="amount" value="{{ $certificates->amount }}">
                         @else
-                            <input type="text" id="amount">
+                            <input type="text" id="amount" value="{{ number_format($amount, 2, '.', '') }}">
                         @endif
                     </div>
                 </td>

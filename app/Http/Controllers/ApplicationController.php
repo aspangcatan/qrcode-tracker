@@ -143,7 +143,7 @@ class ApplicationController extends Controller
     public function storeCertificate(Request $request)
     {
         try {
-            $excluded_certificate = ['ordinary', 'aksyon_agad', 'aksyon_agad_inpatient', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient','maipp_opd', 'coc', 'medical_abstract', 'dental', 'dental_presigned'];
+            $excluded_certificate = ['ordinary', 'aksyon_agad', 'aksyon_agad_inpatient', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient', 'maipp_opd', 'coc', 'medical_abstract', 'dental', 'dental_presigned'];
             $specific_documents = $request->document_type;
             $type = $request->type;
 
@@ -261,12 +261,13 @@ class ApplicationController extends Controller
         $receivers = $this->homisService->receiver();
         $title = "MEDICAL CERTIFICATE";
         $type = $request->type;
+        $amount = 50.00;
         switch ($request->type) {
             case "ordinary":
                 if ($request->has('id')) {
                     return view('forms.ordinary', compact('certificates', 'diagnosis', 'receivers', 'title'));
                 }
-                return view('forms.ordinary', compact('certificate_no', 'receivers', 'title'));
+                return view('forms.ordinary', compact('certificate_no', 'receivers', 'title', 'amount'));
             case "dental":
                 $title = "DENTAL CERTIFICATE";
                 if ($request->has('id')) {
@@ -277,7 +278,7 @@ class ApplicationController extends Controller
                 if ($request->has('id')) {
                     return view('forms.ordinary_inpatient', compact('certificates', 'diagnosis', 'receivers'));
                 }
-                return view('forms.ordinary_inpatient', compact('certificate_no', 'receivers'));
+                return view('forms.ordinary_inpatient', compact('certificate_no', 'receivers', 'amount'));
             case "aksyon_agad":
                 if ($request->has('id')) {
                     return view('forms.aksyon_agad', compact('certificates', 'diagnosis', 'receivers'));
@@ -293,17 +294,17 @@ class ApplicationController extends Controller
                 if ($request->has('id')) {
                     return view('forms.maipp', compact('certificates', 'diagnosis', 'receivers', 'type'));
                 }
-                return view('forms.maipp', compact('certificate_no', 'receivers', 'type'));
+                return view('forms.maipp', compact('certificate_no', 'receivers', 'type', 'amount'));
             case "maipp_opd":
                 if ($request->has('id')) {
                     return view('forms.maipp_opd', compact('certificates', 'diagnosis', 'receivers', 'type'));
                 }
-                return view('forms.maipp_opd', compact('certificate_no', 'receivers', 'type'));
+                return view('forms.maipp_opd', compact('certificate_no', 'receivers', 'type', 'amount'));
             case "maipp_inpatient":
                 if ($request->has('id')) {
                     return view('forms.maipp_inpatient', compact('certificates', 'diagnosis', 'receivers'));
                 }
-                return view('forms.maipp_inpatient', compact('certificate_no', 'receivers'));
+                return view('forms.maipp_inpatient', compact('certificate_no', 'receivers', 'amount'));
             case "medico_legal":
                 if ($request->has('id')) {
                     $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
@@ -314,12 +315,12 @@ class ApplicationController extends Controller
                 if ($request->has('id')) {
                     return view('forms.coc', compact('certificates', 'diagnosis', 'receivers'));
                 }
-                return view('forms.coc', compact('certificate_no', 'receivers'));
+                return view('forms.coc', compact('certificate_no', 'receivers', 'amount'));
             case "medical_abstract":
                 if ($request->has('id')) {
                     return view('forms.medical_abstract', compact('certificates', 'receivers'));
                 }
-                return view('forms.medical_abstract', compact('certificate_no', 'receivers'));
+                return view('forms.medical_abstract', compact('certificate_no', 'receivers', 'amount'));
             case "common":
                 if ($request->has('id')) {
                     return view('forms.common', compact('certificates', 'receivers'));
