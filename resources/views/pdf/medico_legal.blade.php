@@ -258,7 +258,7 @@
             </td>
         </tr>
     </table>
-    <table style="width: 100%">
+    <table style="width: 100%;margin-top:10px">
         <tr>
             <td style="width: 45%" class="border-bottom text-center fw-bold">{{ $certificate->address }}</td>
             <td style="width: 10%" class="text-center">on</td>
@@ -350,29 +350,15 @@
 
     </table>
     <div class="certificate-text">
-        <table style="width: 100%">
-            <tr>
-                <td colspan="3">
-                    <div>In my opinion, the injuries sustained by the patient will
-                        incapacitate or require medical
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td style="width: 25%">attention for a period of</td>
-                <td style="width: 30%" class="border-bottom text-center">
-                    {{ $certificate->days_barred }}
-                </td>
-                <td>day/days barring complications.</td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <div>
-                        Otherwise, the period of healing will vary accordingly.
-                    </div>
-                </td>
-            </tr>
-        </table>
+        <div style="text-align: justify; line-height: 1.5;">
+            In my opinion, the injuries sustained by the patient will incapacitate or
+            require medical attention for a period of
+            <span style="display: inline-block; min-width: 60px; border-bottom: 1px solid black; text-align: center;">
+        {{ $certificate->days_barred }}
+    </span>
+            day/days barring complications. Otherwise, the period of healing will vary accordingly.
+        </div>
+
     </div>
     <div class="doctor-container mt-5">
         <table style="width: 95%;">
@@ -427,13 +413,13 @@
     </div>
 </div>
 <script>
-    document.addEventListener('contextmenu', event => event.preventDefault());
-    document.onkeydown = function (e) {
-        if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
-            e.preventDefault();
-            return false;
-        }
-    };
+    // document.addEventListener('contextmenu', event => event.preventDefault());
+    // document.onkeydown = function (e) {
+    //     if ((e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 123)) {
+    //         e.preventDefault();
+    //         return false;
+    //     }
+    // };
 </script>
 </body>
 </html>
