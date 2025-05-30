@@ -281,7 +281,7 @@ class ApplicationController extends Controller
                 }
                 return view('forms.ordinary_inpatient', compact('certificate_no', 'receivers', 'amount'));
             case "aksyon_agad":
-                if ($request->haso('id')) {
+                if ($request->has('id')) {
                     return view('forms.aksyon_agad', compact('certificates', 'diagnosis', 'receivers'));
                 }
                 return view('forms.aksyon_agad', compact('certificate_no', 'receivers'));
