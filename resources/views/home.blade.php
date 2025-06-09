@@ -1,5 +1,45 @@
 @extends('master')
 @section('content')
+    <div class="row mb-3 align-items-end">
+        <div class="col-md-2">
+            <label for="date_from" class="form-label">From</label>
+            <input type="date" id="date_from" class="form-control">
+        </div>
+        <div class="col-md-2">
+            <label for="date_to" class="form-label">To</label>
+            <input type="date" id="date_to" class="form-control">
+        </div>
+        <div class="col-md-2 d-none">
+            <label for="status_filter" class="form-label">Status</label>
+            <select id="status_filter" class="form-select">
+                <option value="">ALL</option>
+                <option value="PENDING">PENDING</option>
+                <option value="FOR RELEASE">FOR RELEASE</option>
+                <option value="RELEASED">RELEASED</option>
+                <option value="CANCELLED">CANCELLED</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-outline-primary w-100" id="filter_dashboard">
+                <i class="bi bi-funnel-fill me-1"></i>Filter
+            </button>
+        </div>
+    </div>
+
+
+    <div class="row mb-3">
+        <div class="col-md-2">
+            <div class="card border-0 shadow-sm" style="background-color: #E3F2FD;">
+                <div class="card-body">
+                    <h5 class="card-title text-primary">Total Served</h5>
+                    <p class="card-text fs-4 fw-bold text-dark" id="served_count">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <hr/>
     <div class="row">
         <div class="col-md-10">
             <div class="d-flex justify-content-end mb-2">
@@ -107,10 +147,11 @@
                         <div id="number_serving" class="number">
                         @if($ticket_no && isset($ticket_no->ticket_no))
                             {{ $ticket_no->ticket_no }}  <!-- Assuming 'ticket_no' is a property of the object -->
-                        @endif
+                            @endif
                         </div>
                         <button class="btn btn-primary" id="btn_next_ticket" onclick="next()">NEXT</button>
-                        <button class="btn btn-warning" id="btn_next_ticket_senior" onclick="nextSenior()">NEXT SENIOR</button>
+                        <button class="btn btn-warning" id="btn_next_ticket_senior" onclick="nextSenior()">NEXT SENIOR
+                        </button>
                         <button class="btn btn-danger" id="btn_notify" onclick="notify()">NOTIFY</button>
                     </div>
                 </div>

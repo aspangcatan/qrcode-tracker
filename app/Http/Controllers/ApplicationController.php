@@ -681,4 +681,14 @@ class ApplicationController extends Controller
             return response()->json(['error' => $exception->getMessage()]);
         }
     }
+
+    public function dashboardCount(Request $request)
+    {
+        try {
+            $data = $this->certificateService->getDashboardCount($request->from, $request->to,$request->status);
+            return response()->json($data);
+        } catch (\Exception $exception) {
+            return response()->json($exception->getMessage(), 500);
+        }
+    }
 }

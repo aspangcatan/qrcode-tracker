@@ -43,6 +43,22 @@
             }
         });
 
+        $('#filter_dashboard').on('click', function () {
+            const from = $('#date_from').val();
+            const to = $('#date_to').val();
+            const status = $('#status_filter').val();
+
+            fetch(`{{ route('dashboardCount') }}?from=${from}&to=${to}&status=${status}`)
+                .then(response => response.json())
+                .then(data => {
+                    $('#served_count').text(data.total);
+                })
+                .catch(error => {
+                    console.error('Error fetching dashboard counts:', error);
+                });
+        });
+
+
         $("#select_doctor").select2({
             dropdownParent: $("#doctor_modal .modal-body"),
             width: '100%'

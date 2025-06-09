@@ -28,7 +28,7 @@ class CertificateService
             })
             ->skip($page)
             ->take(11)
-            ->orderBy('id','DESC')
+            ->orderBy('id', 'DESC')
             ->get();
     }
 
@@ -108,7 +108,7 @@ class CertificateService
             ]);
     }
 
-    public function updateStatus($id, $status,$released_by)
+    public function updateStatus($id, $status, $released_by)
     {
         DB::table('qr_tracker.certificates')
             ->where('id', '=', $id)
@@ -182,4 +182,20 @@ class CertificateService
             ->orderBy('id', 'desc') // Orders by ID in descending order to get the latest one
             ->first();
     }
+
+    public function getDashboardCount($from, $to)
+    {
+        $query = DB::table('qr_tracker.certificates');
+
+        if ($from && $to) {
+            $query->whereBetween(DB::raw('DATE(created_at)'), [$from, $to]);
+        }
+
+        $total = $query->count();
+
+        return [
+            'total' => $total
+        ];
+    }
+
 }

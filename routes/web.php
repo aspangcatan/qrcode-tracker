@@ -43,5 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/receivers', [\App\Http\Controllers\ApplicationController::class, 'receiver'])->name('getReceivers');
     Route::get('/doctors', [\App\Http\Controllers\ApplicationController::class, 'doctors'])->name('getDoctors');
+
+    Route::get('/dashboard-counts', [\App\Http\Controllers\ApplicationController::class, 'dashboardCount'])->name('dashboardCount');
 });
 
