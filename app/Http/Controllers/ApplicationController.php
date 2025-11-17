@@ -351,7 +351,8 @@ class ApplicationController extends Controller
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
-                            'seal_margin_top' => $request->seal_margin_top
+                            'seal_margin_top' => $request->seal_margin_top,
+                            'with_myla' => $request->with_myla,
                         ]
                     );
                 case "ordinary":
@@ -685,7 +686,7 @@ class ApplicationController extends Controller
     public function dashboardCount(Request $request)
     {
         try {
-            $data = $this->certificateService->getDashboardCount($request->from, $request->to,$request->status);
+            $data = $this->certificateService->getDashboardCount($request->from, $request->to, $request->status);
             return response()->json($data);
         } catch (\Exception $exception) {
             return response()->json($exception->getMessage(), 500);

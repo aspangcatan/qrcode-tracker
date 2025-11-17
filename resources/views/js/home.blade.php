@@ -366,10 +366,12 @@
             const d_margin_bottom = $("#d_margin_bottom").val();
             const s_margin_top = $("#s_margin_top").val();
             const seal_margin_top = $("#seal_margin_top").val();
+            const with_myla = $("#with_myla").val();
 
             window.open("http://192.168.5.4/qrcode-tracker/print-preview?id=" + certificate_id +
                 "&d_margin_top=" + d_margin_top +
-                "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top + "&seal_margin_top=" + seal_margin_top
+                "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top + "&seal_margin_top=" + seal_margin_top +
+                "&with_myla=" + with_myla
                 , '_blank');
         });
 
@@ -1035,7 +1037,7 @@
 
         const data = await response.json();
         $("#number_serving").text(data.ticket_no);
-        callTicket(data.ticket_no, window_no,"0");
+        callTicket(data.ticket_no, window_no, "0");
     }
 
     async function nextSenior() {

@@ -85,6 +85,13 @@
                     <input type="number" class="form-control" id="seal_margin_top">
                     <label>Margin Top (Seal)</label>
                 </div>
+                <div class="form-floating mb-3 mt-2">
+                    <select class="form-control" id="with_myla">
+                        <option value="1" selected>Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    <label>With Myla Assignatory</label>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>

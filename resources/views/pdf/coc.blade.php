@@ -271,7 +271,8 @@
             </tr>
         </table>
     </div>
-    <div class="certificate-diagnosis" style="margin-left: 130px;margin-top:{{$d_margin_top}}px;margin-bottom:{{$d_margin_bottom}}px;text-transform: uppercase">
+    <div class="certificate-diagnosis"
+         style="margin-left: 130px;margin-top:{{$d_margin_top}}px;margin-bottom:{{$d_margin_bottom}}px;text-transform: uppercase">
         @for($i=0; $i<count($diagnosis); $i++)
             <div>{!! $diagnosis[$i]->diagnosis !!}</div>
         @endfor
@@ -310,18 +311,20 @@
         </table>
     </div>
     <div class="doctor-container mt-5">
-        <table style="width: 100%;">
-            <tr>
-                <td style="width: 50%;"></td> <!-- Empty Left Side (aligns with QR Code area) -->
+        @if($with_myla == "1")
+            <table style="width: 100%;">
+                <tr>
+                    <td style="width: 50%;"></td> <!-- Empty Left Side (aligns with QR Code area) -->
 
-                <!-- Right Side (aligns directly under Certificate No area) -->
-                <td style="width: 50%; text-align: center;">
-                    <div style="border-bottom: 1px solid black; font-weight: bold;">MYLA D. BORROMEO</div>
-                    <div>Supervising Administrative Officer</div>
-                    <div>Health Information Management Department</div>
-                </td>
-            </tr>
-        </table>
+                    <!-- Right Side (aligns directly under Certificate No area) -->
+                    <td style="width: 50%; text-align: center;">
+                        <div style="border-bottom: 1px solid black; font-weight: bold;">MYLA D. BORROMEO</div>
+                        <div>Supervising Administrative Officer</div>
+                        <div>Health Information Management Department</div>
+                    </td>
+                </tr>
+            </table>
+        @endif
     </div>
     <div style="clear:both"></div>
     <div style="margin-top:{{$seal_margin_top}}px">
