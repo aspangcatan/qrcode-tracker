@@ -38,9 +38,8 @@ class CertificateService
                     $end   = Carbon::parse($end)->format('Y-m-d');
 
                     // Apply date range query
-                    $query->whereBetween('date_issued', [$start, $end]);
+                    $query->whereBetween('date_requested', [$start, $end]);
                 }
-
             })
             ->skip($page)
             ->take(11)

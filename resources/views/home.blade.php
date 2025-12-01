@@ -34,7 +34,7 @@
                     <input class="form-control" placeholder="Search patient" id="filter_patient"/>
                 </div>
                 <div class="ms-2 me-1">
-                    <input type="text" class="form-control" placeholder="Search date issued" id="filter_date_issued"/>
+                    <input type="text" class="form-control" placeholder="Search date requested" id="filter_date_issued"/>
                 </div>
                 <div class="ms-1">
                     <button class="btn btn-success" id="btn_search">
