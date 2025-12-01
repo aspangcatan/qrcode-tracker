@@ -6,6 +6,7 @@
                 <div class="me-1">
                     <select class="form-control" id="filter_status">
                         <option value="">Search status</option>
+                        <option>PENDING</option>
                         <option>FOR RELEASE</option>
                         <option>RELEASED</option>
                         <option>CANCELLED</option>
