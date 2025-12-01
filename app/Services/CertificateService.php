@@ -3,6 +3,7 @@
 namespace App\Services;
 
 
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class CertificateService
@@ -15,6 +16,10 @@ class CertificateService
                 if (!session('access_rights') === 'admin') {
                     $query->where('user_id', '=', $user_id);
                 }
+                if ($filters['filter_status'] != '') {
+                    $query->where('status', '=', $filters['filter_status']);
+                }
+
                 if ($filters['filter_type'] != '') {
                     $query->where('type', 'LIKE', '%' . $filters['filter_type'] . '%');
                 }
@@ -22,9 +27,20 @@ class CertificateService
                 if ($filters['filter_patient'] != '') {
                     $query->where('patient', 'LIKE', '%' . $filters['filter_patient'] . '%');
                 }
+
                 if ($filters['filter_date_issued'] != '') {
-                    $query->where('date_issued', '=', $filters['filter_date_issued']);
+
+                    // Split "MM/DD/YYYY - MM/DD/YYYY"
+                    [$start, $end] = explode(' - ', $filters['filter_date_issued']);
+
+                    // Convert to Y-m-d format for database
+                    $start = Carbon::parse($start)->format('Y-m-d');
+                    $end   = Carbon::parse($end)->format('Y-m-d');
+
+                    // Apply date range query
+                    $query->whereBetween('date_issued', [$start, $end]);
                 }
+
             })
             ->skip($page)
             ->take(11)

@@ -131,7 +131,7 @@ class ApplicationController extends Controller
     public function getCertificates(Request $request)
     {
         try {
-            $filters = $request->only(['filter_type', 'filter_patient', 'filter_date_issued']);
+            $filters = $request->only(['filter_status','filter_type', 'filter_patient', 'filter_date_issued']);
             $response = $this->certificateService->index(Auth::id(), $filters, $request->page * 10);
             return response()->json($response);
         } catch (\Exception $exception) {

@@ -43,6 +43,20 @@
             }
         });
 
+        $('#filter_date_issued').daterangepicker({
+            autoUpdateInput: false,
+            opens: 'right'
+        });
+
+        $('#filter_date_issued').on('apply.daterangepicker', function(ev, picker) {
+            $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+        });
+
+        // When user clears/cancels
+        $('#filter_date_issued').on('cancel.daterangepicker', function(ev, picker) {
+            $(this).val('');
+        });
+
         $('#filter_dashboard').on('click', function () {
             const from = $('#date_from').val();
             const to = $('#date_to').val();
@@ -843,10 +857,12 @@
 
     async function getCertificates() {
 
+        const filter_status = $("#filter_status").val();
         const filter_type = $("#filter_type").val();
         const filter_patient = $("#filter_patient").val().trim();
         const filter_date_issued = $("#filter_date_issued").val();
         const response = await fetch('{{ route('getCertificates') }}?page=' + page +
+            '&filter_status=' + filter_status +
             '&filter_patient=' + filter_patient +
             '&filter_type=' + filter_type +
             '&filter_date_issued=' + filter_date_issued);

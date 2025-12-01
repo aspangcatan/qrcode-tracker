@@ -4,6 +4,14 @@
         <div class="col-md-10">
             <div class="d-flex justify-content-end mb-2">
                 <div class="me-1">
+                    <select class="form-control" id="filter_status">
+                        <option value="">Search status</option>
+                        <option>FOR RELEASE</option>
+                        <option>RELEASED</option>
+                        <option>CANCELLED</option>
+                    </select>
+                </div>
+                <div class="me-1">
                     <select class="form-control" id="filter_type">
                         <option value="">Search type</option>
                         <option value="aksyon_agad">AKSYON AGAD</option>
@@ -25,7 +33,7 @@
                     <input class="form-control" placeholder="Search patient" id="filter_patient"/>
                 </div>
                 <div class="ms-2 me-1">
-                    <input type="date" class="form-control" placeholder="Search date issued" id="filter_date_issued"/>
+                    <input type="text" class="form-control" placeholder="Search date issued" id="filter_date_issued"/>
                 </div>
                 <div class="ms-1">
                     <button class="btn btn-success" id="btn_search">
