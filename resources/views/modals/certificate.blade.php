@@ -117,6 +117,7 @@
                     <option value="1">ORDINARY MEDCERT - ER/OPD</option>
                     <option value="5">PRESIGNED - INPATIENT</option>
                     <option value="4">ORDINARY MEDCERT - INPATIENT</option>
+                    <option value="14">MEDICAL CERT INPATIENT - FILING CASES</option>
                     <option value="3">MEDICO LEGAL</option>
                     <option value="6">COC</option>
                     <option value="7">MEDICAL ABSTRACT</option>

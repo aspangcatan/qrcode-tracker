@@ -22,6 +22,7 @@
                         <option value="ordinary">ORDINARY MEDCERT - ER/OPD</option>
                         <option value="maipp_inpatient">PRESIGNED - INPATIENT</option>
                         <option value="ordinary_inpatient">ORDINARY MEDCERT - INPATIENT</option>
+                        <option value="ordinary_inpatient_filing">MEDICAL CERT INPATIENT - FILING CASES</option>
                         <option value="medico_legal">MEDICO LEGAL</option>
                         <option value="coc">COC</option>
                         <option value="medical_abstract">MEDICAL ABSTRACT</option>

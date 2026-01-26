@@ -187,6 +187,9 @@
                 case "13":
                     type = "maipp_opd";
                     break;
+                case "14":
+                    type = "ordinary_inpatient_filing";
+                    break;
             }
 
             $("#choose_certificate_modal").modal("hide");
@@ -920,6 +923,9 @@
                     break;
                 case "ordinary_inpatient":
                     _type = "ORDINARY MED CERT - INPATIENT";
+                    break;
+                case "ordinary_inpatient_filing":
+                    _type = "MEDICAL CERT INPATIENT - FILING CASES";
                     break;
                 case "maipp":
                     _type = "PRESIGNED - ER/OPD";

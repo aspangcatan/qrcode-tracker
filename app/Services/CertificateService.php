@@ -166,6 +166,7 @@ class CertificateService
             WHEN type = "coc" THEN "CERTIFICATE OF CONFINEMENT"
             WHEN type = "medical_abstract" THEN "MEDICAL ABSTRACT"
             WHEN type = "aksyon_agad" THEN "AKSYON AGAD"
+            WHEN type = "ordinary_inpatient_filing" THEN "MEDICAL CERT INPATIENT - FILING CASES"
             WHEN type = "aksyon_agad_inpatient" THEN "AKSYON AGAD - INPATIENT"
             WHEN type = "dental" THEN "DENTAL"
             WHEN type = "common" THEN UPPER(specific_document)

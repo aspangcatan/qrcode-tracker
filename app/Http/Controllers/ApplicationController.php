@@ -143,7 +143,7 @@ class ApplicationController extends Controller
     public function storeCertificate(Request $request)
     {
         try {
-            $excluded_certificate = ['ordinary', 'aksyon_agad', 'aksyon_agad_inpatient', 'maipp', 'medico_legal', 'ordinary_inpatient', 'maipp_inpatient', 'maipp_opd', 'coc', 'medical_abstract', 'dental', 'dental_presigned'];
+            $excluded_certificate = ['ordinary', 'aksyon_agad', 'aksyon_agad_inpatient', 'maipp', 'medico_legal', 'ordinary_inpatient', 'ordinary_inpatient_filing', 'maipp_inpatient', 'maipp_opd', 'coc', 'medical_abstract', 'dental', 'dental_presigned'];
             $specific_documents = $request->document_type;
             $type = $request->type;
 
@@ -280,6 +280,11 @@ class ApplicationController extends Controller
                     return view('forms.ordinary_inpatient', compact('certificates', 'diagnosis', 'receivers'));
                 }
                 return view('forms.ordinary_inpatient', compact('certificate_no', 'receivers', 'amount'));
+            case "ordinary_inpatient_filing":
+                if ($request->has('id')) {
+                    return view('forms.ordinary_inpatient_filing', compact('certificates', 'diagnosis', 'receivers'));
+                }
+                return view('forms.ordinary_inpatient_filing', compact('certificate_no', 'receivers', 'amount'));
             case "aksyon_agad":
                 if ($request->has('id')) {
                     return view('forms.aksyon_agad', compact('certificates', 'diagnosis', 'receivers'));
@@ -379,6 +384,17 @@ class ApplicationController extends Controller
                         ]);
                 case "ordinary_inpatient":
                     return view('pdf.ordinary_inpatient',
+                        [
+                            'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'd_margin_top' => $request->d_margin_top,
+                            'd_margin_bottom' => $request->d_margin_bottom,
+                            's_margin_top' => $request->s_margin_top,
+                            's_margin_bottom' => $request->s_margin_bottom,
+                            'seal_margin_top' => $request->seal_margin_top
+                        ]);
+                case "ordinary_inpatient_filing":
+                    return view('pdf.ordinary_inpatient_filing',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
