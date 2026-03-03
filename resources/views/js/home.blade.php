@@ -100,6 +100,14 @@
             }
         });
 
+        $('#filter_certificate_no').on('keyup', function (e) {
+            if (e.key === 'Enter') {
+                getCertificates();
+            } else if ($(this).val() === '') {
+                getCertificates();
+            }
+        });
+
         $("#btn_settings").click(function () {
             //SHOW MODAL SETTINGS
             $("#window_modal").modal("show");
@@ -863,11 +871,13 @@
         const filter_status = $("#filter_status").val();
         const filter_type = $("#filter_type").val();
         const filter_patient = $("#filter_patient").val().trim();
+        const filter_certificate_no = $("#filter_certificate_no").val().trim();
         const filter_date_issued = $("#filter_date_issued").val();
         const response = await fetch('{{ route('getCertificates') }}?page=' + page +
             '&filter_status=' + filter_status +
             '&filter_patient=' + filter_patient +
             '&filter_type=' + filter_type +
+            '&filter_certificate_no=' + filter_certificate_no +
             '&filter_date_issued=' + filter_date_issued);
 
         const data = await response.json();

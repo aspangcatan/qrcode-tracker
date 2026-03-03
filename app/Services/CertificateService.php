@@ -28,6 +28,10 @@ class CertificateService
                     $query->where('patient', 'LIKE', '%' . $filters['filter_patient'] . '%');
                 }
 
+                if (!empty($filters['filter_certificate_no'])) {
+                    $query->where('certificate_no', 'LIKE', '%' . $filters['filter_certificate_no'] . '%');
+                }
+
                 if ($filters['filter_date_issued'] != '') {
 
                     // Split "MM/DD/YYYY - MM/DD/YYYY"
