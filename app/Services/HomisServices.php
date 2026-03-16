@@ -22,7 +22,10 @@ class HomisServices
 
     public function doctors()
     {
-        $results = HProvider::with('hpersonal')->get();
+        $results = HProvider::with('hpersonal')
+                ->where('empstat', 'A')
+                ->whereHas('hpersonal')
+                ->get();
         $formattedResults = $results->map(function ($provider) {
             $middlenameInitial = $provider->hpersonal->middlename ? substr($provider->hpersonal->middlename, 0, 1) . '.' : '';
             $fullName = "DR. {$provider->hpersonal->firstname} {$middlenameInitial} {$provider->hpersonal->lastname}";
