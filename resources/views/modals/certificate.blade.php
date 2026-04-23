@@ -92,6 +92,13 @@
                     </select>
                     <label>With Myla Assignatory</label>
                 </div>
+                <div class="form-floating mb-3 mt-2">
+                    <select class="form-control" id="hide_middle_portion">
+                        <option value="1" selected>Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                    <label>Hide middle portion</label>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
@@ -102,7 +109,7 @@
 </div>
 
 <div class="modal fade" id="choose_certificate_modal" tabindex="-1" aria-labelledby="updateModalLabel"
-     aria-hidden="true">
+    aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -138,7 +145,8 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <div class="card-title p-1" style="font-size: 24px">Tag as: <span id="tag_patient" class="text-dark fw-bold fs-5"></span></div>
+                <div class="card-title p-1" style="font-size: 24px">Tag as: <span id="tag_patient"
+                        class="text-dark fw-bold fs-5"></span></div>
             </div>
             <div class="modal-body w-100">
                 <select class="js-example-basic-single w-100" name="doctor" id="select_tag">
@@ -164,28 +172,28 @@
             <div class="modal-body">
                 <div class="ms-1">
                     <input name="datefilter" class="form-control" placeholder="Select daterange" id="filter_date"
-                           readonly/>
+                        readonly />
                 </div>
-                <hr/>
+                <hr />
                 <div class="table-responsive">
                     <table class="table table-striped text-center" style="font-size: 13px">
                         <thead>
-                        <tr>
-                            <th>DATE/TIME REQUESTED</th>
-                            <th>CERT NO.</th>
-                            <th>PATIENT</th>
-                            <th>DOCUMENT REQUESTED</th>
-                            <th>CS NO.</th>
-                            <th>OR NO.</th>
-                            <th>RECEIVED BY</th>
-                            <th>PREPARED BY</th>
-                            <th>REQUESTED BY</th>
-                            <th>RELATIONSHIP</th>
-                            <th>DATE/TIME COMPLETED</th>
-                            <th>DATE/TIME RELEASED</th>
-                            <th>RELEASED/CANCELLED BY</th>
-                            <th>STATUS</th>
-                        </tr>
+                            <tr>
+                                <th>DATE/TIME REQUESTED</th>
+                                <th>CERT NO.</th>
+                                <th>PATIENT</th>
+                                <th>DOCUMENT REQUESTED</th>
+                                <th>CS NO.</th>
+                                <th>OR NO.</th>
+                                <th>RECEIVED BY</th>
+                                <th>PREPARED BY</th>
+                                <th>REQUESTED BY</th>
+                                <th>RELATIONSHIP</th>
+                                <th>DATE/TIME COMPLETED</th>
+                                <th>DATE/TIME RELEASED</th>
+                                <th>RELEASED/CANCELLED BY</th>
+                                <th>STATUS</th>
+                            </tr>
                         </thead>
                         <tbody id="report_list">
 
@@ -201,6 +209,3 @@
         </div>
     </div>
 </div>
-
-
-

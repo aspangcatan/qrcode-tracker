@@ -487,6 +487,7 @@ class ApplicationController extends Controller
                     return view('pdf.medical_abstract',
                         [
                             'certificate' => $certificate,
+                            'hide_middle_portion' => filter_var($request->hide_middle_portion, FILTER_VALIDATE_BOOLEAN),
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,

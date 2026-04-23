@@ -392,11 +392,12 @@
             const s_margin_top = $("#s_margin_top").val();
             const seal_margin_top = $("#seal_margin_top").val();
             const with_myla = $("#with_myla").val();
+            const hide_middle_portion = $("#hide_middle_portion").val();
 
             window.open("http://192.168.5.4/qrcode-tracker/print-preview?id=" + certificate_id +
                 "&d_margin_top=" + d_margin_top +
                 "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top + "&seal_margin_top=" + seal_margin_top +
-                "&with_myla=" + with_myla
+                "&with_myla=" + with_myla+"&hide_middle_portion="+hide_middle_portion
                 , '_blank');
         });
 
