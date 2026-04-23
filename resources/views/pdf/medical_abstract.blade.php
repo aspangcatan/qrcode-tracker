@@ -168,6 +168,9 @@
 </head>
 
 <body>
+    @php
+        $hideDetails = !empty($hide_details);
+    @endphp
     <div class="container" style="margin-top: 70px">
         <table style="width: 100%">
             <tr>
@@ -179,7 +182,7 @@
                 <td>
                     <div style="text-align: right">
                         Certificate No:
-                        <div class="small fw-bold">{{ $certificate->certificate_no }}</div>
+                        <div class="small fw-bold">{{ $hideDetails ? '' : $certificate->certificate_no }}</div>
                     </div>
                 </td>
             </tr>
@@ -187,7 +190,7 @@
                 <td>
                     <div style="text-align: right">
                         Hospital No:
-                        <div class="small fw-bold">{{ $certificate->health_record_no }}</div>
+                        <div class="small fw-bold">{{ $hideDetails ? '' : $certificate->health_record_no }}</div>
                     </div>
                 </td>
             </tr>
@@ -196,69 +199,71 @@
                     <div style="text-align: right">
                         Date:
                         <div class="small fw-bold">
-                            {{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}
+                            {{ $hideDetails ? '' : strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}
                         </div>
                     </div>
                 </td>
             </tr>
         </table>
 
-        <div class="certificate-title">
-            MEDICAL ABSTRACT
-        </div>
-        <table style="width: 100%">
-            <tr>
-                <td style="width: 15%">
-                    Name:
-                </td>
-                <td style="width: 40%">
-                    <div>
-                        <div style="width: 95%" class="small fw-bold">{{ $certificate->patient }}</div>
-                    </div>
-                </td>
-                <td style="width: 5%;text-align: right">
-                    Age:
-                </td>
-                <td>
-                    <div>
-                        <div style="width: 100%" class="small fw-bold">{{ $certificate->age }}</div>
-                    </div>
-                </td>
-                <td style="width: 5%">
-                    Sex:
-                </td>
-                <td>
-                    <div>
-                        <div style="width: 100%" class="small fw-bold">{{ $certificate->sex }}</div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Address:</td>
-                <td>
-                    <div>
-                        <div style="width: 95%" class="small fw-bold">{{ $certificate->address }}</div>
-                    </div>
-                </td>
-                <td>Ward/Room:</td>
-                <td colspan="3">
-                    <div>
-                        <div style="width: 100%" class="small fw-bold">{{ $certificate->ward }}</div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>Date Admitted:</td>
-                <td>
-                    <div>
-                        <div style="width: 95%" class="small fw-bold">
-                            {{ strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}
+        <div class="{{ $hideDetails ? 'preserve-empty-space' : '' }}">
+            <div class="certificate-title">
+                MEDICAL ABSTRACT
+            </div>
+            <table style="width: 100%">
+                <tr>
+                    <td style="width: 15%">
+                        Name:
+                    </td>
+                    <td style="width: 40%">
+                        <div>
+                            <div style="width: 95%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->patient }}</div>
                         </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-        <div id="middle_portion" class="{{ !empty($hide_middle_portion) ? 'preserve-empty-space' : '' }}">
+                    </td>
+                    <td style="width: 5%;text-align: right">
+                        Age:
+                    </td>
+                    <td>
+                        <div>
+                            <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->age }}</div>
+                        </div>
+                    </td>
+                    <td style="width: 5%">
+                        Sex:
+                    </td>
+                    <td>
+                        <div>
+                            <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->sex }}</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Address:</td>
+                    <td>
+                        <div>
+                            <div style="width: 95%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->address }}</div>
+                        </div>
+                    </td>
+                    <td>Ward/Room:</td>
+                    <td colspan="3">
+                        <div>
+                            <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->ward }}</div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Date Admitted:</td>
+                    <td>
+                        <div>
+                            <div style="width: 95%" class="small fw-bold">
+                                {{ $hideDetails ? '' : strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div id="middle_portion" class="{{ $hideDetails ? 'preserve-empty-space' : '' }}">
             <table style="width: 100%; margin-top: 20px">
                 <tr>
                     <td style="width: 45%">
@@ -380,16 +385,16 @@
                 <tr>
                     <td style="width: 18%">OR NO</td>
                     <td style="width: 3%">:</td>
-                    <td style="width: 49%">{{ $certificate->or_no }}</td>
+                    <td style="width: 49%">{{ $hideDetails ? '' : $certificate->or_no }}</td>
                     <td style="width: 30%"></td>
                 </tr>
                 <tr>
                     <td>AMOUNT</td>
                     <td>:</td>
-                    @if(is_numeric($certificate->amount))
+                    @if(!$hideDetails && is_numeric($certificate->amount))
                         <td>₱{{ number_format($certificate->amount, 2) }}</td>
                     @else
-                        <td>{{ $certificate->amount }}</td>
+                        <td>{{ $hideDetails ? '' : $certificate->amount }}</td>
                     @endif
                     <td style="text-align: right">
                         <small>MPS-REC-FM-04</small>
@@ -399,7 +404,7 @@
                     <td>Prepared by</td>
                     <td>:</td>
                     <td>
-                        {{ $certificate->prepared_by }}
+                        {{ $hideDetails ? '' : $certificate->prepared_by }}
                     </td>
                     <td style="text-align: right">
                         <small>07-Dec-18</small>

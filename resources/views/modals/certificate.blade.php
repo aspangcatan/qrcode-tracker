@@ -97,7 +97,7 @@
                         <option value="1" selected>Yes</option>
                         <option value="0">No</option>
                     </select>
-                    <label>Hide middle portion</label>
+                    <label>Hide details</label>
                 </div>
             </div>
             <div class="modal-footer">
