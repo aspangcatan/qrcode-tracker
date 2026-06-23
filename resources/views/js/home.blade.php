@@ -446,11 +446,17 @@
             const seal_margin_top = $("#seal_margin_top").val();
             const with_myla = $("#with_myla").val();
             const hide_middle_portion = $("#hide_middle_portion").val();
+            const chief_complaint_page = $("#chief_complaint_page").val();
+            const diagnosis_page = $("#diagnosis_page").val();
+            const medication_page = $("#medication_page").val();
+            const plan_page = $("#plan_page").val();
 
             window.open("http://192.168.5.4/qrcode-tracker/print-preview?id=" + certificate_id +
                 "&d_margin_top=" + d_margin_top +
                 "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top + "&seal_margin_top=" + seal_margin_top +
-                "&with_myla=" + with_myla+"&hide_details="+hide_middle_portion
+                "&with_myla=" + with_myla+"&hide_details="+hide_middle_portion +
+                "&chief_complaint_page=" + chief_complaint_page + "&diagnosis_page=" + diagnosis_page +
+                "&medication_page=" + medication_page + "&plan_page=" + plan_page
                 , '_blank');
         });
 
