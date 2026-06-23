@@ -270,24 +270,16 @@
                         Chief Complaint/History of Present Illness:
                     </td>
                     <td>
-                        <div style="width: 100%" class="small fw-bold"></div>
+                        <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : (isset($chief_complaints[0]) ? $chief_complaints[0]->chief_complaint : '') }}</div>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
+                @for($i = 1; $i < count($chief_complaints); $i++)
+                    <tr>
+                        <td colspan="2">
+                            <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $chief_complaints[$i]->chief_complaint }}</div>
+                        </td>
+                    </tr>
+                @endfor
             </table>
             <table style="width: 100%;margin-top: 20px">
                 <tr>
@@ -295,19 +287,16 @@
                         Diagnosis:
                     </td>
                     <td>
-                        <div style="width: 100%" class="small fw-bold"></div>
+                        <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : (isset($diagnosis[0]) ? $diagnosis[0]->diagnosis : '') }}</div>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
+                @for($i = 1; $i < count($diagnosis); $i++)
+                    <tr>
+                        <td colspan="2">
+                            <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $diagnosis[$i]->diagnosis }}</div>
+                        </td>
+                    </tr>
+                @endfor
             </table>
             <table style="width: 100%; margin-top: 20px">
                 <tr>
@@ -315,24 +304,16 @@
                         Medication on Board:
                     </td>
                     <td>
-                        <div style="width: 100%" class="small fw-bold"></div>
+                        <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : (isset($medications[0]) ? $medications[0]->medication : '') }}</div>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
+                @for($i = 1; $i < count($medications); $i++)
+                    <tr>
+                        <td colspan="2">
+                            <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $medications[$i]->medication }}</div>
+                        </td>
+                    </tr>
+                @endfor
             </table>
             <table style="width: 100%; margin-top: 20px">
                 <tr>
@@ -340,24 +321,16 @@
                         Plan:
                     </td>
                     <td>
-                        <div style="width: 100%" class="small fw-bold"></div>
+                        <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : (isset($plans[0]) ? $plans[0]->plan : '') }}</div>
                     </td>
                 </tr>
-                <tr>
-                    <td colspan="2">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
+                @for($i = 1; $i < count($plans); $i++)
+                    <tr>
+                        <td colspan="2">
+                            <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $plans[$i]->plan }}</div>
+                        </td>
+                    </tr>
+                @endfor
             </table>
             <table style="width: 100%; margin-top:30px">
                 <tr>
