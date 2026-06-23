@@ -492,6 +492,30 @@
                 });
             }
 
+            const chief_complaints_array = [];
+            for (let i = 0; i < $("#chief_complaint_list tr").length; i++) {
+                const chief_complaint = $("#chief_complaint_list tr:eq(" + i + ") td:eq(0)").html().trim();
+                chief_complaints_array.push({
+                    chief_complaint: chief_complaint
+                });
+            }
+
+            const medications_array = [];
+            for (let i = 0; i < $("#medication_list tr").length; i++) {
+                const medication = $("#medication_list tr:eq(" + i + ") td:eq(0)").html().trim();
+                medications_array.push({
+                    medication: medication
+                });
+            }
+
+            const plans_array = [];
+            for (let i = 0; i < $("#plan_list tr").length; i++) {
+                const plan = $("#plan_list tr:eq(" + i + ") td:eq(0)").html().trim();
+                plans_array.push({
+                    plan: plan
+                });
+            }
+
             const noi = $("#noi").val();
             const doi = $("#doi").val();
             const toi = $("#toi").val();
@@ -758,6 +782,9 @@
                 "date_finished": date_finished,
                 "type": type,
                 "diagnosis": diagnosis_array,
+                "chief_complaints": chief_complaints_array,
+                "medications": medications_array,
+                "plans": plans_array,
                 "sustained": (noi === undefined) ? null : sustained,
                 "ward": (ward === undefined) ? null : ward,
                 "received_by": received_by,
