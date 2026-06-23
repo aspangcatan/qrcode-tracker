@@ -122,6 +122,42 @@
                     </select>
                     <label>Hide details</label>
                 </div>
+                <div class="form-floating mb-3 mt-2 medical-abstract-only d-none">
+                    <select class="form-control" id="chief_complaint_page">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <label>Chief Complaint Page</label>
+                </div>
+                <div class="form-floating mb-3 mt-2 medical-abstract-only d-none">
+                    <select class="form-control" id="diagnosis_page">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <label>Diagnosis Page</label>
+                </div>
+                <div class="form-floating mb-3 mt-2 medical-abstract-only d-none">
+                    <select class="form-control" id="medication_page">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <label>Medication on Board Page</label>
+                </div>
+                <div class="form-floating mb-3 mt-2 medical-abstract-only d-none">
+                    <select class="form-control" id="plan_page">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>
+                    <label>Plan Page</label>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
