@@ -195,221 +195,192 @@
         $diagnosis_lines = $splitClinicalLines($diagnosis, 'diagnosis');
         $medication_lines = $splitClinicalLines($medications, 'medication');
         $plan_lines = $splitClinicalLines($plans, 'plan');
+
+        $sectionDefs = [
+            'chief_complaint' => ['label' => 'Chief Complaint/History of Present Illness:', 'width' => 45, 'lines' => $chief_complaint_lines, 'page' => max(1, (int) ($chief_complaint_page ?? 1))],
+            'diagnosis' => ['label' => 'Diagnosis:', 'width' => 15, 'lines' => $diagnosis_lines, 'page' => max(1, (int) ($diagnosis_page ?? 1))],
+            'medication' => ['label' => 'Medication on Board:', 'width' => 25, 'lines' => $medication_lines, 'page' => max(1, (int) ($medication_page ?? 1))],
+            'plan' => ['label' => 'Plan:', 'width' => 15, 'lines' => $plan_lines, 'page' => max(1, (int) ($plan_page ?? 1))],
+        ];
+
+        $pages = collect($sectionDefs)
+            ->pluck('page')
+            ->unique()
+            ->sort()
+            ->values()
+            ->map(fn($pageNum) => array_filter($sectionDefs, fn($s) => $s['page'] === $pageNum))
+            ->values();
     @endphp
     <div class="container" style="margin-top: 70px">
-        <table style="width: 100%">
-            <tr>
-                <td rowspan="3">
-                    <div style="height: 100%;vertical-align: middle;text-align: center">
-                        {!! QrCode::size(100)->generate($certificate->url) !!}
-                    </div>
-                </td>
-                <td>
-                    <div style="text-align: right">
-                        Certificate No:
-                        <div class="small fw-bold">{{ $hideDetails ? '' : $certificate->certificate_no }}</div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div style="text-align: right">
-                        Hospital No:
-                        <div class="small fw-bold">{{ $hideDetails ? '' : $certificate->health_record_no }}</div>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <div style="text-align: right">
-                        Date:
-                        <div class="small fw-bold">
-                            {{ $hideDetails ? '' : strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </table>
-
-        <div class="{{ $hideDetails ? 'preserve-empty-space' : '' }}">
-            <div class="certificate-title">
-                MEDICAL ABSTRACT
-            </div>
+        @foreach($pages as $pageIndex => $sections)
             <table style="width: 100%">
                 <tr>
-                    <td style="width: 15%">
-                        Name:
-                    </td>
-                    <td style="width: 40%">
-                        <div>
-                            <div style="width: 95%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->patient }}</div>
+                    <td rowspan="3">
+                        <div style="height: 100%;vertical-align: middle;text-align: center">
+                            {!! QrCode::size(100)->generate($certificate->url) !!}
                         </div>
                     </td>
-                    <td style="width: 5%;text-align: right">
-                        Age:
-                    </td>
                     <td>
-                        <div>
-                            <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->age }}</div>
-                        </div>
-                    </td>
-                    <td style="width: 5%">
-                        Sex:
-                    </td>
-                    <td>
-                        <div>
-                            <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->sex }}</div>
+                        <div style="text-align: right">
+                            Certificate No:
+                            <div class="small fw-bold">{{ $hideDetails ? '' : $certificate->certificate_no }}</div>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td>Address:</td>
                     <td>
-                        <div>
-                            <div style="width: 95%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->address }}</div>
-                        </div>
-                    </td>
-                    <td>Ward/Room:</td>
-                    <td colspan="3">
-                        <div>
-                            <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->ward }}</div>
+                        <div style="text-align: right">
+                            Hospital No:
+                            <div class="small fw-bold">{{ $hideDetails ? '' : $certificate->health_record_no }}</div>
                         </div>
                     </td>
                 </tr>
                 <tr>
-                    <td>Date Admitted:</td>
                     <td>
-                        <div>
-                            <div style="width: 95%" class="small fw-bold">
-                                {{ $hideDetails ? '' : strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}
+                        <div style="text-align: right">
+                            Date:
+                            <div class="small fw-bold">
+                                {{ $hideDetails ? '' : strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_issued)->format('F j, Y')) }}
                             </div>
                         </div>
                     </td>
                 </tr>
             </table>
-        </div>
-        <div id="middle_portion" class="{{ $hideDetails ? 'preserve-empty-space' : '' }}">
-            <table style="width: 100%; margin-top: 20px">
-                <tr>
-                    <td style="width: 45%">
-                        Chief Complaint/History of Present Illness:
-                    </td>
-                    <td>
-                        <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($chief_complaint_lines[0] ?? '') }}</div>
-                    </td>
-                </tr>
-                @for($i = 1; $i < max(count($chief_complaint_lines), 4); $i++)
+
+            <div class="{{ $hideDetails ? 'preserve-empty-space' : '' }}">
+                <div class="certificate-title">
+                    MEDICAL ABSTRACT
+                </div>
+                <table style="width: 100%">
                     <tr>
-                        <td colspan="2">
-                            <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($chief_complaint_lines[$i] ?? '') }}</div>
+                        <td style="width: 15%">
+                            Name:
+                        </td>
+                        <td style="width: 40%">
+                            <div>
+                                <div style="width: 95%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->patient }}</div>
+                            </div>
+                        </td>
+                        <td style="width: 5%;text-align: right">
+                            Age:
+                        </td>
+                        <td>
+                            <div>
+                                <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->age }}</div>
+                            </div>
+                        </td>
+                        <td style="width: 5%">
+                            Sex:
+                        </td>
+                        <td>
+                            <div>
+                                <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->sex }}</div>
+                            </div>
                         </td>
                     </tr>
-                @endfor
-            </table>
-            <table style="width: 100%;margin-top: 20px">
-                <tr>
-                    <td style="width: 15%">
-                        Diagnosis:
-                    </td>
-                    <td>
-                        <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($diagnosis_lines[0] ?? '') }}</div>
-                    </td>
-                </tr>
-                @for($i = 1; $i < max(count($diagnosis_lines), 4); $i++)
                     <tr>
-                        <td colspan="2">
-                            <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($diagnosis_lines[$i] ?? '') }}</div>
+                        <td>Address:</td>
+                        <td>
+                            <div>
+                                <div style="width: 95%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->address }}</div>
+                            </div>
+                        </td>
+                        <td>Ward/Room:</td>
+                        <td colspan="3">
+                            <div>
+                                <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->ward }}</div>
+                            </div>
                         </td>
                     </tr>
-                @endfor
-            </table>
-            <table style="width: 100%; margin-top: 20px">
-                <tr>
-                    <td style="width: 25%">
-                        Medication on Board:
-                    </td>
-                    <td>
-                        <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($medication_lines[0] ?? '') }}</div>
-                    </td>
-                </tr>
-                @for($i = 1; $i < max(count($medication_lines), 4); $i++)
                     <tr>
-                        <td colspan="2">
-                            <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($medication_lines[$i] ?? '') }}</div>
+                        <td>Date Admitted:</td>
+                        <td>
+                            <div>
+                                <div style="width: 95%" class="small fw-bold">
+                                    {{ $hideDetails ? '' : strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}
+                                </div>
+                            </div>
                         </td>
                     </tr>
-                @endfor
-            </table>
-            <table style="width: 100%; margin-top: 20px">
-                <tr>
-                    <td style="width: 15%">
-                        Plan:
-                    </td>
-                    <td>
-                        <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($plan_lines[0] ?? '') }}</div>
-                    </td>
-                </tr>
-                @for($i = 1; $i < max(count($plan_lines), 4); $i++)
+                </table>
+            </div>
+            <div id="middle_portion_{{ $pageIndex }}" class="{{ $hideDetails ? 'preserve-empty-space' : '' }}">
+                @foreach($sections as $section)
+                    <table style="width: 100%; margin-top: 20px">
+                        <tr>
+                            <td style="width: {{ $section['width'] }}%">
+                                {{ $section['label'] }}
+                            </td>
+                            <td>
+                                <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($section['lines'][0] ?? '') }}</div>
+                            </td>
+                        </tr>
+                        @for($i = 1; $i < max(count($section['lines']), 4); $i++)
+                            <tr>
+                                <td colspan="2">
+                                    <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($section['lines'][$i] ?? '') }}</div>
+                                </td>
+                            </tr>
+                        @endfor
+                    </table>
+                @endforeach
+                <table style="width: 100%; margin-top:30px">
                     <tr>
-                        <td colspan="2">
-                            <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($plan_lines[$i] ?? '') }}</div>
+                        <td></td>
+                        <td style="width: 40%">
+                            <div style="width: 100%" class="small fw-bold"></div>
                         </td>
                     </tr>
-                @endfor
-            </table>
-            <table style="width: 100%; margin-top:30px">
-                <tr>
-                    <td></td>
-                    <td style="width: 40%">
-                        <div style="width: 100%" class="small fw-bold"></div>
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="text-align: center">ATTENDING PHYSICIAN</td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td style="text-align: center">
-                        License No.
-                        <span class="small" style="width: 75px"></span>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div style="margin-top:{{$seal_margin_top}}px">
-            <div class="fw-bold">(NOT VALID WITHOUT SEAL)</div>
-            <table style="width: 100%">
-                <tr>
-                    <td style="width: 18%">OR NO</td>
-                    <td style="width: 3%">:</td>
-                    <td style="width: 49%">{{ $hideDetails ? '' : $certificate->or_no }}</td>
-                    <td style="width: 30%"></td>
-                </tr>
-                <tr>
-                    <td>AMOUNT</td>
-                    <td>:</td>
-                    @if(!$hideDetails && is_numeric($certificate->amount))
-                        <td>₱{{ number_format($certificate->amount, 2) }}</td>
-                    @else
-                        <td>{{ $hideDetails ? '' : $certificate->amount }}</td>
-                    @endif
-                    <td style="text-align: right">
-                        <small>MPS-REC-FM-04</small>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Prepared by</td>
-                    <td>:</td>
-                    <td>
-                        {{ $hideDetails ? '' : $certificate->prepared_by }}
-                    </td>
-                    <td style="text-align: right">
-                        <small>07-Dec-18</small>
-                    </td>
-                </tr>
-            </table>
-        </div>
+                    <tr>
+                        <td></td>
+                        <td style="text-align: center">ATTENDING PHYSICIAN</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td style="text-align: center">
+                            License No.
+                            <span class="small" style="width: 75px"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div style="margin-top:{{$seal_margin_top}}px">
+                <div class="fw-bold">(NOT VALID WITHOUT SEAL)</div>
+                <table style="width: 100%">
+                    <tr>
+                        <td style="width: 18%">OR NO</td>
+                        <td style="width: 3%">:</td>
+                        <td style="width: 49%">{{ $hideDetails ? '' : $certificate->or_no }}</td>
+                        <td style="width: 30%"></td>
+                    </tr>
+                    <tr>
+                        <td>AMOUNT</td>
+                        <td>:</td>
+                        @if(!$hideDetails && is_numeric($certificate->amount))
+                            <td>₱{{ number_format($certificate->amount, 2) }}</td>
+                        @else
+                            <td>{{ $hideDetails ? '' : $certificate->amount }}</td>
+                        @endif
+                        <td style="text-align: right">
+                            <small>MPS-REC-FM-04</small>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Prepared by</td>
+                        <td>:</td>
+                        <td>
+                            {{ $hideDetails ? '' : $certificate->prepared_by }}
+                        </td>
+                        <td style="text-align: right">
+                            <small>07-Dec-18</small>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            @if(!$loop->last)
+                <div style="page-break-after: always;"></div>
+            @endif
+        @endforeach
     </div>
     <script>
         // Disable right-click
