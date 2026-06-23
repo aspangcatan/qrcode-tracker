@@ -146,6 +146,26 @@ class ApplicationController extends Controller
         }
     }
 
+    public function showCertificate(int $certificate)
+    {
+        try {
+            $certificateData = $this->certificateService->getCertificateById($certificate);
+            if (!$certificateData) {
+                return response()->json(['message' => 'Certificate not found'], 404);
+            }
+
+            return response()->json([
+                'data' => $certificateData,
+                'diagnosis' => $this->diagnosisService->getDiagnosisByCertificate($certificate),
+                'sustained' => $this->sustainedService->getSustainedByCertificate($certificate),
+                'chief_complaints' => $this->chiefComplaintService->getByCertificate($certificate),
+                'medications' => $this->medicationService->getByCertificate($certificate),
+                'plans' => $this->planService->getByCertificate($certificate),
+            ]);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
+        }
+    }
 
     public function storeCertificate(Request $request)
     {
