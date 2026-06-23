@@ -218,6 +218,7 @@
                     $("#certificate_modal #certificate_form").html(html);
                     $("#certificate_modal .modal-footer").removeClass("d-none");
                     $("#no_copies_container").removeClass("d-none");
+                    $(".list-field-btn").toggleClass("d-none", type !== "medical_abstract");
 
                     $("#received_by").select2({
                         dropdownParent: $("#certificate_modal .modal-body"),
@@ -835,6 +836,7 @@
             .then(html => {
                 $("#certificate_modal #certificate_form").html(html);
                 $("#certificate_modal .modal-footer").removeClass("d-none");
+                $(".list-field-btn").toggleClass("d-none", type !== "medical_abstract");
                 $("#received_by").select2({
                     dropdownParent: $("#certificate_modal .modal-body"),
                     width: '100%'
