@@ -164,12 +164,37 @@
         .preserve-empty-space {
             visibility: hidden;
         }
+
+        .clinical-line {
+            text-align: left;
+            width: 100%;
+            display: block;
+            border-bottom: 1px solid black;
+        }
     </style>
 </head>
 
 <body>
     @php
         $hideDetails = !empty($hide_details);
+
+        $splitClinicalLines = function ($collection, $field) {
+            $lines = [];
+            foreach ($collection as $item) {
+                foreach (preg_split('/<br\s*\/?>/i', $item->$field) as $segment) {
+                    $segment = trim($segment);
+                    if ($segment !== '') {
+                        $lines[] = $segment;
+                    }
+                }
+            }
+            return $lines;
+        };
+
+        $chief_complaint_lines = $splitClinicalLines($chief_complaints, 'chief_complaint');
+        $diagnosis_lines = $splitClinicalLines($diagnosis, 'diagnosis');
+        $medication_lines = $splitClinicalLines($medications, 'medication');
+        $plan_lines = $splitClinicalLines($plans, 'plan');
     @endphp
     <div class="container" style="margin-top: 70px">
         <table style="width: 100%">
@@ -270,13 +295,13 @@
                         Chief Complaint/History of Present Illness:
                     </td>
                     <td>
-                        <div style="width: 100%" class="small fw-bold">{!! $hideDetails ? '' : (isset($chief_complaints[0]) ? $chief_complaints[0]->chief_complaint : '') !!}</div>
+                        <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($chief_complaint_lines[0] ?? '') }}</div>
                     </td>
                 </tr>
-                @for($i = 1; $i < count($chief_complaints); $i++)
+                @for($i = 1; $i < max(count($chief_complaint_lines), 4); $i++)
                     <tr>
                         <td colspan="2">
-                            <div style="width: 100%" class="small fw-bold">{!! $hideDetails ? '' : $chief_complaints[$i]->chief_complaint !!}</div>
+                            <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($chief_complaint_lines[$i] ?? '') }}</div>
                         </td>
                     </tr>
                 @endfor
@@ -287,13 +312,13 @@
                         Diagnosis:
                     </td>
                     <td>
-                        <div style="width: 100%" class="small fw-bold">{!! $hideDetails ? '' : (isset($diagnosis[0]) ? $diagnosis[0]->diagnosis : '') !!}</div>
+                        <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($diagnosis_lines[0] ?? '') }}</div>
                     </td>
                 </tr>
-                @for($i = 1; $i < count($diagnosis); $i++)
+                @for($i = 1; $i < max(count($diagnosis_lines), 4); $i++)
                     <tr>
                         <td colspan="2">
-                            <div style="width: 100%" class="small fw-bold">{!! $hideDetails ? '' : $diagnosis[$i]->diagnosis !!}</div>
+                            <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($diagnosis_lines[$i] ?? '') }}</div>
                         </td>
                     </tr>
                 @endfor
@@ -304,13 +329,13 @@
                         Medication on Board:
                     </td>
                     <td>
-                        <div style="width: 100%" class="small fw-bold">{!! $hideDetails ? '' : (isset($medications[0]) ? $medications[0]->medication : '') !!}</div>
+                        <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($medication_lines[0] ?? '') }}</div>
                     </td>
                 </tr>
-                @for($i = 1; $i < count($medications); $i++)
+                @for($i = 1; $i < max(count($medication_lines), 4); $i++)
                     <tr>
                         <td colspan="2">
-                            <div style="width: 100%" class="small fw-bold">{!! $hideDetails ? '' : $medications[$i]->medication !!}</div>
+                            <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($medication_lines[$i] ?? '') }}</div>
                         </td>
                     </tr>
                 @endfor
@@ -321,13 +346,13 @@
                         Plan:
                     </td>
                     <td>
-                        <div style="width: 100%" class="small fw-bold">{!! $hideDetails ? '' : (isset($plans[0]) ? $plans[0]->plan : '') !!}</div>
+                        <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($plan_lines[0] ?? '') }}</div>
                     </td>
                 </tr>
-                @for($i = 1; $i < count($plans); $i++)
+                @for($i = 1; $i < max(count($plan_lines), 4); $i++)
                     <tr>
                         <td colspan="2">
-                            <div style="width: 100%" class="small fw-bold">{!! $hideDetails ? '' : $plans[$i]->plan !!}</div>
+                            <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($plan_lines[$i] ?? '') }}</div>
                         </td>
                     </tr>
                 @endfor
