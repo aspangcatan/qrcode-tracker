@@ -858,12 +858,18 @@
 
     function printPreview(id) {
         certificate_id = id;
+        const print_type = $("#certificate_id_" + id + " td:eq(0)").text().trim();
+        $(".medical-abstract-only").toggleClass("d-none", print_type !== "medical_abstract");
         $("#heading_modal").modal("show");
         //SET DEFAULTS
         $("#d_margin_top").val(50);
         $("#d_margin_bottom").val(50);
         $("#s_margin_top").val(130);
         $("#seal_margin_top").val(100);
+        $("#chief_complaint_page").val(1);
+        $("#diagnosis_page").val(1);
+        $("#medication_page").val(1);
+        $("#plan_page").val(1);
     }
 
     function editCertificate(id) {
