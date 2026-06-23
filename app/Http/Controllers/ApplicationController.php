@@ -337,7 +337,10 @@ class ApplicationController extends Controller
                 return view('forms.coc', compact('certificate_no', 'receivers', 'amount'));
             case "medical_abstract":
                 if ($request->has('id')) {
-                    return view('forms.medical_abstract', compact('certificates', 'receivers'));
+                    $chief_complaints = $this->chiefComplaintService->getByCertificate($request->id);
+                    $medications = $this->medicationService->getByCertificate($request->id);
+                    $plans = $this->planService->getByCertificate($request->id);
+                    return view('forms.medical_abstract', compact('certificates', 'diagnosis', 'chief_complaints', 'medications', 'plans', 'receivers'));
                 }
                 return view('forms.medical_abstract', compact('certificate_no', 'receivers', 'amount'));
             case "common":
