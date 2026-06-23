@@ -99,6 +99,15 @@
             }
         });
 
+        $("#list_item_input").on("keypress", function (e) {
+            // Check if the pressed key is Enter (key code 13)
+            if (e.which == 13) {
+                // Prevent the default behavior of Enter key (which creates a new line)
+                // Append a <br> tag to the textarea's value
+                $("#list_item_input").val($(this).val() + '<br>');
+            }
+        });
+
         $('#filter_patient').on('keyup', function (e) {
             if (e.key === 'Enter') {
                 getCertificates();
