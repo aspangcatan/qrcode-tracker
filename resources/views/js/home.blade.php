@@ -401,6 +401,31 @@
             $("#diagnosis").val("");
         });
 
+        $("#btn_save_list_item").click(function () {
+            let value = $("#list_item_input").val();
+            value = value.replace(/\n/g, "");
+
+            if (value == '') {
+                alert("Please fill in this field");
+                return;
+            }
+
+            const listId = LIST_FIELDS[current_list_field].listId;
+            if (list_item_index > -1) {
+                $("#" + listId + " tr:eq(" + list_item_index + ") td:eq(0)").html(value);
+                $("#list_item_modal").modal("hide");
+                list_item_index = -1;
+            } else {
+                let tr = "<tr>";
+                tr += "<td style='width: 90%'>" + value + "</td>"
+                tr += "<td style='width: 5%'><button type='button' class='btn btn-sm btn-transparent' onClick='editListItem(this)'><i class='bi bi-pencil-fill text-success'></i></button></td>"
+                tr += "<td style='width: 5%'><button type='button' class='btn btn-sm btn-transparent' onClick='deleteListItem(this)'><i class='bi bi-trash-fill text-danger'></i></button></td>"
+                tr += "</tr>";
+                $("#" + listId).append(tr);
+            }
+            $("#list_item_input").val("");
+        });
+
         $("#btn_print_certificate").click(function () {
             const d_margin_top = $("#d_margin_top").val();
             const d_margin_bottom = $("#d_margin_bottom").val();
@@ -876,6 +901,26 @@
     }
 
     function deleteDiagnosis(button) {
+        if (confirm("Are you sure you want to remove this record?")) {
+            const tr = $(button).closest('tr');
+            tr.remove();
+        }
+    }
+
+    function editListItem(button) {
+        const tr = $(button).closest('tr');
+        const table_id = tr.closest('table').attr('id');
+        current_list_field = Object.keys(LIST_FIELDS).find(key => LIST_FIELDS[key].listId === table_id);
+        const value = tr.find('td:first').html();
+        list_item_index = tr.index();
+
+        $("#list_item_modal_title").text(LIST_FIELDS[current_list_field].label);
+        $("#list_item_modal").modal("show");
+        const textWithLineBreaks = value.replace(/<br>/g, '<br>\n');
+        $("#list_item_input").val(textWithLineBreaks);
+    }
+
+    function deleteListItem(button) {
         if (confirm("Are you sure you want to remove this record?")) {
             const tr = $(button).closest('tr');
             tr.remove();
