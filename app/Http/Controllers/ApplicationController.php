@@ -160,11 +160,17 @@ class ApplicationController extends Controller
                         $certificate_id = $this->createCertificate($request, $document_type);
                         $this->handleDiagnosis($request->diagnosis, $certificate_id);
                         $this->handleSustained($request->sustained, $certificate_id);
+                        $this->handleChiefComplaint($request->chief_complaints, $certificate_id);
+                        $this->handleMedication($request->medications, $certificate_id);
+                        $this->handlePlan($request->plans, $certificate_id);
                     }
                 } else {
                     $certificate_id = $this->createCertificate($request, '');
                     $this->handleDiagnosis($request->diagnosis, $certificate_id);
                     $this->handleSustained($request->sustained, $certificate_id);
+                    $this->handleChiefComplaint($request->chief_complaints, $certificate_id);
+                    $this->handleMedication($request->medications, $certificate_id);
+                    $this->handlePlan($request->plans, $certificate_id);
                 }
             }
 
