@@ -644,7 +644,11 @@ class ApplicationController extends Controller
                             'd_margin_bottom' => $request->d_margin_bottom,
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
-                            'seal_margin_top' => $request->seal_margin_top
+                            'seal_margin_top' => $request->seal_margin_top,
+                            'chief_complaint_page' => $request->chief_complaint_page,
+                            'diagnosis_page' => $request->diagnosis_page,
+                            'medication_page' => $request->medication_page,
+                            'plan_page' => $request->plan_page
                         ]
                     );
             }
