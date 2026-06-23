@@ -500,9 +500,16 @@ class ApplicationController extends Controller
                             'seal_margin_top' => $request->seal_margin_top
                         ]);
                 case "medical_abstract":
+                    $chief_complaints = $this->chiefComplaintService->getByCertificate($request->id);
+                    $medications = $this->medicationService->getByCertificate($request->id);
+                    $plans = $this->planService->getByCertificate($request->id);
                     return view('pdf.medical_abstract',
                         [
                             'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'chief_complaints' => $chief_complaints,
+                            'medications' => $medications,
+                            'plans' => $plans,
                             'hide_details' => filter_var($request->hide_details, FILTER_VALIDATE_BOOLEAN),
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
