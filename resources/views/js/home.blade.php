@@ -4,6 +4,13 @@
     let page = 0;
     let certificate_id = 0;
     let diagnosis_index = -1;
+    let list_item_index = -1;
+    let current_list_field = '';
+    const LIST_FIELDS = {
+        chief_complaint: {listId: 'chief_complaint_list', label: 'Enter chief complaint / history of present illness'},
+        medication: {listId: 'medication_list', label: 'Enter medication'},
+        plan: {listId: 'plan_list', label: 'Enter plan'}
+    };
     const HEADERS = {
         "Content-Type": "application/json",
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -334,6 +341,14 @@
             diagnosis_index = -1;
             $("#diagnosis").val("");
             $("#diagnosis_modal").modal("show");
+        });
+
+        $(".list-field-btn").click(function () {
+            current_list_field = $(this).data("field");
+            list_item_index = -1;
+            $("#list_item_input").val("");
+            $("#list_item_modal_title").text(LIST_FIELDS[current_list_field].label);
+            $("#list_item_modal").modal("show");
         });
 
         $("#btn_add_doctor").click(function () {
