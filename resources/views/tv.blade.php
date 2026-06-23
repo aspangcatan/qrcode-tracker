@@ -288,7 +288,7 @@
     }
 
     async function loadServing() {
-        const response = await fetch('{{ route('getTicketsTv') }}', {
+        const response = await fetch('{{ route('queue.tickets.tv') }}', {
             method: "GET"
         });
 

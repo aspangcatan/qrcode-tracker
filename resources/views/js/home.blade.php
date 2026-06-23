@@ -6,6 +6,8 @@
     let diagnosis_index = -1;
     const HEADERS = {
         "Content-Type": "application/json",
+        "Accept": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     };
 
@@ -32,8 +34,9 @@
 
         $("#btn_reset_ticket").click(function () {
             if (confirm("Are you sure you want to reset the tickets?")) {
-                fetch('{{ route('truncateTicket') }}', {
-                    method: "GET"
+                fetch('{{ route('queue.tickets.truncate') }}', {
+                    method: "DELETE",
+                    headers: HEADERS
                 })
                     .then(response => response.json()) // Convert response to text
                     .then(data => {
@@ -62,7 +65,7 @@
             const to = $('#date_to').val();
             const status = $('#status_filter').val();
 
-            fetch(`{{ route('dashboardCount') }}?from=${from}&to=${to}&status=${status}`)
+            fetch(`{{ route('dashboard.counts') }}?from=${from}&to=${to}&status=${status}`)
                 .then(response => response.json())
                 .then(data => {
                     $('#served_count').text(data.total);
@@ -254,7 +257,7 @@
             } else
                 title += " - " + to_month_name + " " + to_date.format("D, YYYY");
 
-            window.open("/qrcode-tracker/generate_report?from_date=" + from_date.format("YYYY-MM-DD") + "&to_date=" + to_date.format("YYYY-MM-DD") + "&title=" + title, "_blank");
+            window.open("{{ route('reports.certificates.export') }}?from_date=" + from_date.format("YYYY-MM-DD") + "&to_date=" + to_date.format("YYYY-MM-DD") + "&title=" + title, "_blank");
         });
 
         $("#btn_generate_report").click(async function () {
@@ -269,7 +272,7 @@
             let from_date = moment(filtered_date.split("-")[0].trim(), "MM/DD/YYYY");
             let to_date = moment(filtered_date.split("-")[1].trim(), "MM/DD/YYYY");
 
-            const response = await fetch('{{ route('generateTableReport') }}?from_date=' + from_date.format("YYYY-MM-DD") + "&to_date=" + to_date.format("YYYY-MM-DD"));
+            const response = await fetch('{{ route('reports.certificates.index') }}?from_date=' + from_date.format("YYYY-MM-DD") + "&to_date=" + to_date.format("YYYY-MM-DD"));
             const data = await response.json();
 
             $("#report_list").empty();
@@ -726,8 +729,13 @@
 
             try {
                 $(this).prop("disabled", true);
-                const response = await fetch('{{route('storeCertificate')}}', {
-                    method: "POST",
+                const endpoint = certificate_id === 0
+                    ? '{{ route('certificates.store') }}'
+                    : `{{ url('/certificates') }}/${certificate_id}`;
+                const method = certificate_id === 0 ? "POST" : "PUT";
+
+                const response = await fetch(endpoint, {
+                    method: method,
                     headers: HEADERS,
                     body: JSON.stringify(params)
                 });
@@ -751,10 +759,10 @@
             }
 
             if (confirm("Are you sure you want to tag this record?")) {
-                const response = await fetch('{{ route('tagCertificate') }}', {
-                    method: "PUT",
+                const response = await fetch(`{{ url('/certificates') }}/${certificate_id}/status`, {
+                    method: "PATCH",
                     headers: HEADERS,
-                    body: JSON.stringify({id: certificate_id, status: status})
+                    body: JSON.stringify({status: status})
                 });
 
                 const data = await response.json();
@@ -812,10 +820,10 @@
 
     async function tagAsComplete(id) {
         if (confirm("Are you sure you want to tag this as completed?")) {
-            const response = await fetch('{{ route('tagAsComplete') }}', {
-                method: "PUT",
+            const response = await fetch(`{{ url('/certificates') }}/${id}/complete`, {
+                method: "PATCH",
                 headers: HEADERS,
-                body: JSON.stringify({id: id})
+                body: JSON.stringify({})
             });
 
             if (!response.ok) {
@@ -832,10 +840,9 @@
 
     async function cancelCertificate(id) {
         if (confirm("Are you sure you want to cancel this record?")) {
-            const response = await fetch('{{ route('cancelCertificate') }}', {
+            const response = await fetch(`{{ url('/certificates') }}/${id}`, {
                 method: "DELETE",
-                headers: HEADERS,
-                body: JSON.stringify({id: id})
+                headers: HEADERS
             });
 
             if (!response.ok) {
@@ -874,7 +881,7 @@
         const filter_patient = $("#filter_patient").val().trim();
         const filter_certificate_no = $("#filter_certificate_no").val().trim();
         const filter_date_issued = $("#filter_date_issued").val();
-        const response = await fetch('{{ route('getCertificates') }}?page=' + page +
+        const response = await fetch('{{ route('certificates.index') }}?page=' + page +
             '&filter_status=' + filter_status +
             '&filter_patient=' + filter_patient +
             '&filter_type=' + filter_type +
@@ -1037,7 +1044,7 @@
     }
 
     async function getDoctors() {
-        const response = await fetch('{{ route('getDoctors') }}', {
+        const response = await fetch('{{ route('lookups.doctors') }}', {
             method: "GET"
         });
 
@@ -1062,7 +1069,7 @@
         setTimeout(function () {
             $("#btn_next_ticket").prop("disabled", false);
         }, 3000);
-        const response = await fetch('{{route('storeTicket')}}', {
+        const response = await fetch('{{route('queue.tickets.store')}}', {
             method: "POST",
             headers: HEADERS,
             body: JSON.stringify({window_no: window_no, lane: 0})
@@ -1085,7 +1092,7 @@
             $("#btn_next_ticket_senior").prop("disabled", false);
         }, 3000);
 
-        const response = await fetch('{{route('storeTicket')}}', {
+        const response = await fetch('{{route('queue.tickets.store')}}', {
             method: "POST",
             headers: HEADERS,
             body: JSON.stringify({window_no: window_no, lane: 1})
@@ -1097,8 +1104,8 @@
     }
 
     async function storeWindowSession(window_no, window_label) {
-        const response = await fetch('{{route('storeSession')}}', {
-            method: "POST",
+        const response = await fetch('{{route('queue.session.store')}}', {
+            method: "PUT",
             headers: HEADERS,
             body: JSON.stringify({window_no: window_no, window_label: window_label})
         });

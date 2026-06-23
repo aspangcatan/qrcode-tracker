@@ -23,9 +23,13 @@ class ApplicationController extends Controller
 {
     protected $certificateService, $diagnosisService, $sustainedService, $homisService, $queueService;
 
-    public function __construct(CertificateService $certificateService, DiagnosisService $diagnosisService,
-                                SustainedService $sustainedService, HomisServices $homisService, QueueService $queueService)
-    {
+    public function __construct(
+        CertificateService $certificateService,
+        DiagnosisService $diagnosisService,
+        SustainedService $sustainedService,
+        HomisServices $homisService,
+        QueueService $queueService
+    ) {
         $this->certificateService = $certificateService;
         $this->diagnosisService = $diagnosisService;
         $this->sustainedService = $sustainedService;
@@ -53,13 +57,15 @@ class ApplicationController extends Controller
 
     public function index()
     {
-        if (Auth::check()) return redirect()->route('home');
+        if (Auth::check())
+            return redirect()->route('home');
         return view('login');
     }
 
     public function home()
     {
-        if (!Auth::check()) return redirect()->route('login');
+        if (!Auth::check())
+            return redirect()->route('login');
 
         // Check if the session has a value for 'window_no'
         $window_no = session('window_no', null); // Get the session value, or null if not set
@@ -82,16 +88,46 @@ class ApplicationController extends Controller
     {
         $credentials = ['username' => $request->username, 'password' => $request->password];
         if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
             $user_priv = UserPrivelege::where([['user_id', Auth::id()], ['syscode', 'qr-tracker']])->get()->first();
             if ($user_priv == null) {
                 Auth::logout();
+                $request->session()->invalidate();
+                $request->session()->regenerateToken();
                 return back()->with(['message' => 'Access denied']);
             }
 
             session(['access_rights' => $user_priv->level]);
-            return redirect()->intended('/home');
+            return redirect()->intended(route('home'));
         }
         return back()->with(['message' => 'The provided credentials do not match our records.']);
+    }
+
+    public function apiLogin(Request $request)
+    {
+        $credentials = ['username' => $request->username, 'password' => $request->password];
+        if (!Auth::attempt($credentials)) {
+            return response()->json(['message' => 'The provided credentials do not match our records.'], 401);
+        }
+
+        $request->session()->regenerate();
+
+        $user_priv = UserPrivelege::where([['user_id', Auth::id()], ['syscode', 'qr-tracker']])->first();
+        if (!$user_priv) {
+            Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            Session::flush();
+
+            return response()->json(['message' => 'Access denied'], 403);
+        }
+
+        session(['access_rights' => $user_priv->level]);
+
+        return response()->json([
+            'message' => 'Authenticated successfully',
+            'user' => Auth::user(),
+        ]);
     }
 
     public function changePassword(Request $request)
@@ -108,6 +144,14 @@ class ApplicationController extends Controller
         } catch (\Exception $exception) {
             return ['code' => 500, 'message' => $exception->getMessage()];
         }
+    }
+
+    public function apiLogout()
+    {
+        Auth::logout();
+        Session::flush();
+
+        return response()->json(['message' => 'Logged out successfully']);
     }
 
     public function logout()
@@ -131,9 +175,27 @@ class ApplicationController extends Controller
     public function getCertificates(Request $request)
     {
         try {
-            $filters = $request->only(['filter_status','filter_type', 'filter_patient', 'filter_certificate_no', 'filter_date_issued']);
+            $filters = $request->only(['filter_status', 'filter_type', 'filter_patient', 'filter_certificate_no', 'filter_date_issued']);
             $response = $this->certificateService->index(Auth::id(), $filters, $request->page * 10);
             return response()->json($response);
+        } catch (\Exception $exception) {
+            return response()->json(['message' => $exception->getMessage()], 500);
+        }
+    }
+
+    public function showCertificate(int $certificate)
+    {
+        try {
+            $certificateData = $this->certificateService->getCertificateById($certificate);
+            if (!$certificateData) {
+                return response()->json(['message' => 'Certificate not found'], 404);
+            }
+
+            return response()->json([
+                'data' => $certificateData,
+                'diagnosis' => $this->diagnosisService->getDiagnosisByCertificate($certificate),
+                'sustained' => $this->sustainedService->getSustainedByCertificate($certificate),
+            ]);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
@@ -165,6 +227,26 @@ class ApplicationController extends Controller
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
+    }
+
+    public function storeCertificateResource(Request $request)
+    {
+        $request->merge([
+            'id' => null,
+            'no_copies' => $request->input('no_copies', 1),
+        ]);
+
+        return $this->storeCertificate($request);
+    }
+
+    public function updateCertificateResource(Request $request, int $certificate)
+    {
+        $request->merge([
+            'id' => $certificate,
+            'no_copies' => 1,
+        ]);
+
+        return $this->storeCertificate($request);
     }
 
     public function tagCertificate(Request $request)
@@ -216,6 +298,13 @@ class ApplicationController extends Controller
         }
     }
 
+    public function updateCertificateStatus(Request $request, int $certificate)
+    {
+        $request->merge(['id' => $certificate]);
+
+        return $this->tagCertificate($request);
+    }
+
     public function tagAsComplete(Request $request)
     {
         try {
@@ -235,6 +324,13 @@ class ApplicationController extends Controller
         }
     }
 
+    public function completeCertificate(Request $request, int $certificate)
+    {
+        $request->merge(['id' => $certificate]);
+
+        return $this->tagAsComplete($request);
+    }
+
     public function cancelCertificate(Request $request)
     {
         try {
@@ -242,11 +338,25 @@ class ApplicationController extends Controller
             if (!$certificate) {
                 return response()->json(['message' => 'QR not found'], 404);
             }
-            $this->certificateService->updateStatus($request->id, 'CANCELLED');
+            $releasedBy = null;
+            if (Auth::check()) {
+                $mi = Auth::user()->mname ? Auth::user()->mname[0] . '. ' : '';
+                $releasedBy = trim(strtoupper(Auth::user()->fname . ' ' . $mi . Auth::user()->lname));
+            }
+
+            $this->certificateService->updateStatus($request->id, 'CANCELLED', $releasedBy);
             return response()->json(['message' => 'Record removed']);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()]);
         }
+    }
+
+    public function destroyCertificate(int $certificate)
+    {
+        $request = request();
+        $request->merge(['id' => $certificate]);
+
+        return $this->cancelCertificate($request);
     }
 
     public function partialForm(Request $request)
@@ -348,7 +458,8 @@ class ApplicationController extends Controller
             $diagnosis = $this->diagnosisService->getDiagnosisByCertificate($request->id);
             switch ($certificate->type) {
                 case "coc":
-                    return view('pdf.coc',
+                    return view(
+                        'pdf.coc',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -361,7 +472,8 @@ class ApplicationController extends Controller
                         ]
                     );
                 case "ordinary":
-                    return view('pdf.ordinary',
+                    return view(
+                        'pdf.ordinary',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -370,9 +482,11 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
                 case "dental":
-                    return view('pdf.dental',
+                    return view(
+                        'pdf.dental',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -381,9 +495,11 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
                 case "ordinary_inpatient":
-                    return view('pdf.ordinary_inpatient',
+                    return view(
+                        'pdf.ordinary_inpatient',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -392,9 +508,11 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
                 case "ordinary_inpatient_filing":
-                    return view('pdf.ordinary_inpatient_filing',
+                    return view(
+                        'pdf.ordinary_inpatient_filing',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -403,9 +521,11 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
                 case "aksyon_agad":
-                    return view('pdf.aksyon_agad',
+                    return view(
+                        'pdf.aksyon_agad',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -414,9 +534,11 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
                 case "maipp":
-                    return view('pdf.maipp',
+                    return view(
+                        'pdf.maipp',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -425,9 +547,11 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
                 case "maipp_opd":
-                    return view('pdf.maipp_opd',
+                    return view(
+                        'pdf.maipp_opd',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -436,9 +560,11 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
                 case "aksyon_agad_inpatient":
-                    return view('pdf.aksyon_agad_inpatient',
+                    return view(
+                        'pdf.aksyon_agad_inpatient',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -447,9 +573,11 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
                 case "dental_presigned":
-                    return view('pdf.dental_presigned',
+                    return view(
+                        'pdf.dental_presigned',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -458,9 +586,11 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
                 case "maipp_inpatient":
-                    return view('pdf.maipp_inpatient',
+                    return view(
+                        'pdf.maipp_inpatient',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -469,10 +599,12 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
                 case "medico_legal":
                     $sustained = $this->sustainedService->getSustainedByCertificate($request->id);
-                    return view('pdf.medico_legal',
+                    return view(
+                        'pdf.medico_legal',
                         [
                             'certificate' => $certificate,
                             'diagnosis' => $diagnosis,
@@ -482,9 +614,11 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
                 case "medical_abstract":
-                    return view('pdf.medical_abstract',
+                    return view(
+                        'pdf.medical_abstract',
                         [
                             'certificate' => $certificate,
                             'hide_details' => filter_var($request->hide_details, FILTER_VALIDATE_BOOLEAN),
@@ -493,11 +627,19 @@ class ApplicationController extends Controller
                             's_margin_top' => $request->s_margin_top,
                             's_margin_bottom' => $request->s_margin_bottom,
                             'seal_margin_top' => $request->seal_margin_top
-                        ]);
+                        ]
+                    );
             }
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
         }
+    }
+
+    public function previewCertificate(Request $request, int $certificate)
+    {
+        $request->merge(['id' => $certificate]);
+
+        return $this->printPreview($request);
     }
 
     public function generateTableReport(Request $request)
@@ -549,9 +691,11 @@ class ApplicationController extends Controller
                 function () use ($writer) {
                     $writer->save('php://output');
                 },
-                200, [
+                200,
+                [
                     'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-                    'Content-Disposition' => 'attachment; filename="' . $filename . '"',]
+                    'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                ]
             );
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
