@@ -144,6 +144,84 @@
             </tr>
         </table>
     </div>
+
+    <div class="d-flex flex-column mt-3 mb-3">
+        <label>Chief Complaint/History of Present Illness:</label>
+        <table id="chief_complaint_list" class="w-75">
+            @if(isset($chief_complaints) && $chief_complaints)
+                @foreach($chief_complaints as $item)
+                    <tr>
+                        <td style='width: 90%'>{!! $item->chief_complaint !!}</td>
+                        <td style='width: 5%'>
+                            <button type="button" class='btn btn-sm btn-transparent' onClick='editListItem(this)'><i
+                                    class='bi bi-pencil-fill text-success'></i></button>
+                        </td>
+                        <td style='width: 5%'>
+                            <button type="button" class='btn btn-sm btn-transparent' onClick='deleteListItem(this)'><i
+                                    class='bi bi-trash-fill text-danger'></i></button>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+        </table>
+
+        <label class="mt-2">Diagnosis:</label>
+        <table id="diagnosis_list" class="w-75">
+            @if(isset($diagnosis) && $diagnosis)
+                @foreach($diagnosis as $item)
+                    <tr>
+                        <td style='width: 90%'>{!! $item->diagnosis !!}</td>
+                        <td style='width: 5%'>
+                            <button type="button" class='btn btn-sm btn-transparent' onClick='editDiagnosis(this)'><i
+                                    class='bi bi-pencil-fill text-success'></i></button>
+                        </td>
+                        <td style='width: 5%'>
+                            <button type="button" class='btn btn-sm btn-transparent' onClick='deleteDiagnosis(this)'><i
+                                    class='bi bi-trash-fill text-danger'></i></button>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+        </table>
+
+        <label class="mt-2">Medication on Board:</label>
+        <table id="medication_list" class="w-75">
+            @if(isset($medications) && $medications)
+                @foreach($medications as $item)
+                    <tr>
+                        <td style='width: 90%'>{!! $item->medication !!}</td>
+                        <td style='width: 5%'>
+                            <button type="button" class='btn btn-sm btn-transparent' onClick='editListItem(this)'><i
+                                    class='bi bi-pencil-fill text-success'></i></button>
+                        </td>
+                        <td style='width: 5%'>
+                            <button type="button" class='btn btn-sm btn-transparent' onClick='deleteListItem(this)'><i
+                                    class='bi bi-trash-fill text-danger'></i></button>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+        </table>
+
+        <label class="mt-2">Plan:</label>
+        <table id="plan_list" class="w-75">
+            @if(isset($plans) && $plans)
+                @foreach($plans as $item)
+                    <tr>
+                        <td style='width: 90%'>{!! $item->plan !!}</td>
+                        <td style='width: 5%'>
+                            <button type="button" class='btn btn-sm btn-transparent' onClick='editListItem(this)'><i
+                                    class='bi bi-pencil-fill text-success'></i></button>
+                        </td>
+                        <td style='width: 5%'>
+                            <button type="button" class='btn btn-sm btn-transparent' onClick='deleteListItem(this)'><i
+                                    class='bi bi-trash-fill text-danger'></i></button>
+                        </td>
+                    </tr>
+                @endforeach
+            @endif
+        </table>
+    </div>
     <div class="doctor-container mt-3 d-none">
         <div>Doctor:
             <div class="medium ml-1">

@@ -4,6 +4,13 @@
     let page = 0;
     let certificate_id = 0;
     let diagnosis_index = -1;
+    let list_item_index = -1;
+    let current_list_field = '';
+    const LIST_FIELDS = {
+        chief_complaint: {listId: 'chief_complaint_list', label: 'Enter chief complaint / history of present illness'},
+        medication: {listId: 'medication_list', label: 'Enter medication'},
+        plan: {listId: 'plan_list', label: 'Enter plan'}
+    };
     const HEADERS = {
         "Content-Type": "application/json",
         "Accept": "application/json",
@@ -92,6 +99,15 @@
                 // Prevent the default behavior of Enter key (which creates a new line)
                 // Append a <br> tag to the textarea's value
                 $("#diagnosis").val($(this).val() + '<br>');
+            }
+        });
+
+        $("#list_item_input").on("keypress", function (e) {
+            // Check if the pressed key is Enter (key code 13)
+            if (e.which == 13) {
+                // Prevent the default behavior of Enter key (which creates a new line)
+                // Append a <br> tag to the textarea's value
+                $("#list_item_input").val($(this).val() + '<br>');
             }
         });
 
@@ -214,6 +230,7 @@
                     $("#certificate_modal #certificate_form").html(html);
                     $("#certificate_modal .modal-footer").removeClass("d-none");
                     $("#no_copies_container").removeClass("d-none");
+                    $(".list-field-btn").toggleClass("d-none", type !== "medical_abstract");
 
                     $("#received_by").select2({
                         dropdownParent: $("#certificate_modal .modal-body"),
@@ -339,6 +356,14 @@
             $("#diagnosis_modal").modal("show");
         });
 
+        $(".list-field-btn").click(function () {
+            current_list_field = $(this).data("field");
+            list_item_index = -1;
+            $("#list_item_input").val("");
+            $("#list_item_modal_title").text(LIST_FIELDS[current_list_field].label);
+            $("#list_item_modal").modal("show");
+        });
+
         $("#btn_add_doctor").click(function () {
             $("#doctor_modal").modal("show");
         });
@@ -387,6 +412,31 @@
                 $("#diagnosis_list").append(tr);
             }
             $("#diagnosis").val("");
+        });
+
+        $("#btn_save_list_item").click(function () {
+            let value = $("#list_item_input").val();
+            value = value.replace(/\n/g, "");
+
+            if (value == '') {
+                alert("Please fill in this field");
+                return;
+            }
+
+            const listId = LIST_FIELDS[current_list_field].listId;
+            if (list_item_index > -1) {
+                $("#" + listId + " tr:eq(" + list_item_index + ") td:eq(0)").html(value);
+                $("#list_item_modal").modal("hide");
+                list_item_index = -1;
+            } else {
+                let tr = "<tr>";
+                tr += "<td style='width: 90%'>" + value + "</td>"
+                tr += "<td style='width: 5%'><button type='button' class='btn btn-sm btn-transparent' onClick='editListItem(this)'><i class='bi bi-pencil-fill text-success'></i></button></td>"
+                tr += "<td style='width: 5%'><button type='button' class='btn btn-sm btn-transparent' onClick='deleteListItem(this)'><i class='bi bi-trash-fill text-danger'></i></button></td>"
+                tr += "</tr>";
+                $("#" + listId).append(tr);
+            }
+            $("#list_item_input").val("");
         });
 
         $("#btn_print_certificate").click(function () {
@@ -451,6 +501,30 @@
                 const diagnosis = $("#diagnosis_list tr:eq(" + i + ") td:eq(0)").html().trim();
                 diagnosis_array.push({
                     diagnosis: diagnosis
+                });
+            }
+
+            const chief_complaints_array = [];
+            for (let i = 0; i < $("#chief_complaint_list tr").length; i++) {
+                const chief_complaint = $("#chief_complaint_list tr:eq(" + i + ") td:eq(0)").html().trim();
+                chief_complaints_array.push({
+                    chief_complaint: chief_complaint
+                });
+            }
+
+            const medications_array = [];
+            for (let i = 0; i < $("#medication_list tr").length; i++) {
+                const medication = $("#medication_list tr:eq(" + i + ") td:eq(0)").html().trim();
+                medications_array.push({
+                    medication: medication
+                });
+            }
+
+            const plans_array = [];
+            for (let i = 0; i < $("#plan_list tr").length; i++) {
+                const plan = $("#plan_list tr:eq(" + i + ") td:eq(0)").html().trim();
+                plans_array.push({
+                    plan: plan
                 });
             }
 
@@ -720,6 +794,9 @@
                 "date_finished": date_finished,
                 "type": type,
                 "diagnosis": diagnosis_array,
+                "chief_complaints": chief_complaints_array,
+                "medications": medications_array,
+                "plans": plans_array,
                 "sustained": (noi === undefined) ? null : sustained,
                 "ward": (ward === undefined) ? null : ward,
                 "received_by": received_by,
@@ -803,6 +880,7 @@
             .then(html => {
                 $("#certificate_modal #certificate_form").html(html);
                 $("#certificate_modal .modal-footer").removeClass("d-none");
+                $(".list-field-btn").toggleClass("d-none", type !== "medical_abstract");
                 $("#received_by").select2({
                     dropdownParent: $("#certificate_modal .modal-body"),
                     width: '100%'
@@ -868,6 +946,26 @@
     }
 
     function deleteDiagnosis(button) {
+        if (confirm("Are you sure you want to remove this record?")) {
+            const tr = $(button).closest('tr');
+            tr.remove();
+        }
+    }
+
+    function editListItem(button) {
+        const tr = $(button).closest('tr');
+        const table_id = tr.closest('table').attr('id');
+        current_list_field = Object.keys(LIST_FIELDS).find(key => LIST_FIELDS[key].listId === table_id);
+        const value = tr.find('td:first').html();
+        list_item_index = tr.index();
+
+        $("#list_item_modal_title").text(LIST_FIELDS[current_list_field].label);
+        $("#list_item_modal").modal("show");
+        const textWithLineBreaks = value.replace(/<br>/g, '<br>\n');
+        $("#list_item_input").val(textWithLineBreaks);
+    }
+
+    function deleteListItem(button) {
         if (confirm("Are you sure you want to remove this record?")) {
             const tr = $(button).closest('tr');
             tr.remove();

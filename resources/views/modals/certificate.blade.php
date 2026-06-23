@@ -13,6 +13,9 @@
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
                 <button class="btn btn-primary ml-1 mr-1" id="btn_add_doctor">ADD PHYSICIAN</button>
                 <button class="btn btn-warning ml-1 mr-1" id="btn_add_diagnosis">ADD DIAGNOSIS</button>
+                <button class="btn btn-warning ml-1 mr-1 list-field-btn d-none" id="btn_add_chief_complaint" data-field="chief_complaint">ADD CHIEF COMPLAINT</button>
+                <button class="btn btn-warning ml-1 mr-1 list-field-btn d-none" id="btn_add_medication" data-field="medication">ADD MEDICATION</button>
+                <button class="btn btn-warning ml-1 mr-1 list-field-btn d-none" id="btn_add_plan" data-field="plan">ADD PLAN</button>
                 <button class="btn btn-success ml-1" id="btn_save">SAVE</button>
             </div>
         </div>
@@ -34,6 +37,26 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
                 <button class="btn btn-success ml-1" id="btn_save_diagnosis">SAVE</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="list_item_modal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="card-title p-1" style="font-size: 24px" id="list_item_modal_title">Enter item</div>
+            </div>
+            <div class="modal-body">
+                <div class="form-floating mb-3">
+                    <textarea type="text" class="form-control" id="list_item_input" style="height: 300px"></textarea>
+                    <label>Enter here</label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
+                <button class="btn btn-success ml-1" id="btn_save_list_item">SAVE</button>
             </div>
         </div>
     </div>

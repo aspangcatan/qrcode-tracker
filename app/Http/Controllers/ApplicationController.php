@@ -6,8 +6,11 @@ use App\Models\NurseStation;
 use App\Models\User;
 use App\Models\UserPrivelege;
 use App\Services\CertificateService;
+use App\Services\ChiefComplaintService;
 use App\Services\DiagnosisService;
 use App\Services\HomisServices;
+use App\Services\MedicationService;
+use App\Services\PlanService;
 use App\Services\QueueService;
 use App\Services\SustainedService;
 use Illuminate\Http\Request;
@@ -21,20 +24,20 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ApplicationController extends Controller
 {
-    protected $certificateService, $diagnosisService, $sustainedService, $homisService, $queueService;
+    protected $certificateService, $diagnosisService, $sustainedService, $homisService, $queueService, $chiefComplaintService, $medicationService, $planService;
 
-    public function __construct(
-        CertificateService $certificateService,
-        DiagnosisService $diagnosisService,
-        SustainedService $sustainedService,
-        HomisServices $homisService,
-        QueueService $queueService
-    ) {
+    public function __construct(CertificateService $certificateService, DiagnosisService $diagnosisService,
+                                SustainedService $sustainedService, HomisServices $homisService, QueueService $queueService,
+                                ChiefComplaintService $chiefComplaintService, MedicationService $medicationService, PlanService $planService)
+    {
         $this->certificateService = $certificateService;
         $this->diagnosisService = $diagnosisService;
         $this->sustainedService = $sustainedService;
         $this->homisService = $homisService;
         $this->queueService = $queueService;
+        $this->chiefComplaintService = $chiefComplaintService;
+        $this->medicationService = $medicationService;
+        $this->planService = $planService;
     }
 
     public function receiver()
@@ -215,11 +218,17 @@ class ApplicationController extends Controller
                         $certificate_id = $this->createCertificate($request, $document_type);
                         $this->handleDiagnosis($request->diagnosis, $certificate_id);
                         $this->handleSustained($request->sustained, $certificate_id);
+                        $this->handleChiefComplaint($request->chief_complaints, $certificate_id);
+                        $this->handleMedication($request->medications, $certificate_id);
+                        $this->handlePlan($request->plans, $certificate_id);
                     }
                 } else {
                     $certificate_id = $this->createCertificate($request, '');
                     $this->handleDiagnosis($request->diagnosis, $certificate_id);
                     $this->handleSustained($request->sustained, $certificate_id);
+                    $this->handleChiefComplaint($request->chief_complaints, $certificate_id);
+                    $this->handleMedication($request->medications, $certificate_id);
+                    $this->handlePlan($request->plans, $certificate_id);
                 }
             }
 
@@ -434,7 +443,10 @@ class ApplicationController extends Controller
                 return view('forms.coc', compact('certificate_no', 'receivers', 'amount'));
             case "medical_abstract":
                 if ($request->has('id')) {
-                    return view('forms.medical_abstract', compact('certificates', 'receivers'));
+                    $chief_complaints = $this->chiefComplaintService->getByCertificate($request->id);
+                    $medications = $this->medicationService->getByCertificate($request->id);
+                    $plans = $this->planService->getByCertificate($request->id);
+                    return view('forms.medical_abstract', compact('certificates', 'diagnosis', 'chief_complaints', 'medications', 'plans', 'receivers'));
                 }
                 return view('forms.medical_abstract', compact('certificate_no', 'receivers', 'amount'));
             case "common":
@@ -617,10 +629,16 @@ class ApplicationController extends Controller
                         ]
                     );
                 case "medical_abstract":
-                    return view(
-                        'pdf.medical_abstract',
+                    $chief_complaints = $this->chiefComplaintService->getByCertificate($request->id);
+                    $medications = $this->medicationService->getByCertificate($request->id);
+                    $plans = $this->planService->getByCertificate($request->id);
+                    return view('pdf.medical_abstract',
                         [
                             'certificate' => $certificate,
+                            'diagnosis' => $diagnosis,
+                            'chief_complaints' => $chief_complaints,
+                            'medications' => $medications,
+                            'plans' => $plans,
                             'hide_details' => filter_var($request->hide_details, FILTER_VALIDATE_BOOLEAN),
                             'd_margin_top' => $request->d_margin_top,
                             'd_margin_bottom' => $request->d_margin_bottom,
@@ -799,6 +817,72 @@ class ApplicationController extends Controller
             $this->sustainedService->delete($certificate_id);
             $sustained['certificate_id'] = $certificate_id;
             $this->sustainedService->store($sustained);
+        }
+    }
+
+    /**
+     * Handle chief complaint data.
+     *
+     * @param array $chief_complaints
+     * @param int $certificate_id
+     * @return void
+     */
+    private function handleChiefComplaint($chief_complaints, $certificate_id)
+    {
+        if ($chief_complaints) {
+            $params = [];
+            foreach ($chief_complaints as $item) {
+                $params[] = [
+                    'certificate_id' => $certificate_id,
+                    'chief_complaint' => $item['chief_complaint']
+                ];
+            }
+            $this->chiefComplaintService->delete($certificate_id);
+            $this->chiefComplaintService->store($params);
+        }
+    }
+
+    /**
+     * Handle medication data.
+     *
+     * @param array $medications
+     * @param int $certificate_id
+     * @return void
+     */
+    private function handleMedication($medications, $certificate_id)
+    {
+        if ($medications) {
+            $params = [];
+            foreach ($medications as $item) {
+                $params[] = [
+                    'certificate_id' => $certificate_id,
+                    'medication' => $item['medication']
+                ];
+            }
+            $this->medicationService->delete($certificate_id);
+            $this->medicationService->store($params);
+        }
+    }
+
+    /**
+     * Handle plan data.
+     *
+     * @param array $plans
+     * @param int $certificate_id
+     * @return void
+     */
+    private function handlePlan($plans, $certificate_id)
+    {
+        if ($plans) {
+            $params = [];
+            foreach ($plans as $item) {
+                $params[] = [
+                    'certificate_id' => $certificate_id,
+                    'plan' => $item['plan']
+                ];
+            }
+            $this->planService->delete($certificate_id);
+            $this->planService->store($params);
         }
     }
 
