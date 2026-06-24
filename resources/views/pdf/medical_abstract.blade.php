@@ -196,6 +196,16 @@
         $medication_lines = $splitClinicalLines($medications, 'medication');
         $plan_lines = $splitClinicalLines($plans, 'plan');
 
+        // A blank line still needs a real character in it, otherwise the
+        // empty <div> collapses to zero height instead of matching the
+        // line-height of a row that has text in it.
+        $renderLine = function ($section, $i) use ($hideDetails) {
+            if ($hideDetails || !isset($section['lines'][$i])) {
+                return '&nbsp;';
+            }
+            return e($section['lines'][$i]);
+        };
+
         $sectionDefs = [
             'chief_complaint' => ['label' => 'Chief Complaint/History of Present Illness:', 'width' => 45, 'lines' => $chief_complaint_lines, 'page' => max(1, (int) ($chief_complaint_page ?? 1))],
             'diagnosis' => ['label' => 'Diagnosis:', 'width' => 15, 'lines' => $diagnosis_lines, 'page' => max(1, (int) ($diagnosis_page ?? 1))],
@@ -312,13 +322,13 @@
                                 {{ $section['label'] }}
                             </td>
                             <td>
-                                <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($section['lines'][0] ?? '') }}</div>
+                                <div class="clinical-line fw-bold">{!! $renderLine($section, 0) !!}</div>
                             </td>
                         </tr>
                         @for($i = 1; $i < max(count($section['lines']), 4); $i++)
                             <tr>
                                 <td colspan="2">
-                                    <div class="clinical-line fw-bold">{{ $hideDetails ? '' : ($section['lines'][$i] ?? '') }}</div>
+                                    <div class="clinical-line fw-bold">{!! $renderLine($section, $i) !!}</div>
                                 </td>
                             </tr>
                         @endfor
