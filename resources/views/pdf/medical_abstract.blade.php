@@ -169,7 +169,6 @@
             text-align: left;
             width: 100%;
             display: block;
-            border-bottom: 1px solid black;
         }
     </style>
 </head>
@@ -206,11 +205,16 @@
             return e($section['lines'][$i]);
         };
 
+        // Chief Complaint has the longest label, so its column width is the
+        // basis every section's label column uses to keep all value columns
+        // aligned to the same starting x position.
+        $labelColumnWidth = 33;
+
         $sectionDefs = [
-            'chief_complaint' => ['label' => 'Chief Complaint/History of Present Illness:', 'width' => 45, 'lines' => $chief_complaint_lines, 'page' => max(1, (int) ($chief_complaint_page ?? 1))],
-            'diagnosis' => ['label' => 'Diagnosis:', 'width' => 15, 'lines' => $diagnosis_lines, 'page' => max(1, (int) ($diagnosis_page ?? 1))],
-            'medication' => ['label' => 'Medication on Board:', 'width' => 25, 'lines' => $medication_lines, 'page' => max(1, (int) ($medication_page ?? 1))],
-            'plan' => ['label' => 'Plan:', 'width' => 15, 'lines' => $plan_lines, 'page' => max(1, (int) ($plan_page ?? 1))],
+            'chief_complaint' => ['label' => 'Chief Complaint/History of Present Illness:', 'width' => $labelColumnWidth, 'lines' => $chief_complaint_lines, 'page' => max(1, (int) ($chief_complaint_page ?? 1))],
+            'diagnosis' => ['label' => 'Diagnosis:', 'width' => $labelColumnWidth, 'lines' => $diagnosis_lines, 'page' => max(1, (int) ($diagnosis_page ?? 1))],
+            'medication' => ['label' => 'Medication on Board:', 'width' => $labelColumnWidth, 'lines' => $medication_lines, 'page' => max(1, (int) ($medication_page ?? 1))],
+            'plan' => ['label' => 'Plan:', 'width' => $labelColumnWidth, 'lines' => $plan_lines, 'page' => max(1, (int) ($plan_page ?? 1))],
         ];
 
         $pages = collect($sectionDefs)
@@ -268,7 +272,7 @@
                         </td>
                         <td style="width: 40%">
                             <div>
-                                <div style="width: 95%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->patient }}</div>
+                                <div style="width: 95%; text-align: left" class="small fw-bold">{{ $hideDetails ? '' : $certificate->patient }}</div>
                             </div>
                         </td>
                         <td style="width: 5%;text-align: right">
@@ -292,7 +296,7 @@
                         <td>Address:</td>
                         <td>
                             <div>
-                                <div style="width: 95%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->address }}</div>
+                                <div style="width: 95%; text-align: left" class="small fw-bold">{{ $hideDetails ? '' : $certificate->address }}</div>
                             </div>
                         </td>
                         <td>Ward/Room:</td>
@@ -306,7 +310,7 @@
                         <td>Date Admitted:</td>
                         <td>
                             <div>
-                                <div style="width: 95%" class="small fw-bold">
+                                <div style="width: 95%; text-align: left" class="small fw-bold">
                                     {{ $hideDetails ? '' : strtoupper(\Illuminate\Support\Carbon::parse($certificate->date_examined)->format('F j, Y')) }}
                                 </div>
                             </div>
@@ -318,16 +322,17 @@
                 @foreach($sections as $section)
                     <table style="width: 100%; margin-top: 20px">
                         <tr>
-                            <td style="width: {{ $section['width'] }}%">
+                            <td style="width: {{ $section['width'] }}%; vertical-align: top">
                                 {{ $section['label'] }}
                             </td>
-                            <td>
+                            <td style="vertical-align: top">
                                 <div class="clinical-line fw-bold">{!! $renderLine($section, 0) !!}</div>
                             </td>
                         </tr>
-                        @for($i = 1; $i < max(count($section['lines']), 4); $i++)
+                        @for($i = 1; $i < count($section['lines']); $i++)
                             <tr>
-                                <td colspan="2">
+                                <td style="width: {{ $section['width'] }}%; vertical-align: top"></td>
+                                <td style="vertical-align: top">
                                     <div class="clinical-line fw-bold">{!! $renderLine($section, $i) !!}</div>
                                 </td>
                             </tr>
