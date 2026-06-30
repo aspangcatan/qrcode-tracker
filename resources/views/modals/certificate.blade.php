@@ -12,8 +12,8 @@
             <div class="modal-footer">
                 <button class="btn btn-secondary mr-1" data-bs-dismiss="modal">CANCEL</button>
                 <button class="btn btn-primary ml-1 mr-1" id="btn_add_doctor">ADD PHYSICIAN</button>
-                <button class="btn btn-warning ml-1 mr-1" id="btn_add_diagnosis">ADD DIAGNOSIS</button>
                 <button class="btn btn-warning ml-1 mr-1 list-field-btn d-none" id="btn_add_chief_complaint" data-field="chief_complaint">ADD CHIEF COMPLAINT</button>
+                <button class="btn btn-warning ml-1 mr-1" id="btn_add_diagnosis">ADD DIAGNOSIS</button>
                 <button class="btn btn-warning ml-1 mr-1 list-field-btn d-none" id="btn_add_medication" data-field="medication">ADD MEDICATION</button>
                 <button class="btn btn-warning ml-1 mr-1 list-field-btn d-none" id="btn_add_plan" data-field="plan">ADD PLAN</button>
                 <button class="btn btn-success ml-1" id="btn_save">SAVE</button>

@@ -205,16 +205,11 @@
             return e($section['lines'][$i]);
         };
 
-        // Chief Complaint has the longest label, so its column width is the
-        // basis every section's label column uses to keep all value columns
-        // aligned to the same starting x position.
-        $labelColumnWidth = 33;
-
         $sectionDefs = [
-            'chief_complaint' => ['label' => 'Chief Complaint/History of Present Illness:', 'width' => $labelColumnWidth, 'lines' => $chief_complaint_lines, 'page' => max(1, (int) ($chief_complaint_page ?? 1))],
-            'diagnosis' => ['label' => 'Diagnosis:', 'width' => $labelColumnWidth, 'lines' => $diagnosis_lines, 'page' => max(1, (int) ($diagnosis_page ?? 1))],
-            'medication' => ['label' => 'Medication on Board:', 'width' => $labelColumnWidth, 'lines' => $medication_lines, 'page' => max(1, (int) ($medication_page ?? 1))],
-            'plan' => ['label' => 'Plan:', 'width' => $labelColumnWidth, 'lines' => $plan_lines, 'page' => max(1, (int) ($plan_page ?? 1))],
+            'chief_complaint' => ['label' => 'Chief Complaint/History of Present Illness:', 'width' => 33, 'lines' => $chief_complaint_lines, 'page' => max(1, (int) ($chief_complaint_page ?? 1))],
+            'diagnosis' => ['label' => 'Diagnosis:', 'width' => 12, 'lines' => $diagnosis_lines, 'page' => max(1, (int) ($diagnosis_page ?? 1))],
+            'medication' => ['label' => 'Medication on Board:', 'width' => 20, 'lines' => $medication_lines, 'page' => max(1, (int) ($medication_page ?? 1))],
+            'plan' => ['label' => 'Plan:', 'width' => 7, 'lines' => $plan_lines, 'page' => max(1, (int) ($plan_page ?? 1))],
         ];
 
         $pages = collect($sectionDefs)
