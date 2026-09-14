@@ -338,7 +338,7 @@
                     <tr>
                         <td></td>
                         <td style="width: 40%">
-                            <div style="width: 100%" class="small fw-bold"></div>
+                            <div style="width: 100%" class="small fw-bold">{{ $hideDetails ? '' : $certificate->doctor }}</div>
                         </td>
                     </tr>
                     <tr>
@@ -349,7 +349,7 @@
                         <td></td>
                         <td style="text-align: center">
                             License No.
-                            <span class="small" style="width: 75px"></span>
+                            <span class="small" style="width: 75px">{{ $hideDetails ? '' : $certificate->doctor_license }}</span>
                         </td>
                     </tr>
                 </table>
