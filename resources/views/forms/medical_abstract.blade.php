@@ -222,7 +222,7 @@
             @endif
         </table>
     </div>
-    <div class="doctor-container mt-3 d-none">
+    <div class="doctor-container mt-3">
         <div>Doctor:
             <div class="medium ml-1">
                 @if(isset($certificates) && $certificates)
@@ -252,8 +252,7 @@
             </div>
         </div>
     </div>
-    <hr />
-    <div class="mt-5">
+    <div class="mt-3">
         <div>(NOT VALID WITHOUT SEAL)</div>
         <table style="width: 100%">
             <tr>
