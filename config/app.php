@@ -54,6 +54,9 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
+    // Comma-separated hosts that are served over HTTPS through a proxy (links are generated as https://).
+    'force_https_hosts' => env('FORCE_HTTPS_HOSTS', ''),
+
     'asset_url' => env('ASSET_URL', null),
 
     /*
