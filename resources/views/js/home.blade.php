@@ -87,12 +87,12 @@
 
 
         $("#select_doctor").select2({
-            dropdownParent: $("#doctor_modal .modal-body"),
+            dropdownParent: $("#doctor_modal"),
             width: '100%'
         });
 
         $("#select_tag").select2({
-            dropdownParent: $("#tagging_modal .modal-body"),
+            dropdownParent: $("#tagging_modal"),
             width: '100%'
         });
 
