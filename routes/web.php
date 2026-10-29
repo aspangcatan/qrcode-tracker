@@ -19,10 +19,10 @@ Route::get('/tv', [\App\Http\Controllers\ApplicationController::class, 'tv'])->n
 Route::post('/authenticate', [\App\Http\Controllers\ApplicationController::class, 'authenticate'])->name('authenticate')->middleware('throttle:10,1');
 Route::get('/logout', [\App\Http\Controllers\ApplicationController::class, 'logout'])->name('logout');
 Route::get('/qrcode-details', [\App\Http\Controllers\ApplicationController::class, 'displayQrcodeDetails'])->middleware('throttle:10,1');
-Route::get('/partial-form', [\App\Http\Controllers\ApplicationController::class, 'partialForm'])->name('partialForm');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('/home',[\App\Http\Controllers\ApplicationController::class,'home'])->name('home');
+    Route::get('/partial-form', [\App\Http\Controllers\ApplicationController::class, 'partialForm'])->name('partialForm');
     Route::post('/password/update', [\App\Http\Controllers\ApplicationController::class, 'changePassword'])->name('changePassword');
     Route::get('/print-preview', [\App\Http\Controllers\ApplicationController::class, 'printPreview'])->name('printPreview');
 
