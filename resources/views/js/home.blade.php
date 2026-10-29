@@ -39,7 +39,7 @@
         getDoctors();
 
         $("#btn_open_tv").click(function () {
-            window.open("http://192.168.5.4/qrcode-tracker/tv", "_blank");
+            window.open("{{ route('tv') }}", "_blank");
         });
 
         $("#btn_reset_ticket").click(function () {
@@ -225,7 +225,7 @@
             $("#choose_certificate_modal").modal("hide");
             $("#certificate_modal").modal('show');
             showSpinner();
-            fetch('/qrcode-tracker/partial-form?type=' + type, {
+            fetch('{{ route('partialForm') }}?type=' + type, {
                 method: "GET"
             })
                 .then(response => response.text()) // Convert response to text
@@ -454,7 +454,7 @@
             const medication_page = $("#medication_page").val();
             const plan_page = $("#plan_page").val();
 
-            window.open("http://192.168.5.4/qrcode-tracker/print-preview?id=" + certificate_id +
+            window.open("{{ route('printPreview') }}?id=" + certificate_id +
                 "&d_margin_top=" + d_margin_top +
                 "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top + "&seal_margin_top=" + seal_margin_top +
                 "&with_myla=" + with_myla+"&hide_details="+hide_middle_portion +
@@ -887,7 +887,7 @@
         $("#certificate_modal").modal("show");
         $("#certificate_modal .modal-footer").addClass("d-none");
         showSpinner();
-        fetch('/qrcode-tracker/partial-form?type=' + type +
+        fetch('{{ route('partialForm') }}?type=' + type +
             '&id=' + id, {
             method: "GET"
         })
