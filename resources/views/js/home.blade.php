@@ -864,7 +864,7 @@
 
     function printPreview(id) {
         certificate_id = id;
-        const print_type = $("#certificate_id_" + id + " td:eq(0)").text().trim();
+        const print_type = $("#certificate_id_" + id + " .cell-type").text().trim();
         $(".medical-abstract-only").toggleClass("d-none", print_type !== "medical_abstract");
         $("#heading_modal").modal("show");
         //SET DEFAULTS
@@ -880,7 +880,7 @@
 
     function editCertificate(id) {
         certificate_id = id;
-        type = $("#certificate_id_" + id + " td:eq(0)").text().trim();
+        type = $("#certificate_id_" + id + " .cell-type").text().trim();
         $("#certificate_modal").modal("show");
         $("#certificate_modal .modal-footer").addClass("d-none");
         showSpinner();
@@ -903,7 +903,7 @@
 
     async function tagCertificate(id) {
         certificate_id = id;
-        const patient_name = $("#certificate_id_" + id + " td:eq(2)").text();
+        const patient_name = $("#certificate_id_" + id + " .cell-patient").text();
         $("#tag_patient").text(patient_name);
         $("#tagging_modal").modal("show");
     }
@@ -1019,8 +1019,9 @@
         $("#page_items_count").text(((page * 10) + 1) + " - " + ((page * 10) + max_visible));
         for (let i = 0; i < max_visible; i++) {
             const it = data[i];
-            const date_requested = (it.date_requested) ? moment(it.date_requested).format("MM/DD/YYYY hh:mm A") : "";
-            const date_issued = (it.date_issued) ? moment(it.date_issued).format("MM/DD/YYYY hh:mm A") : "";
+            // Date on the first line, time on the second.
+            const date_requested = (it.date_requested) ? moment(it.date_requested).format("MM/DD/YYYY[<br>]hh:mm A") : "";
+            const date_issued = (it.date_issued) ? moment(it.date_issued).format("MM/DD/YYYY[<br>]hh:mm A") : "";
             const status = (it.status) ? it.status : "";
             const released_by = (it.released_by) ? it.released_by : "";
 
@@ -1092,37 +1093,37 @@
 
             let tr = `
                     <tr id="certificate_id_` + it.id + `">
-                        <td class="d-none">` + it.type + `</td>
-                        <td>` + _type + `</td>
-                        <td>` + it.patient + `</td>
-                        <td>` + it.health_record_no + `</td>
-                        <td>` + it.certificate_no + `</td>
-                        <td>` + date_requested + `</td>
-                        <td>` + moment(it.created_at).format("MM/DD/YYYY hh:mm A") + `</td>
-                        <td>` + date_issued + `</td>
-                        <td>` + it.prepared_by + `</td>
-                        <td>` + released_by + `</td>
-                        <td>
-                            <span class="badge text-white text-center ` + bg + `">` + status + `</span>
-                        </td>
-                        <td>`;
+                        <td class="d-none cell-type">` + it.type + `</td>
+                        <td class="cell-action">`;
             if (it.type != "common") {
-                tr += `<button class="btn btn-sm btn-info" onclick="printPreview(` + it.id + `)">
+                tr += `<button class="btn btn-sm btn-info" title="Print with QR code" onclick="printPreview(` + it.id + `)">
                         <i class="bi bi-qr-code"></i>
                     </button>`;
             }
             tr += `</td>`;
             tr +=
-                `<td>
-                            <button class="btn btn-sm btn-success" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used editing the certificate information" onclick="editCertificate(` + it.id + `)">
+                `<td class="cell-action">
+                            <button class="btn btn-sm btn-success" title="Edit certificate information" onclick="editCertificate(` + it.id + `)">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
                          </td>
-                    <td>
-                           <button class="btn btn-sm btn-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="This button is used for tagging the certificate as finished" onclick="tagCertificate(` + it.id + `)">
+                    <td class="cell-action">
+                           <button class="btn btn-sm btn-warning" title="Tag as for release, released or cancelled" onclick="tagCertificate(` + it.id + `)">
                                 <i class="bi bi-tag-fill"></i>
                             </button>
-                        </td>`;
+                        </td>
+                        <td class="cell-status">
+                            <span class="badge text-white text-center ` + bg + `">` + status + `</span>
+                        </td>
+                        <td class="cell-type-label">` + _type + `</td>
+                        <td class="cell-patient">` + it.patient + `</td>
+                        <td class="cell-number">` + it.health_record_no + `</td>
+                        <td class="cell-number">` + it.certificate_no + `</td>
+                        <td class="cell-date">` + date_requested + `</td>
+                        <td class="cell-date">` + moment(it.created_at).format("MM/DD/YYYY[<br>]hh:mm A") + `</td>
+                        <td class="cell-date">` + date_issued + `</td>
+                        <td>` + it.prepared_by + `</td>
+                        <td>` + released_by + `</td>`;
 
             $("#certificate_lists").append(tr);
         }

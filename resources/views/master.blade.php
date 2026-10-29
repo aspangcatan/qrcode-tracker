@@ -11,245 +11,35 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="{{ asset('images/csmc-logo.png') }}" rel="icon">
 
-    <!-- Google Fonts -->
-{{--    <link href="https://fonts.gstatic.com" rel="preconnect">--}}
-{{--    <link--}}
-{{--        href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i"--}}
-{{--        rel="stylesheet">--}}
+    <!-- Fonts -->
+    <link href="{{ asset('css/fonts.css') }}" rel="stylesheet">
 
-<!-- Vendor CSS Files -->
-    <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
-    <link href="assets/vendor/boxicons/css/boxicons.min.css" rel="stylesheet">
-    <link href="assets/vendor/quill/quill.snow.css" rel="stylesheet">
-    <link href="assets/vendor/quill/quill.bubble.css" rel="stylesheet">
-    <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
-    <link href="assets/vendor/simple-datatables/style.css" rel="stylesheet">
+    <!-- Vendor CSS Files -->
+    <link href="{{ asset('assets/vendor/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/boxicons/css/boxicons.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/quill/quill.snow.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/quill/quill.bubble.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/remixicon/remixicon.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/vendor/simple-datatables/style.css') }}" rel="stylesheet">
 
     <!-- Template Main CSS File -->
-    <link href="assets/css/style.css?v={{ date('ymdhis') }}" rel="stylesheet">
-    <link href="css/toastr.min.css?v={{ date('ymdhis') }}" rel="stylesheet">
-    <link href="css/daterangepicker.css?v={{ date('ymdhis') }}" rel="stylesheet" type="text/css" />
-    <link href="css/select2.min.css?v={{ date('ymdhis') }}" rel="stylesheet" />
+    <link href="{{ asset('assets/css/style.css') }}?v={{ date('ymdhis') }}" rel="stylesheet">
+    <link href="{{ asset('css/toastr.min.css') }}?v={{ date('ymdhis') }}" rel="stylesheet">
+    <link href="{{ asset('css/daterangepicker.css') }}?v={{ date('ymdhis') }}" rel="stylesheet" type="text/css"/>
+    <link href="{{ asset('css/select2.min.css') }}?v={{ date('ymdhis') }}" rel="stylesheet"/>
+    <link href="{{ asset('css/app-theme.css') }}?v={{ date('ymdhis') }}" rel="stylesheet">
     <!-- =======================================================
     * Template Name: NiceAdmin - v2.5.0
     * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
     * Author: BootstrapMade.com
     * License: https://bootstrapmade.com/license/
     ======================================================== -->
-    <style>
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            border: 1px solid #333;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            cursor: pointer;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        /* Style the tooltip text */
-        .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 5px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.2s;
-        }
-        .banner img {
-            display: block;
-            max-width: 100%;
-            width: 100%;
-            height: auto;
-        }
-
-        .certificate-details {
-            text-align: right;
-            margin-top: 10px;
-        }
-
-        .certificate-details p {
-            margin: 10px 0;
-        }
-
-        .certificate-details span {
-            text-decoration: underline;
-        }
-
-        .certificate-title {
-            text-align: center;
-            margin-top: 20px;
-            font-weight: bold;
-        }
-
-        .certificate-text {
-            margin-top: 20px;
-            margin-left: 15%;
-            margin-right: 10%;
-        }
-
-        .certificate-text > div {
-            margin-top: 20px;
-        }
-
-        .input-underline {
-            text-align: center;
-            border-bottom: 1px solid black;
-            display: inline-block;
-        }
-
-        .is-invalid {
-            border: 1px solid #dc3545; /* Red border color */
-            background-color: #f8d7da; /* Red background color */
-            color: #dc3545; /* Red text color */
-        }
-
-        .long {
-            text-align: center;
-            width: 390px; /* Adjust the width as needed */
-            border-bottom: 1px solid black;
-            display: inline-block;
-        }
-
-        .medium {
-            margin-left: 20px;
-            text-align: center;
-            width: 300px; /* Adjust the width as needed */
-            border-bottom: 1px solid black;
-            display: inline-block;
-        }
-
-        .very-small {
-            text-align: center;
-            width: 90px; /* Adjust the width as needed */
-            border-bottom: 1px solid black;
-            display: inline-block;
-        }
-
-
-        .small {
-            text-align: center;
-            width: 180px; /* Adjust the width as needed */
-            border-bottom: 1px solid black;
-            display: inline-block;
-        }
-
-        .very-small input {
-            text-align: center;
-            width: 130%;
-            border: 0px solid transparent;
-        }
-
-        .small input {
-            text-align: center;
-            width: 100%;
-            border: 0px solid transparent;
-        }
-
-        .btn-transparent {
-            background: transparent;
-            border: 0px solid transparent;
-        }
-
-        .medium input {
-            text-align: center;
-            width: 100%;
-            border: 0px solid transparent;
-        }
-
-        .long input {
-            text-align: center;
-            width: 100%;
-            border: 0px solid transparent;
-        }
-
-        .mt-1 {
-            margin-top: 10px;
-        }
-
-        /* Specific styling for the label */
-        .label {
-            text-align: center;
-            margin-top: 10px;
-            font-size: 14px;
-        }
-
-        .border-bottom {
-            border-bottom: 1px solid black;
-        }
-
-        .ml-1 {
-            margin-left: 10px;
-        }
-
-        .mr-3 {
-            margin-right: 30px;
-        }
-
-        .doctor-container {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: end;
-        }
-
-        .mt-3 {
-            margin-top: 30px;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-    /*
-    */
-
-        .queue-control {
-            background-color: white;
-            padding: 1rem;
-            text-align: center;
-            margin-bottom: 1rem;
-        }
-
-        .queue-control h2 {
-            margin-bottom: 1rem;
-            font-size: 2rem;
-        }
-
-        .queue-control .number {
-            font-size: 4rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-        }
-
-        .queue-control button {
-            width: 100%;
-            margin-bottom: 0.5rem;
-            font-size: 1.5rem;
-        }
-
-
-    </style>
 </head>
 
-<body>
+<body class="theme-v2">
 <div class="fullscreen-modal d-none" id="spinner">
     <div class="spinner-border text-light" role="status">
         <span class="visually-hidden">Loading...</span>
@@ -259,11 +49,12 @@
 <!-- ======= Header ======= -->
 @include('layouts.navbar')
 @include('modals.settings')
-<!-- ======= Sidebar ======= -->
 <main id="main" class="main">
-    <div class="pagetitle">
-        <h1>@yield('Title')</h1>
-    </div>
+    @hasSection('Title')
+        <div class="pagetitle">
+            <h1>@yield('Title')</h1>
+        </div>
+    @endif
     <section class="section dashboard">
         @yield('content')
     </section>
@@ -273,7 +64,7 @@
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
-        &copy; Copyright <strong><span>NiceAdmin</span></strong>. All Rights Reserved
+        &copy; {{ date('Y') }} <strong><span>Cebu South Medical Center</span></strong> · QR Tracker
     </div>
     <div class="credits">
         <!-- All the links in the footer should remain intact. -->
@@ -288,21 +79,21 @@
         class="bi bi-arrow-up-short"></i></a>
 
 <!-- Vendor JS Files -->
-<script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
-<script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="assets/vendor/chart.js/chart.umd.js"></script>
-<script src="assets/vendor/echarts/echarts.min.js"></script>
-<script src="assets/vendor/quill/quill.min.js"></script>
-<script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
-<script src="assets/vendor/tinymce/tinymce.min.js"></script>
-<script src="assets/vendor/php-email-form/validate.js"></script>
+<script src="{{ asset('assets/vendor/apexcharts/apexcharts.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/chart.js/chart.umd.js') }}"></script>
+<script src="{{ asset('assets/vendor/echarts/echarts.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/quill/quill.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/simple-datatables/simple-datatables.js') }}"></script>
+<script src="{{ asset('assets/vendor/tinymce/tinymce.min.js') }}"></script>
+<script src="{{ asset('assets/vendor/php-email-form/validate.js') }}"></script>
 <!-- Template Main JS File -->
-<script src="assets/js/main.js"></script>
-<script src="js/jquery.min.js"></script>
-<script src="js/toastr.min.js"></script>
-<script src="js/moment.min.js"></script>
-<script src="js/select2.min.js?v={{ date('ymdhis') }}"></script>
-<script src="js/daterangepicker.min.js?v={{ date('ymdhis') }}"></script>
+<script src="{{ asset('assets/js/main.js') }}"></script>
+<script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="{{ asset('js/toastr.min.js') }}"></script>
+<script src="{{ asset('js/moment.min.js') }}"></script>
+<script src="{{ asset('js/select2.min.js') }}?v={{ date('ymdhis') }}"></script>
+<script src="{{ asset('js/daterangepicker.min.js') }}?v={{ date('ymdhis') }}"></script>
 
 <script>
     const settings_modal = new bootstrap.Modal(document.getElementById('settings_modal'));
