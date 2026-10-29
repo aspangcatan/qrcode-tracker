@@ -20,16 +20,19 @@
 
     let type = "";
 
-    const ws = new WebSocket('ws://192.168.4.3:9000');
+    // Queue module is off (QUEUE_ENABLED) -> no websocket, so the public HTTPS site doesn't hit the LAN.
+    const ws = @json(config('app.queue_enabled')) ? new WebSocket('ws://192.168.4.3:9000') : null;
 
-    ws.onopen = () => {
-        console.log('Connected to the WebSocket server');
-    };
+    if (ws) {
+        ws.onopen = () => {
+            console.log('Connected to the WebSocket server');
+        };
 
-    ws.onclose = () => {
-        //TODO: HANDLE AUTO RECONNECT EVERY 10 seconds.
-        console.log('Disconnected from the WebSocket server');
-    };
+        ws.onclose = () => {
+            //TODO: HANDLE AUTO RECONNECT EVERY 10 seconds.
+            console.log('Disconnected from the WebSocket server');
+        };
+    }
 
     $(document).ready(() => {
 
@@ -1246,6 +1249,7 @@
     }
 
     function callTicket(ticket, window, lane) {
+        if (!ws) return;
         ws.send(JSON.stringify({
             action: "NOTIFY",
             ticket: ticket,

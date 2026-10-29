@@ -57,6 +57,9 @@ return [
     // Comma-separated hosts that are served over HTTPS through a proxy (links are generated as https://).
     'force_https_hosts' => env('FORCE_HTTPS_HOSTS', ''),
 
+    // Queue panel on the home page (uses the LAN websocket to call tickets on the TV).
+    'queue_enabled' => (bool)env('QUEUE_ENABLED', false),
+
     'asset_url' => env('ASSET_URL', null),
 
     /*

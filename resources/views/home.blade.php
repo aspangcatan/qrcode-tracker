@@ -17,7 +17,7 @@
     </div>
 
     <div class="row g-3">
-        <div class="col-12 col-xxl-9">
+        <div class="col-12 {{ config('app.queue_enabled') ? 'col-xxl-9' : '' }}">
             <div class="card list-card">
                 <div class="toolbar">
                     <div class="input-icon flex-grow-1">
@@ -108,6 +108,7 @@
             </div>
         </div>
 
+        @if(config('app.queue_enabled'))
         <div class="col-12 col-xxl-3 order-first order-xxl-last">
             <div class="card queue-card queue-sticky">
                 <div class="card-header">
@@ -181,6 +182,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
     @include('modals.certificate')
 @stop
