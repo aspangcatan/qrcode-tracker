@@ -103,6 +103,16 @@
             "positionClass": "toast-bottom-right",
         }
 
+        // Client wants all typed text in capitals; keep the caret where it was.
+        $(document).on("input", "input[type=text], input[type=search], input:not([type]), textarea", function (e) {
+            if (e.originalEvent && e.originalEvent.isComposing) return;
+            const upper = this.value.toUpperCase();
+            if (this.value === upper) return;
+            const start = this.selectionStart, end = this.selectionEnd;
+            this.value = upper;
+            this.setSelectionRange(start, end);
+        });
+
         $("#change_password").click(function (e) {
             e.preventDefault();
             settings_modal.toggle();

@@ -236,7 +236,7 @@
                     $(".list-field-btn").toggleClass("d-none", type !== "medical_abstract");
 
                     $("#received_by").select2({
-                        dropdownParent: $("#certificate_modal .modal-body"),
+                        dropdownParent: $("#certificate_modal"),
                         width: '100%'
                     });
                 })
@@ -897,7 +897,7 @@
                 $("#certificate_modal .modal-footer").removeClass("d-none");
                 $(".list-field-btn").toggleClass("d-none", type !== "medical_abstract");
                 $("#received_by").select2({
-                    dropdownParent: $("#certificate_modal .modal-body"),
+                    dropdownParent: $("#certificate_modal"),
                     width: '100%'
                 });
             })
