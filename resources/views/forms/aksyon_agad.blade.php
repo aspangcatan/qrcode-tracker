@@ -1,4 +1,4 @@
-{{-- Aksyon Agad certification (ER/OPD). Free of charge, so payment stays hidden. --}}
+{{-- Aksyon Agad certification (ER/OPD). Free of charge: only the request date is shown. --}}
 <div class="cert-form">
     @include('forms.partials.head', ['title' => 'Aksyon Agad · ER/OPD', 'icon' => 'lightning-charge'])
     <div class="row g-3">

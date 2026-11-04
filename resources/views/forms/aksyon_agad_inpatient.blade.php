@@ -1,4 +1,4 @@
-{{-- Aksyon Agad certification (inpatient). Free of charge: no payment fields. --}}
+{{-- Aksyon Agad certification (inpatient). Free of charge: only the request date is shown. --}}
 <div class="cert-form">
     @include('forms.partials.head', ['title' => 'Aksyon Agad · Inpatient', 'icon' => 'lightning-charge'])
     <div class="row g-3">
@@ -20,6 +20,7 @@
                 'purpose' => 'select', 'second_options' => ['(AKSYON AGAD)', '(CSWD)', '(DSWD)', '(MAIPP)'],
                 'second_blank_last' => true,
             ])
+            @include('forms.partials.billing', ['hidden' => true])
         </div>
     </div>
 </div>

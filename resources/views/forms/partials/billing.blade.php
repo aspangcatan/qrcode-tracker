@@ -1,18 +1,25 @@
 {{--
     Payment and release tracking. js/home shows #no_copies_container for new certificates.
-    Params: $amount_default (new certificates), $amount_locked, $hidden.
+    Params: $amount_default (new certificates), $amount_locked,
+            $hidden (free certificates: only Date/time requested is shown, the rest stays hidden).
 --}}
 @php
     $c = (isset($certificates) && $certificates) ? $certificates : null;
+    $hidden = $hidden ?? false;
+    $hide = $hidden ? 'd-none' : '';
 @endphp
-<section class="form-section @if($hidden ?? false) d-none @endif">
-    <h6 class="section-title"><i class="bi bi-receipt"></i> Payment &amp; release</h6>
+<section class="form-section">
+    @if($hidden)
+        <h6 class="section-title"><i class="bi bi-calendar-event"></i> Request date</h6>
+    @else
+        <h6 class="section-title"><i class="bi bi-receipt"></i> Payment &amp; release</h6>
+    @endif
     <div class="row g-3">
-        <div class="col-sm-6">
+        <div class="col-sm-6 {{ $hide }}">
             <label class="form-label" for="or_no">OR No.</label>
             <input type="text" class="form-control" id="or_no" value="{{ $c ? $c->or_no : '' }}"/>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 {{ $hide }}">
             <label class="form-label" for="amount">Amount <span class="req">*</span></label>
             <div class="input-group">
                 <span class="input-group-text">₱</span>
@@ -20,7 +27,7 @@
                        value="{{ $c ? $c->amount : ($amount_default ?? '') }}" @if($amount_locked ?? false) disabled @endif/>
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 {{ $hide }}">
             <label class="form-label" for="charge_slip_no">Charge slip No. <span class="req">*</span></label>
             <input type="text" class="form-control" id="charge_slip_no" value="{{ $c ? $c->charge_slip_no : '' }}"/>
         </div>
@@ -33,12 +40,12 @@
             <input type="datetime-local" class="form-control" id="date_requested"
                    value="{{ $c ? $c->date_requested : now()->format('Y-m-d\TH:i') }}"/>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 {{ $hide }}">
             <label class="form-label" for="date_finished">Date/time finished</label>
             <input type="datetime-local" class="form-control" id="date_finished"
                    value="{{ $c ? $c->date_completed : '' }}" disabled/>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-6 {{ $hide }}">
             <label class="form-label" for="received_by">Received by <span class="req">*</span></label>
             <select class="js-example-basic-single w-100" id="received_by">
                 <option></option>
@@ -47,6 +54,8 @@
                 @endforeach
             </select>
         </div>
+        {{-- js/home un-hides #no_copies_container, so free certificates wrap it to keep it hidden. --}}
+        @if($hidden)<div class="d-none">@endif
         <div class="col-sm-6 d-none" id="no_copies_container">
             <label class="form-label" for="no_copies">Number of copies</label>
             <select class="form-select" id="no_copies">
@@ -55,5 +64,6 @@
                 @endfor
             </select>
         </div>
+        @if($hidden)</div>@endif
     </div>
 </section>

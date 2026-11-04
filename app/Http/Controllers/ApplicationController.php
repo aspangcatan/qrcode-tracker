@@ -212,6 +212,10 @@ class ApplicationController extends Controller
             $specific_documents = $request->document_type;
             $type = $request->type;
 
+            if (!$request->date_requested) {
+                throw new \Exception('Date requested is required');
+            }
+
             for ($i = 0; $i < $request->no_copies; $i++) {
                 if (!in_array($type, $excluded_certificate)) {
                     foreach ($specific_documents as $document_type) {

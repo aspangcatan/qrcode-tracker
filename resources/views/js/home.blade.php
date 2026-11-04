@@ -571,7 +571,7 @@
                 is_valid = false;
             }
 
-            if (!date_requested && type != "aksyon_agad" && type != "aksyon_agad_inpatient") {
+            if (!date_requested) {
                 toastr.error('Date requested is required');
                 $("#date_requested").addClass("is-invalid");
                 is_valid = false;
