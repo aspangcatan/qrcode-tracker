@@ -288,7 +288,7 @@ class ApplicationController extends Controller
                     if ($certificate->date_issued) {
                         return response()->json(['message' => 'Certificate already tagged as released'], 500);
                     }
-                    if (!$certificate->date_completed) {
+                    if ($certificate->status !== 'FOR RELEASE' && !$certificate->date_completed) {
                         return response()->json(['message' => 'Certificate not yet for release'], 500);
                     }
                     $this->certificateService->updateDateIssued($certificate->id, Carbon::now()->format('Y-m-d\TH:i'), $prepared_by);

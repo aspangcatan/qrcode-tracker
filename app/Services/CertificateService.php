@@ -94,7 +94,6 @@ class CertificateService
                 'amount' => $data['amount'],
                 'charge_slip_no' => $data['charge_slip_no'],
                 'date_requested' => $data['date_requested'],
-                'date_completed' => null,
                 'days_barred' => $data['days_barred'],
                 'prepared_by' => $data['prepared_by'],
                 'received_by' => $data['received_by'],
