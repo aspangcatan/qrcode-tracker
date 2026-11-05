@@ -230,6 +230,36 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="form-section medical-abstract-only d-none">
+                    <h6 class="section-title"><i class="bi bi-arrow-bar-down"></i> Bottom margin of each section</h6>
+                    <div class="row g-2">
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="chief_complaint_margin_bottom" min="0">
+                                <label for="chief_complaint_margin_bottom">Chief complaint</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="diagnosis_margin_bottom" min="0">
+                                <label for="diagnosis_margin_bottom">Diagnosis</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="medication_margin_bottom" min="0">
+                                <label for="medication_margin_bottom">Medication on board</label>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="plan_margin_bottom" min="0">
+                                <label for="plan_margin_bottom">Plan</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-light" data-bs-dismiss="modal">Cancel</button>

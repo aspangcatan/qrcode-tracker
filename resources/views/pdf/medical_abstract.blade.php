@@ -206,10 +206,10 @@
         };
 
         $sectionDefs = [
-            'chief_complaint' => ['label' => 'Chief Complaint/History of Present Illness:', 'width' => 33, 'lines' => $chief_complaint_lines, 'page' => max(1, (int) ($chief_complaint_page ?? 1))],
-            'diagnosis' => ['label' => 'Diagnosis:', 'width' => 12, 'lines' => $diagnosis_lines, 'page' => max(1, (int) ($diagnosis_page ?? 1))],
-            'medication' => ['label' => 'Medication on Board:', 'width' => 20, 'lines' => $medication_lines, 'page' => max(1, (int) ($medication_page ?? 1))],
-            'plan' => ['label' => 'Plan:', 'width' => 7, 'lines' => $plan_lines, 'page' => max(1, (int) ($plan_page ?? 1))],
+            'chief_complaint' => ['label' => 'Chief Complaint/History of Present Illness:', 'width' => 33, 'lines' => $chief_complaint_lines, 'page' => max(1, (int) ($chief_complaint_page ?? 1)), 'margin_bottom' => max(0, (int) ($chief_complaint_margin_bottom ?? 0))],
+            'diagnosis' => ['label' => 'Diagnosis:', 'width' => 12, 'lines' => $diagnosis_lines, 'page' => max(1, (int) ($diagnosis_page ?? 1)), 'margin_bottom' => max(0, (int) ($diagnosis_margin_bottom ?? 0))],
+            'medication' => ['label' => 'Medication on Board:', 'width' => 20, 'lines' => $medication_lines, 'page' => max(1, (int) ($medication_page ?? 1)), 'margin_bottom' => max(0, (int) ($medication_margin_bottom ?? 0))],
+            'plan' => ['label' => 'Plan:', 'width' => 7, 'lines' => $plan_lines, 'page' => max(1, (int) ($plan_page ?? 1)), 'margin_bottom' => max(0, (int) ($plan_margin_bottom ?? 0))],
         ];
 
         $pages = collect($sectionDefs)
@@ -333,6 +333,11 @@
                             </tr>
                         @endfor
                     </table>
+                    {{-- Spacer instead of margin-bottom: adjacent vertical margins collapse,
+                         so a margin under the next table's 20px margin-top would have no effect. --}}
+                    @if($section['margin_bottom'] > 0)
+                        <div style="height: {{ $section['margin_bottom'] }}px"></div>
+                    @endif
                 @endforeach
                 <table style="width: 100%; margin-top:30px">
                     <tr>

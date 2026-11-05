@@ -652,7 +652,11 @@ class ApplicationController extends Controller
                             'chief_complaint_page' => $request->chief_complaint_page,
                             'diagnosis_page' => $request->diagnosis_page,
                             'medication_page' => $request->medication_page,
-                            'plan_page' => $request->plan_page
+                            'plan_page' => $request->plan_page,
+                            'chief_complaint_margin_bottom' => max(0, (int) $request->chief_complaint_margin_bottom),
+                            'diagnosis_margin_bottom' => max(0, (int) $request->diagnosis_margin_bottom),
+                            'medication_margin_bottom' => max(0, (int) $request->medication_margin_bottom),
+                            'plan_margin_bottom' => max(0, (int) $request->plan_margin_bottom)
                         ]
                     );
             }

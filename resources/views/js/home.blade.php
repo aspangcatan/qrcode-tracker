@@ -453,13 +453,23 @@
             const diagnosis_page = $("#diagnosis_page").val();
             const medication_page = $("#medication_page").val();
             const plan_page = $("#plan_page").val();
+            const print_type = $("#certificate_id_" + certificate_id + " .cell-type").text().trim();
+            let medical_abstract_params = "";
+            if (print_type === "medical_abstract") {
+                medical_abstract_params =
+                    "&chief_complaint_margin_bottom=" + $("#chief_complaint_margin_bottom").val() +
+                    "&diagnosis_margin_bottom=" + $("#diagnosis_margin_bottom").val() +
+                    "&medication_margin_bottom=" + $("#medication_margin_bottom").val() +
+                    "&plan_margin_bottom=" + $("#plan_margin_bottom").val();
+            }
 
             window.open("{{ route('printPreview') }}?id=" + certificate_id +
                 "&d_margin_top=" + d_margin_top +
                 "&d_margin_bottom=" + d_margin_bottom + "&s_margin_top=" + s_margin_top + "&seal_margin_top=" + seal_margin_top +
                 "&with_myla=" + with_myla+"&hide_details="+hide_middle_portion +
                 "&chief_complaint_page=" + chief_complaint_page + "&diagnosis_page=" + diagnosis_page +
-                "&medication_page=" + medication_page + "&plan_page=" + plan_page
+                "&medication_page=" + medication_page + "&plan_page=" + plan_page +
+                medical_abstract_params
                 , '_blank');
         });
 
@@ -879,6 +889,10 @@
         $("#diagnosis_page").val(1);
         $("#medication_page").val(1);
         $("#plan_page").val(1);
+        $("#chief_complaint_margin_bottom").val(0);
+        $("#diagnosis_margin_bottom").val(0);
+        $("#medication_margin_bottom").val(0);
+        $("#plan_margin_bottom").val(0);
     }
 
     function editCertificate(id) {
