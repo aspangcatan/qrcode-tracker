@@ -133,7 +133,7 @@
             color: var(--outline);
         }
 
-        .record dd { margin: 0; font-weight: 600; font-size: 1rem; }
+        .record dd { margin: 0; font-weight: 600; font-size: 1rem; overflow-wrap: anywhere; }
 
         .record .patient { font: 700 1.125rem/1.5rem var(--font-head); color: var(--primary); }
 

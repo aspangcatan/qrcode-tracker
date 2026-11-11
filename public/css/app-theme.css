@@ -476,7 +476,7 @@
 
 .theme-v2 .modal-title { margin: 0; font: 700 1.125rem/1.5rem var(--font-head); color: var(--on-surface); }
 
-.theme-v2 .modal-sub { margin: 0.125rem 0 0; font-size: 0.8125rem; color: var(--outline); }
+.theme-v2 .modal-sub { margin: 0.125rem 0 0; font-size: 0.8125rem; color: var(--outline); overflow-wrap: anywhere; }
 
 .theme-v2 .modal-body { padding: 1.25rem; background: var(--background); }
 
@@ -981,6 +981,9 @@
     border-radius: 0.625rem 0 0 0.625rem;
     border-left: 3px solid var(--primary);
     font-weight: 500;
+    /* Long unbroken text wraps inside the row, keeping the edit and delete buttons in the column. */
+    overflow-wrap: anywhere;
+    word-break: break-word;
 }
 
 .theme-v2 .item-list td:not(:first-child) { width: 1% !important; }
