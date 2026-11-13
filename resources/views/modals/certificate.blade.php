@@ -298,6 +298,7 @@
                     <option value="7">MEDICAL ABSTRACT</option>
                     <option value="11">PRESIGNED - DENTAL</option>
                     <option value="8">DENTAL</option>
+                    <option value="15">BIRTH CERTIFICATION</option>
                     <option value="9">OTHER RECORDS</option>
                 </select>
             </div>
@@ -346,7 +347,7 @@
                     <span class="modal-icon"><i class="bi bi-file-earmark-spreadsheet"></i></span>
                     <div>
                         <h5 class="modal-title" id="report_modal_title">Generate report</h5>
-                        <p class="modal-sub">Pick a date range, generate, then download as Excel.</p>
+                        <p class="modal-sub">Pick a date range and, optionally, one or more types. Generate, then download as Excel.</p>
                     </div>
                 </div>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -357,6 +358,25 @@
                         <i class="bi bi-calendar3"></i>
                         <input name="datefilter" class="form-control" placeholder="Select date range" id="filter_date"
                                readonly/>
+                    </div>
+                    <div class="report-types">
+                        <select class="w-100" id="filter_report_type" multiple aria-label="Certificate types">
+                            <option value="aksyon_agad">AKSYON AGAD</option>
+                            <option value="aksyon_agad_inpatient">AKSYON AGAD - INPATIENT</option>
+                            <option value="maipp">PRESIGNED - ER/OPD</option>
+                            <option value="maipp_opd">PRESIGNED - OPD</option>
+                            <option value="ordinary">ORDINARY MEDCERT - ER/OPD</option>
+                            <option value="maipp_inpatient">PRESIGNED - INPATIENT</option>
+                            <option value="ordinary_inpatient">ORDINARY MEDCERT - INPATIENT</option>
+                            <option value="ordinary_inpatient_filing">MEDICAL CERT INPATIENT - FILING CASES</option>
+                            <option value="medico_legal">MEDICO LEGAL</option>
+                            <option value="coc">COC</option>
+                            <option value="medical_abstract">MEDICAL ABSTRACT</option>
+                            <option value="dental_presigned">PRESIGNED - DENTAL</option>
+                            <option value="dental">DENTAL</option>
+                            <option value="birth">BIRTH CERTIFICATION</option>
+                            <option value="common">OTHER RECORDS</option>
+                        </select>
                     </div>
                     <button class="btn btn-primary" id="btn_generate_report">
                         <i class="bi bi-arrow-repeat"></i> Generate
@@ -381,6 +401,10 @@
                                 <th>Date/Time Released</th>
                                 <th>Released/Cancelled by</th>
                                 <th>Status</th>
+                                {{-- Shown by js/home only when the report has birth certification records. --}}
+                                @foreach(\App\Services\CertificateService::BIRTH_REPORT_COLUMNS as $header)
+                                    <th class="birth-col d-none">{{ ucwords(strtolower($header)) }}</th>
+                                @endforeach
                             </tr>
                             </thead>
                             <tbody id="report_list">

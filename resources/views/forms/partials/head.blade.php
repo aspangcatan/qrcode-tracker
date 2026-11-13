@@ -1,6 +1,6 @@
 {{--
     Certificate header: type, certificate no., hospital no. and date issued.
-    Params: $title, $icon, $lock_issued (date issued stays disabled when editing).
+    Params: $title, $icon, $lock_issued (date issued stays disabled when editing), $hrn_label.
 --}}
 @php
     $c = (isset($certificates) && $certificates) ? $certificates : null;
@@ -23,7 +23,7 @@
             @endif
         </div>
         <div class="cert-meta-item">
-            <label class="info-label" for="health_record_no">Hospital No. <span class="req">*</span></label>
+            <label class="info-label" for="health_record_no">{{ $hrn_label ?? 'Hospital No.' }} <span class="req">*</span></label>
             <input type="text" class="form-control" id="health_record_no" value="{{ $c ? $c->health_record_no : '' }}"/>
         </div>
         <div class="cert-meta-item">

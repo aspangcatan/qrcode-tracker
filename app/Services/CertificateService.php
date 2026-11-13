@@ -8,6 +8,26 @@ use Illuminate\Support\Facades\DB;
 
 class CertificateService
 {
+    /**
+     * Extra report columns for birth certification records, in display order (field => header).
+     * The report table (modals/certificate, js/home) and the Excel export both read this.
+     */
+    public const BIRTH_REPORT_COLUMNS = [
+        'birth_hospital_no' => "CHILD'S HOSPITAL NO.",
+        'birth_transaction' => 'TRANSACTION',
+        'birth_parents_status' => "PARENTS' STATUS",
+        'birth_date_of_birth' => 'DATE OF BIRTH',
+        'birth_time_of_birth' => 'TIME OF BIRTH',
+        'birth_gender' => 'GENDER',
+        'birth_weight' => 'WEIGHT',
+        'birth_mother_name' => "MOTHER'S NAME",
+        'birth_address' => 'ADDRESS',
+        'birth_cell_no' => 'CELL NO.',
+        'birth_doctor' => 'DOCTOR',
+        'birth_authorized_person' => 'AUTHORIZED PERSON',
+        'birth_date_received' => 'DATE RECEIVED',
+        'birth_date_claimed' => 'DATE CLAIMED',
+    ];
 
     public function index($user_id, $filters, $page)
     {
@@ -155,7 +175,10 @@ class CertificateService
             ->delete();
     }
 
-    public function generateReport($from_date, $to_date)
+    /**
+     * @param array $types certificate type keys to include; empty means every type.
+     */
+    public function generateReport($from_date, $to_date, array $types = [])
     {
         return DB::table('qr_tracker.certificates')
             ->select([
@@ -173,6 +196,7 @@ class CertificateService
             WHEN type = "aksyon_agad_inpatient" THEN "AKSYON AGAD - INPATIENT"
             WHEN type = "dental" THEN "DENTAL"
             WHEN type = "common" THEN UPPER(specific_document)
+            WHEN type = "birth" THEN "BIRTH CERTIFICATION"
             ELSE type
         END AS type'), // Display type with custom values
                 'charge_slip_no',
@@ -186,11 +210,31 @@ class CertificateService
                 'certificate_no',
                 DB::raw('DATE_FORMAT(date_issued, "%m/%d/%Y %h:%i %p") AS date_issued'),
                 'released_by',
-                'status'
+                'status',
+                // Birth certification only (null for every other type).
+                DB::raw('certificates.type = "birth" AS is_birth'),
+                DB::raw('IF(certificates.type = "birth", health_record_no, NULL) AS birth_hospital_no'),
+                'bd.transaction AS birth_transaction',
+                'bd.parents_status AS birth_parents_status',
+                DB::raw('DATE_FORMAT(bd.date_of_birth, "%m/%d/%Y") AS birth_date_of_birth'),
+                DB::raw('TIME_FORMAT(bd.time_of_birth, "%h:%i %p") AS birth_time_of_birth'),
+                DB::raw('IF(certificates.type = "birth", sex, NULL) AS birth_gender'),
+                'bd.weight AS birth_weight',
+                'bd.mother_name AS birth_mother_name',
+                DB::raw('IF(certificates.type = "birth", address, NULL) AS birth_address'),
+                'bd.cell_no AS birth_cell_no',
+                DB::raw('IF(certificates.type = "birth", doctor, NULL) AS birth_doctor'),
+                'bd.authorized_person AS birth_authorized_person',
+                DB::raw('DATE_FORMAT(bd.date_received, "%m/%d/%Y") AS birth_date_received'),
+                DB::raw('DATE_FORMAT(bd.date_claimed, "%m/%d/%Y") AS birth_date_claimed'),
             ])
+            ->leftJoin('qr_tracker.birth_details AS bd', 'bd.certificate_id', '=', 'certificates.id')
             ->where(function ($query) use ($from_date, $to_date) {
                 $query->whereDate('created_at', '>=', $from_date);
                 $query->whereDate('created_at', '<=', $to_date);
+            })
+            ->when(count($types) > 0, function ($query) use ($types) {
+                $query->whereIn('certificates.type', $types);
             })
             ->get();
     }

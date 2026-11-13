@@ -55,6 +55,7 @@
                             <option value="medical_abstract">MEDICAL ABSTRACT</option>
                             <option value="dental_presigned">PRESIGNED - DENTAL</option>
                             <option value="dental">DENTAL</option>
+                            <option value="birth">BIRTH CERTIFICATION</option>
                             <option value="common">OTHER RECORDS</option>
                         </select>
                     </div>

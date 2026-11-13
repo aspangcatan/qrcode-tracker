@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\NurseStation;
 use App\Models\User;
 use App\Models\UserPrivelege;
+use App\Services\BirthDetailService;
 use App\Services\CertificateService;
 use App\Services\ChiefComplaintService;
 use App\Services\DiagnosisService;
@@ -24,12 +25,14 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ApplicationController extends Controller
 {
-    protected $certificateService, $diagnosisService, $sustainedService, $homisService, $queueService, $chiefComplaintService, $medicationService, $planService;
+    protected $certificateService, $diagnosisService, $sustainedService, $homisService, $queueService, $chiefComplaintService, $medicationService, $planService, $birthDetailService;
 
     public function __construct(CertificateService $certificateService, DiagnosisService $diagnosisService,
                                 SustainedService $sustainedService, HomisServices $homisService, QueueService $queueService,
-                                ChiefComplaintService $chiefComplaintService, MedicationService $medicationService, PlanService $planService)
+                                ChiefComplaintService $chiefComplaintService, MedicationService $medicationService, PlanService $planService,
+                                BirthDetailService $birthDetailService)
     {
+        $this->birthDetailService = $birthDetailService;
         $this->certificateService = $certificateService;
         $this->diagnosisService = $diagnosisService;
         $this->sustainedService = $sustainedService;
@@ -208,7 +211,7 @@ class ApplicationController extends Controller
     public function storeCertificate(Request $request)
     {
         try {
-            $excluded_certificate = ['ordinary', 'aksyon_agad', 'aksyon_agad_inpatient', 'maipp', 'medico_legal', 'ordinary_inpatient', 'ordinary_inpatient_filing', 'maipp_inpatient', 'maipp_opd', 'coc', 'medical_abstract', 'dental', 'dental_presigned'];
+            $excluded_certificate = ['ordinary', 'aksyon_agad', 'aksyon_agad_inpatient', 'maipp', 'medico_legal', 'ordinary_inpatient', 'ordinary_inpatient_filing', 'maipp_inpatient', 'maipp_opd', 'coc', 'medical_abstract', 'dental', 'dental_presigned', 'birth'];
             $specific_documents = $request->document_type;
             $type = $request->type;
 
@@ -233,6 +236,7 @@ class ApplicationController extends Controller
                     $this->handleChiefComplaint($request->chief_complaints, $certificate_id);
                     $this->handleMedication($request->medications, $certificate_id);
                     $this->handlePlan($request->plans, $certificate_id);
+                    $this->handleBirth($request->birth, $certificate_id);
                 }
             }
 
@@ -458,6 +462,12 @@ class ApplicationController extends Controller
                     return view('forms.common', compact('certificates', 'receivers'));
                 }
                 return view('forms.common', compact('certificate_no', 'receivers'));
+            case "birth":
+                if ($request->has('id')) {
+                    $birth = $this->birthDetailService->getByCertificate($request->id);
+                    return view('forms.birth', compact('certificates', 'birth', 'receivers'));
+                }
+                return view('forms.birth', compact('certificate_no', 'receivers'));
             default:
                 return [];
         }
@@ -675,7 +685,7 @@ class ApplicationController extends Controller
     public function generateTableReport(Request $request)
     {
         try {
-            $response = $this->certificateService->generateReport($request->from_date, $request->to_date);
+            $response = $this->certificateService->generateReport($request->from_date, $request->to_date, (array) $request->input('types', []));
             return response()->json($response);
         } catch (\Exception $exception) {
             return response()->json(['message' => $exception->getMessage()], 500);
@@ -686,12 +696,26 @@ class ApplicationController extends Controller
     {
         try {
             $row = 7;
-            $records = $this->certificateService->generateReport($request->from_date, $request->to_date);
+            $records = $this->certificateService->generateReport($request->from_date, $request->to_date, (array) $request->input('types', []));
             $templatePath = public_path('excel/SUMMARY_TEMPLATE.xlsx'); // Replace with the actual path to your template
             $spreadsheet = IOFactory::load($templatePath);
             $sheet = $spreadsheet->getActiveSheet();
             $sheet->setCellValue('B1', $request->title);
             $sheet->insertNewRowBefore($row, count($records));
+
+            // Birth certification columns go after STATUS (N), only when the report has birth records.
+            $birth_columns = $records->contains(fn($record) => (int)$record->is_birth === 1)
+                ? CertificateService::BIRTH_REPORT_COLUMNS : [];
+            $last_column = 'N';
+            $column = 'N';
+            foreach ($birth_columns as $header) {
+                $column++;
+                $sheet->duplicateStyle($sheet->getStyle('N6'), $column . '6');
+                $sheet->setCellValue($column . '6', $header);
+                $sheet->getColumnDimension($column)->setWidth(22);
+                $last_column = $column;
+            }
+
             for ($i = 0; $i < count($records); $i++) {
                 $sheet->setCellValue('A' . $row, $records[$i]->date_requested);
                 $sheet->setCellValue('B' . $row, $records[$i]->certificate_no);
@@ -707,10 +731,18 @@ class ApplicationController extends Controller
                 $sheet->setCellValue('L' . $row, $records[$i]->date_issued);
                 $sheet->setCellValue('M' . $row, $records[$i]->released_by);
                 $sheet->setCellValue('N' . $row, $records[$i]->status);
+                $column = 'N';
+                foreach (array_keys($birth_columns) as $field) {
+                    $column++;
+                    $sheet->duplicateStyle($sheet->getStyle('N' . $row), $column . $row);
+                    $sheet->setCellValueExplicit($column . $row, (string)($records[$i]->{$field} ?? ''),
+                        \PhpOffice\PhpSpreadsheet\Cell\DataType::TYPE_STRING);
+                }
 
-                $sheet->getStyle('A' . $row . ':N' . $row)->getAlignment()->setWrapText(true);
-                $sheet->getStyle('A' . $row . ':N' . $row)->getAlignment()->setHorizontal('center');
-                $sheet->getStyle('A' . $row . ':N' . $row)->getAlignment()->setVertical('middle');
+                $range = 'A' . $row . ':' . $last_column . $row;
+                $sheet->getStyle($range)->getAlignment()->setWrapText(true);
+                $sheet->getStyle($range)->getAlignment()->setHorizontal('center');
+                $sheet->getStyle($range)->getAlignment()->setVertical('middle');
                 $row++;
             }
 
@@ -895,6 +927,32 @@ class ApplicationController extends Controller
             }
             $this->planService->delete($certificate_id);
             $this->planService->store($params);
+        }
+    }
+
+    /**
+     * Handle birth certification details.
+     *
+     * @param array $birth
+     * @param int $certificate_id
+     * @return void
+     */
+    private function handleBirth($birth, $certificate_id)
+    {
+        if ($birth) {
+            $fields = ['transaction', 'parents_status', 'date_of_birth', 'time_of_birth', 'weight', 'mother_name',
+                'cell_no', 'authorized_person', 'date_received', 'date_claimed'];
+            $params = ['certificate_id' => $certificate_id];
+            foreach ($fields as $field) {
+                $value = $birth[$field] ?? null;
+                $params[$field] = ($value === '') ? null : $value;
+            }
+            // Only New and Retype need the parents' status.
+            if (!in_array($params['transaction'], ['NEW', 'RETYPE'])) {
+                $params['parents_status'] = null;
+            }
+            $this->birthDetailService->delete($certificate_id);
+            $this->birthDetailService->store($params);
         }
     }
 

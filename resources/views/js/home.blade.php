@@ -19,6 +19,7 @@
     };
 
     let type = "";
+    const BIRTH_REPORT_FIELDS = @json(array_keys(\App\Services\CertificateService::BIRTH_REPORT_COLUMNS));
 
     // Queue module is off (QUEUE_ENABLED) -> no websocket, so the public HTTPS site doesn't hit the LAN.
     const ws = @json(config('app.queue_enabled')) ? new WebSocket('ws://192.168.4.3:9000') : null;
@@ -170,6 +171,13 @@
             }
         });
 
+        // Birth certification: only New and Retype ask for the parents' status.
+        $("body").on("change", "#transaction", function () {
+            const needs_status = ["NEW", "RETYPE"].includes($(this).val());
+            $("#parents_status_container").toggleClass("d-none", !needs_status);
+            if (!needs_status) $("#parents_status").val("");
+        });
+
         $("#btn_add_certificate").click(function () {
             certificate_id = 0;
             $("#choose_certificate_modal").modal("show");
@@ -220,6 +228,9 @@
                 case "14":
                     type = "ordinary_inpatient_filing";
                     break;
+                case "15":
+                    type = "birth";
+                    break;
             }
 
             $("#choose_certificate_modal").modal("hide");
@@ -243,8 +254,16 @@
                 .catch(error => console.error(error));
         });
 
+        $("#filter_report_type").select2({
+            dropdownParent: $("#report_modal"),
+            width: '100%',
+            placeholder: 'All types',
+            closeOnSelect: false
+        });
+
         $("#btn_add_report").click(function () {
             $("#filter_date").val("");
+            $("#filter_report_type").val(null).trigger("change");
             $("#report_list").empty();
             $("#report_modal").modal("show");
         });
@@ -277,7 +296,7 @@
             } else
                 title += " - " + to_month_name + " " + to_date.format("D, YYYY");
 
-            window.open("{{ route('reports.certificates.export') }}?from_date=" + from_date.format("YYYY-MM-DD") + "&to_date=" + to_date.format("YYYY-MM-DD") + "&title=" + title, "_blank");
+            window.open("{{ route('reports.certificates.export') }}?" + reportQuery(from_date, to_date, {title: title}), "_blank");
         });
 
         $("#btn_generate_report").click(async function () {
@@ -292,10 +311,13 @@
             let from_date = moment(filtered_date.split("-")[0].trim(), "MM/DD/YYYY");
             let to_date = moment(filtered_date.split("-")[1].trim(), "MM/DD/YYYY");
 
-            const response = await fetch('{{ route('reports.certificates.index') }}?from_date=' + from_date.format("YYYY-MM-DD") + "&to_date=" + to_date.format("YYYY-MM-DD"));
+            const response = await fetch('{{ route('reports.certificates.index') }}?' + reportQuery(from_date, to_date));
             const data = await response.json();
 
             $("#report_list").empty();
+            // Birth certification columns only when the result has birth records.
+            const has_birth = data.some(it => Number(it.is_birth) === 1);
+            $("#report_modal .birth-col").toggleClass("d-none", !has_birth);
             if (data.length === 0) {
                 $("#report_list").append("<tr><td colspan='15' class='text-center'>No record found</td></tr>");
                 return;
@@ -327,7 +349,8 @@
                     <td>` + date_completed + `</td>
                     <td>` + date_issued + `</td>
                     <td>` + released_by + `</td>
-                    <td>` + status + `</td>
+                    <td>` + status + `</td>` +
+                    (has_birth ? BIRTH_REPORT_FIELDS.map(f => `<td>` + (it[f] ?? "") + `</td>`).join("") : "") + `
                 </tr>`;
                 $("#report_list").append(tr);
             });
@@ -559,6 +582,19 @@
                 "toi": (toi === undefined) ? null : toi
             }
 
+            const birth = (type === "birth") ? {
+                "transaction": $("#transaction").val(),
+                "parents_status": $("#parents_status").val(),
+                "date_of_birth": $("#date_of_birth").val(),
+                "time_of_birth": $("#time_of_birth").val(),
+                "weight": $("#weight").val(),
+                "mother_name": $("#mother_name").val(),
+                "cell_no": $("#cell_no").val(),
+                "authorized_person": $("#authorized_person").val(),
+                "date_received": $("#date_received").val(),
+                "date_claimed": $("#date_claimed").val()
+            } : null;
+
             let is_valid = true;
             $(".is-invalid").removeClass("is-invalid");
 
@@ -599,7 +635,7 @@
                 is_valid = false;
             }
 
-            if (!age && type != "common") {
+            if (!age && type != "common" && type != "birth") {
                 toastr.error('Age is required');
                 $("#age").addClass("is-invalid");
                 is_valid = false;
@@ -618,7 +654,7 @@
             }
 
             //CODE ARE SPAGHETTI NOW, GONNA CHANGE TO VERSION 2 SOON
-            if (type != "medical_abstract" && type != "coc" && type != "common" && diagnosis_array.length < 1) {
+            if (type != "medical_abstract" && type != "coc" && type != "common" && type != "birth" && diagnosis_array.length < 1) {
                 toastr.error('Diagnosis is required');
                 is_valid = false;
             }
@@ -775,6 +811,37 @@
                         is_valid = false;
                     }
                     break;
+                case "birth":
+                    if (!birth.transaction) {
+                        toastr.error('Transaction is required');
+                        $("#transaction").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (["NEW", "RETYPE"].includes(birth.transaction) && !birth.parents_status) {
+                        toastr.error("Parents' status is required");
+                        $("#parents_status").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!sex) {
+                        toastr.error('Gender is required');
+                        $("#sex").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!birth.date_of_birth) {
+                        toastr.error('Date of birth is required');
+                        $("#date_of_birth").addClass("is-invalid");
+                        is_valid = false;
+                    }
+
+                    if (!birth.mother_name) {
+                        toastr.error("Mother's name is required");
+                        $("#mother_name").addClass("is-invalid");
+                        is_valid = false;
+                    }
+                    break;
             }
 
             if (!is_valid) {
@@ -817,6 +884,7 @@
                 "medications": medications_array,
                 "plans": plans_array,
                 "sustained": (noi === undefined) ? null : sustained,
+                "birth": birth,
                 "ward": (ward === undefined) ? null : ward,
                 "received_by": received_by,
                 "document_type": document_type_array,
@@ -874,6 +942,17 @@
 
         getCertificates();
     });
+
+    // Query string for the report table and export: date range plus the chosen types (none = all).
+    function reportQuery(from_date, to_date, extra = {}) {
+        const query = new URLSearchParams({
+            from_date: from_date.format("YYYY-MM-DD"),
+            to_date: to_date.format("YYYY-MM-DD"),
+            ...extra
+        });
+        ($("#filter_report_type").val() || []).forEach(t => query.append("types[]", t));
+        return query.toString();
+    }
 
     function printPreview(id) {
         certificate_id = id;
@@ -1106,13 +1185,17 @@
                 case "common":
                     _type = (it.specific_document + "").toUpperCase();
                     break;
+                case "birth":
+                    _type = "BIRTH CERTIFICATION";
+                    break;
             }
 
             let tr = `
                     <tr id="certificate_id_` + it.id + `">
                         <td class="d-none cell-type">` + it.type + `</td>
                         <td class="cell-action">`;
-            if (it.type != "common") {
+            // No print template yet for other records or birth certification.
+            if (it.type != "common" && it.type != "birth") {
                 tr += `<button class="btn btn-sm btn-info" title="Print with QR code" onclick="printPreview(` + it.id + `)">
                         <i class="bi bi-qr-code"></i>
                     </button>`;
