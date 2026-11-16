@@ -2,6 +2,7 @@
     Payment and release tracking. js/home shows #no_copies_container for new certificates.
     Params: $amount_default (new certificates), $amount_locked,
             $hidden (free certificates: only Date/time requested is shown, the rest stays hidden).
+    Received by is always the account that created the record and cannot be changed.
 --}}
 @php
     $c = (isset($certificates) && $certificates) ? $certificates : null;
@@ -47,12 +48,9 @@
         </div>
         <div class="col-sm-6 {{ $hide }}">
             <label class="form-label" for="received_by">Received by <span class="req">*</span></label>
-            <select class="js-example-basic-single w-100" id="received_by">
-                <option></option>
-                @foreach($receivers as $receiver)
-                    <option @if($c && $c->received_by === $receiver->name) selected @endif>{{ $receiver->name }}</option>
-                @endforeach
-            </select>
+            {{-- Locked to the account that created the record; the server enforces this too. --}}
+            <input type="text" class="form-control" id="received_by"
+                   value="{{ ($c && $c->received_by) ? $c->received_by : \App\Http\Controllers\ApplicationController::currentUserName() }}" disabled/>
         </div>
         {{-- js/home un-hides #no_copies_container, so free certificates wrap it to keep it hidden. --}}
         @if($hidden)<div class="d-none">@endif

@@ -1,5 +1,6 @@
 {{--
-    Birth certification. Baby's name, gender, address, informant, relationship, doctor and OR No. use the
+    Birth certification. Baby's name, gender, address, informant, relationship, doctor (chosen from HOMIS via
+    forms.partials.physician) and OR No. use the
     certificates table; the rest lives in birth_details (js/home sends it as "birth").
     js/home shows #parents_status_container only for NEW and RETYPE transactions.
 --}}
@@ -11,6 +12,10 @@ $transactions = ['NEW', 'RETYPE', 'IMMUNIZATION CARD RE-ISSUANCE'];
 $with_status = ['NEW', 'RETYPE'];
 $parent_statuses = ['MARRIED', 'SINGLE', 'SINGLE MARRIED','NOT MARRIED W/ CEDULA', 'NOT MARRIED W/OUT CEDULA'];
 $transaction = $b ? $b->transaction : '';
+// Not stored: an existing record counts as "same" when the informant is the mother and the relationship says so.
+$informant_is_mother = $c && $b && $b->mother_name
+    && strcasecmp(trim($c->requesting_person), trim($b->mother_name)) === 0
+    && strcasecmp(trim($c->relationship), 'MOTHER') === 0;
 @endphp
 <div class="cert-form">
     @include('forms.partials.head', [
@@ -73,16 +78,11 @@ $transaction = $b ? $b->transaction : '';
                         <input type="text" class="form-control" id="weight" placeholder="e.g. 3.2 KG"
                             value="{{ $b ? $b->weight : '' }}" />
                     </div>
-                    <div class="col-12">
-                        <label class="form-label" for="doctor">Doctor</label>
-                        <input type="text" class="form-control" id="doctor" placeholder="Name of attending doctor"
-                            value="{{ $c ? $c->doctor : '' }}" />
-                        {{-- No physician chooser here; keep the columns the save sends filled. --}}
-                        <input type="hidden" id="doctor_designation" value="{{ $c ? $c->doctor_designation : '' }}" />
-                        <input type="hidden" id="doctor_license" value="{{ $c ? $c->doctor_license : '' }}" />
-                    </div>
                 </div>
             </section>
+
+            {{-- Same HOMIS physician chooser as the medical certificates. --}}
+            @include('forms.partials.physician', ['with_designation' => true])
 
             <section class="form-section">
                 <h6 class="section-title"><i class="bi bi-people"></i> Mother &amp; informant</h6>
@@ -102,15 +102,22 @@ $transaction = $b ? $b->transaction : '';
                         <input type="text" class="form-control" id="address" placeholder="Street, Barangay, City / Municipality"
                             value="{{ $c ? $c->address : '' }}" />
                     </div>
+                    <div class="col-12">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="informant_is_mother"
+                                @if($informant_is_mother) checked @endif />
+                            <label class="form-check-label" for="informant_is_mother">INFORMANT AND MOTHER THE SAME</label>
+                        </div>
+                    </div>
                     <div class="col-md-7">
                         <label class="form-label" for="requesting_person">Informant <span class="req">*</span></label>
                         <input type="text" class="form-control" id="requesting_person" placeholder="Name of informant"
-                            value="{{ $c ? $c->requesting_person : '' }}" />
+                            value="{{ $c ? $c->requesting_person : '' }}" @if($informant_is_mother) readonly @endif />
                     </div>
                     <div class="col-md-5">
                         <label class="form-label" for="relationship">Relationship</label>
                         <input type="text" class="form-control" id="relationship" placeholder="e.g. Mother, Father"
-                            value="{{ $c ? $c->relationship : '' }}" />
+                            value="{{ $c ? $c->relationship : '' }}" @if($informant_is_mother) readonly @endif />
                     </div>
                     <div class="col-12">
                         <label class="form-label" for="authorized_person">Authorized person</label>

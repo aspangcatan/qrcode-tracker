@@ -178,6 +178,25 @@
             if (!needs_status) $("#parents_status").val("");
         });
 
+        // Birth certification: "Informant and mother the same" copies the mother's name into the
+        // informant, sets the relationship to MOTHER and keeps both locked while ticked.
+        $("body").on("change", "#informant_is_mother", function () {
+            const same = $(this).is(":checked");
+            $("#requesting_person, #relationship").prop("readonly", same);
+            if (same) {
+                $("#requesting_person").val($("#mother_name").val()).removeClass("is-invalid");
+                $("#relationship").val("MOTHER");
+            } else {
+                $("#requesting_person, #relationship").val("");
+            }
+        });
+
+        $("body").on("input", "#mother_name", function () {
+            if ($("#informant_is_mother").is(":checked")) {
+                $("#requesting_person").val($(this).val());
+            }
+        });
+
         $("#btn_add_certificate").click(function () {
             certificate_id = 0;
             $("#choose_certificate_modal").modal("show");
@@ -246,10 +265,6 @@
                     $("#no_copies_container").removeClass("d-none");
                     $(".list-field-btn").toggleClass("d-none", type !== "medical_abstract");
 
-                    $("#received_by").select2({
-                        dropdownParent: $("#certificate_modal"),
-                        width: '100%'
-                    });
                 })
                 .catch(error => console.error(error));
         });
@@ -905,6 +920,12 @@
                 });
 
                 const data = await response.json();
+                // Keep the dialog open on failure so the typed details aren't lost.
+                if (!response.ok) {
+                    toastr.error(data.message || "Save failed", "Ooops");
+                    return;
+                }
+
                 $("#certificate_modal").modal("hide");
                 toastr.success(data.message, "Information");
                 getCertificates();
@@ -989,10 +1010,6 @@
                 $("#certificate_modal #certificate_form").html(html);
                 $("#certificate_modal .modal-footer").removeClass("d-none");
                 $(".list-field-btn").toggleClass("d-none", type !== "medical_abstract");
-                $("#received_by").select2({
-                    dropdownParent: $("#certificate_modal"),
-                    width: '100%'
-                });
             })
             .catch(error => console.error(error));
     }
